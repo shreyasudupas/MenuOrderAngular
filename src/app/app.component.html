@@ -1,0 +1,9 @@
+<div>
+  <div>
+    <p-button *ngIf="!isUserAuthenticated" label="Click here to Login" (click)="login()"></p-button>
+
+    <p-button *ngIf="isUserAuthenticated" label="Click here to Logout" (click)="logout()"></p-button>
+  </div>
+
+  <router-outlet></router-outlet>
+</div>
