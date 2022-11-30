@@ -86,7 +86,7 @@ export class AuthService {
     public finishLogin = (): Promise<User> => {
       return this._userManager.signinRedirectCallback()
       .then(user => {
-        //debugger
+        debugger
         this._user = user;
         this.userLoginSubject.next(this.checkUser(user));
         return user;

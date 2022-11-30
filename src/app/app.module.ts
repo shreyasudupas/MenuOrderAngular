@@ -36,7 +36,7 @@ import { AuthInterceptor } from './common/interceptor/auth.interceptor';
     NgbModule,
   ],
   providers: [
-    { provide: ErrorHandler,useClass:GlobalErrorHandler},
+    { provide: ErrorHandler,useClass:GlobalErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
