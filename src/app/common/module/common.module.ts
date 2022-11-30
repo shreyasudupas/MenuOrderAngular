@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PrimeNGModule } from 'src/app/primeng.module';
+import { PrimeNGModule } from 'src/app/common/module/primeng.module';
 import { MenuBarComponent } from '../components/menu/menu-bar.component';
 import { ProfileComponent } from '../components/profile/profile.component';
 

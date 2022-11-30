@@ -1,5 +1,5 @@
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,7 +12,10 @@ import { SigninRedirectCallbackComponent } from './common/components/signInRedir
 import { SignoutRedirectComponent } from './common/components/signOutRedirect/sign-redirect-callback.component';
 import { GraphQLModule } from './common/module/graphql.module';
 
-import { PrimeNGModule } from './primeng.module';
+import { PrimeNGModule } from './common/module/primeng.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { GlobalErrorHandler } from './common/services/global-error.service';
+import { AuthInterceptor } from './common/interceptor/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -30,8 +33,12 @@ import { PrimeNGModule } from './primeng.module';
     GraphQLModule,
     HttpClientModule,
     FormsModule,
+    NgbModule,
   ],
-  providers: [],
+  providers: [
+    { provide: ErrorHandler,useClass:GlobalErrorHandler},
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
