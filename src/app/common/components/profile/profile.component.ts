@@ -60,7 +60,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     ,private _broadcastService:CommonDataSharingService) { }
   
   ngOnInit(): void {
-    debugger
+    //debugger
     this.userProfile = this.authService.getUserInformation()!;
 
     this.querySubscription = this.apollo

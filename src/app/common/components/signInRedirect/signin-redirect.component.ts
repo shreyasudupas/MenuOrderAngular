@@ -12,10 +12,10 @@ export class SigninRedirectCallbackComponent implements OnInit {
     constructor(private _authService: AuthService, private _router: Router) { }
     
     ngOnInit(): void {
-        console.log('SigninRedirectCallbackComponent loaded');
+        //console.log('SigninRedirectCallbackComponent loaded');
 
         this._authService.finishLogin().then(() => {
-            debugger
+            //debugger
             this._authService.CheckIfUserIsAppUser()
             .then( res => {
                 if(res){

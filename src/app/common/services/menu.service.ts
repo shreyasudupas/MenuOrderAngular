@@ -67,6 +67,11 @@ export class MenuService{
                     routerLink:['./vendor']
                 },
                 {
+                    label: 'VendorDetail',
+                    icon: 'pi pi-fw pi-calendar',
+                    visible: false
+                },
+                {
                     label: 'Settings', 
                     icon: 'pi pi-fw pi-cog'
                 }
@@ -87,8 +92,16 @@ export class MenuService{
             var findParentMenuListId = this.menuList.findIndex(item => item.parent == role);
 
                 if(findParentMenuListId > -1){
+                    let componentName:string;
+
+                    if(getFirstName.length > 2){
+                        componentName = getFirstName[0] + getFirstName[1];
+                    }else{
+                        componentName = getFirstName[0];
+                    }
+
                     //compare first name of the component and label
-                    var CurrentMenuId = this.menuList[findParentMenuListId].items.findIndex(item => item.label == getFirstName[0]);
+                    var CurrentMenuId = this.menuList[findParentMenuListId].items.findIndex(item => item.label == componentName);
     
                     if(CurrentMenuId > -1){
                         this.menuList[findParentMenuListId].items[CurrentMenuId].visible = true;
