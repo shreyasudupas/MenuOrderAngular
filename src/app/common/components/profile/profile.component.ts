@@ -54,12 +54,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   userRole!:string;
   userProfile!:User;
 
-  constructor(private apollo:Apollo
-    ,private authService:AuthService
+  constructor(
+    private apollo:Apollo,
+    private authService:AuthService
     ,private _broadcastService:CommonDataSharingService) { }
   
   ngOnInit(): void {
-
+    debugger
     this.userProfile = this.authService.getUserInformation()!;
 
     this.querySubscription = this.apollo

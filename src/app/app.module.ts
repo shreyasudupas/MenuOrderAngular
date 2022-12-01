@@ -31,7 +31,7 @@ import { AuthInterceptor } from './common/interceptor/auth.interceptor';
     BrowserAnimationsModule,
     PrimeNGModule,
     GraphQLModule,
-    HttpClientModule,
+    //HttpClientModule,
     FormsModule,
     NgbModule,
   ],
