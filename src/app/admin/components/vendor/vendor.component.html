@@ -8,15 +8,17 @@
                     <th>Category</th>
                     <th>Location</th>
                     <th>Type</th>
+                    <th>Active</th>
                     <th>Edit</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-vendor>
                 <tr>
-                    <td>{{vendor.name}}</td>
+                    <td>{{vendor.vendorName}}</td>
                     <td>{{vendor.category}}</td>
-                    <td>{{vendor.location}}</td>
+                    <td>{{vendor.state}}</td>
                     <td>{{vendor.type}}</td>
+                    <td>{{vendor.active}}</td>
                     <td> <p-button icon="pi pi-file-edit" (click)="editVendor(vendor)"></p-button> </td>
                 </tr>
             </ng-template>

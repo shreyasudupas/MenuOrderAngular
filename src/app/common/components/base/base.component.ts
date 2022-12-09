@@ -12,8 +12,9 @@ export class BaseComponent<T> extends ResourceService<T>{
     public componentName:any;
     private activeMenuList!:MenuActiveItem;
     
-    public action!:string;
-    public versionUrl!:string;
+    public action!:string | null;
+    public baseUrl!:string;
+    
 
     constructor(public _menuService:MenuService,public override httpclient:HttpClient
         ,public _commonBroadcastService:CommonDataSharingService){
@@ -36,11 +37,11 @@ export class BaseComponent<T> extends ResourceService<T>{
 
     public ListItems(params:HttpParams):Observable<T[]> {   
         //console.log(this.action , this.versionUrl) ;
-        if(this.action == undefined || this.action == null){
-            this.requestUri = this.versionUrl;
+        if(this.baseUrl == undefined || this.action == null){
+            this.requestUri = this.baseUrl;
         }
         else{
-            this.requestUri = this.versionUrl + '/' + this.action;
+            this.requestUri = this.baseUrl + '/' + this.action;
         }
         
         return this.listItems(params);
@@ -49,10 +50,10 @@ export class BaseComponent<T> extends ResourceService<T>{
     public Create(body:any):Observable<T>{
         
         if(this.action == undefined || this.action == null){
-            this.requestUri = this.versionUrl;
+            this.requestUri = this.baseUrl;
         }
         else{
-            this.requestUri = this.versionUrl + '/' + this.action;
+            this.requestUri = this.baseUrl + '/' + this.action;
         }
         return this.createItem(body);
     }
@@ -60,20 +61,20 @@ export class BaseComponent<T> extends ResourceService<T>{
     public GetItem(param:HttpParams):Observable<T>{
         
         if(this.action == undefined || this.action == null){
-            this.requestUri = this.versionUrl;
+            this.requestUri = this.baseUrl;
         }
         else{
-            this.requestUri = this.versionUrl + '/' + this.action;
+            this.requestUri = this.baseUrl + '/' + this.action;
         }
         return this.getItem(param);
     }
 
     public UpdateItem(body:any){
         if(this.action == undefined || this.action == null){
-            this.requestUri = this.versionUrl;
+            this.requestUri = this.baseUrl;
         }
         else{
-            this.requestUri = this.versionUrl + '/' + this.action;
+            this.requestUri = this.baseUrl + '/' + this.action;
         }
 
         return this.updateItem(body);
@@ -81,10 +82,10 @@ export class BaseComponent<T> extends ResourceService<T>{
 
     public delete(queryParams: HttpParams): Observable<T> {
         if(this.action == undefined || this.action == null){
-            this.requestUri = this.versionUrl;
+            this.requestUri = this.baseUrl;
         }
         else{
-            this.requestUri = this.versionUrl + '/' + this.action;
+            this.requestUri = this.baseUrl + '/' + this.action;
         }
         return this.deleteItem(queryParams);
     }

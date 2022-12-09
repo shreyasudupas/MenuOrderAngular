@@ -15,7 +15,7 @@ const routes: Routes = [
       path:'vendor', component: VendorComponent
     },
     {
-      path:'vendor-detail', component: VendorDetailComponent
+      path:'vendor-detail/:vendorId', component: VendorDetailComponent
     },
     { 
       path:'',

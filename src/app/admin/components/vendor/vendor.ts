@@ -1,0 +1,22 @@
+export interface Vendor{
+    id:string;
+    vendorName:string;
+    vendorDescription:string;
+    category:string;
+    type:string;
+    rating:number;
+    state:string;
+    city:string;
+    area:string;
+    coordinates:Coordinate;
+    addressLine1:string;
+    addressLine2:string;
+    openTime:Date;
+    closeTime:Date;
+    active:boolean;
+}
+
+export interface Coordinate{
+    latitude:number;
+    longitude:number;
+}
