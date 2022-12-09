@@ -11,6 +11,8 @@ import { MenuService } from "src/app/common/services/menu.service";
 })
 export class VendorDetailComponent extends BaseComponent<any> implements OnInit{
 vendorId!:string;
+categories:any[] = [];
+selectedCategory!:string;
 
     constructor(
         public menuService:MenuService,
@@ -19,6 +21,12 @@ vendorId!:string;
         private activatedRoute:ActivatedRoute,
         private router:Router){
             super(menuService,httpclient,commonBroadcastService)
+
+            this.categories = [
+                { label: 'Vegetarian',value: 'Veg'},
+                { label: 'NonVegetarian', value: 'NonVeg' },
+                { label: 'Veg/NonVegetarian', value: 'Both' },
+            ]
     }
 
     ngOnInit(): void {

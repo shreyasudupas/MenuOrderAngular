@@ -1,5 +1,29 @@
 {{vendorId}}
-
+<div class="grid">
+    <div class="col-12">
+        <span class="p-float-label field">
+            <input id="float-input" type="text" pInputText class="w-full"> 
+            <label for="float-input">Vendor Name</label>
+        </span>
+    </div>
+    <div class="col-12">
+        <span class="p-float-label field">
+            <input id="float-input" type="text" pInputText class="w-full"> 
+            <label for="float-input">Vendor Description</label>
+        </span>
+    </div>
+    <div class="col-12">
+        <span class="p-float-label field">
+            <p-dropdown [options]="categories" 
+                [(ngModel)]="selectedCategory" 
+                placeholder="Select a Category" 
+                optionLabel="label" 
+                optionValue="value"
+                class="w-full"
+                ></p-dropdown>
+        </span>
+    </div>
+</div>
 <div class="grid">
     <div class="col-12">
         <button pButton 
