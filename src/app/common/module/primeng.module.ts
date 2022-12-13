@@ -17,6 +17,8 @@ import {InputTextModule} from 'primeng/inputtext';
 import {CheckboxModule} from 'primeng/checkbox';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {PasswordModule} from 'primeng/password';
+import {CalendarModule} from 'primeng/calendar';
+import {GMapModule} from 'primeng/gmap';
 
 @NgModule({
     imports:[ButtonModule,
@@ -37,7 +39,9 @@ import {PasswordModule} from 'primeng/password';
         InputTextModule,
         CheckboxModule,
         RadioButtonModule,
-        PasswordModule],
+        PasswordModule,
+        CalendarModule,
+        GMapModule],
     exports:[ButtonModule,
         TabMenuModule,
         MessageModule,
@@ -56,7 +60,9 @@ import {PasswordModule} from 'primeng/password';
         InputTextModule,
         CheckboxModule,
         RadioButtonModule,
-        PasswordModule
+        PasswordModule,
+        CalendarModule,
+        GMapModule
     ]
 })
 

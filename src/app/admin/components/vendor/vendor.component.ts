@@ -46,7 +46,9 @@ export class VendorComponent extends BaseComponent<Vendor[]> implements OnInit{
     editVendor(vendor:any){
         //debugger
         //console.log(vendor);
-        this.router.navigateByUrl('/admin/vendor-detail/'+vendor.id, { state: {vendorId: vendor.id}});
+        this.router.navigateByUrl('/admin/vendor-detail', { 
+            state: {vendorId: vendor.id}
+        });
     }
     
 }

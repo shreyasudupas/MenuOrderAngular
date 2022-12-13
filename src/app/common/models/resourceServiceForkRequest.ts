@@ -1,6 +1,9 @@
 export class ResourceServiceForkRequest{
-    requestParamter!:RequestResource[];
+    requestParamter:RequestResource[];
     
+    constructor(){
+        this.requestParamter = []
+    }
 }
 
 export interface RequestResource{

@@ -6,7 +6,7 @@ import { AdminGaurd } from '../gaurds/admin-gaurd';
 import { SharedModule } from 'src/app/common/module/common.module';
 import { AdminDashboardComponent } from '../components/admin-dashboard/admin-dashboard.component';
 import { HomeComponent } from '../components/home/admin-home.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VendorComponent } from '../components/vendor/vendor.component';
 import { PrimeNGModule } from 'src/app/common/module/primeng.module';
 import { VendorDetailComponent } from '../components/vendor-details/vendor-detail.component';
@@ -24,7 +24,8 @@ import { VendorDetailComponent } from '../components/vendor-details/vendor-detai
     FormsModule,
     AdminRoutingModule,
     SharedModule,
-    PrimeNGModule
+    PrimeNGModule,
+    ReactiveFormsModule
   ],
   providers: [ AdminGaurd ]
 })

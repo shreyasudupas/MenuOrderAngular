@@ -29,12 +29,22 @@ export class AdminGaurd implements CanActivate{
       }
     
       
-    private checkForUserAdmin(){
-        return this.auth.CheckIfAdmin()
-          .then( res => {
-            return res ? true: this.redirectToUnAuthorized();
-          })
+  private async checkForUserAdmin() {
+
+    let isAuthenticated = await this.auth.isAuthenticated();
+
+    if(isAuthenticated){
+      var isAdmin = await this.auth.CheckIfAdmin();
+
+      if(isAdmin){
+        return true;
+      }else{
+        return false;
       }
+    }else{
+      return false;
+    }
+  }
     
       private redirectToUnAuthorized(){
         this.router.navigate(['/forbidden'])
