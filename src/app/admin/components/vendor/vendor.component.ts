@@ -31,7 +31,7 @@ export class VendorComponent extends BaseComponent<Vendor[]> implements OnInit{
 
         this.InitilizeMenu();
 
-        this.baseUrl = env.inventoryBaseUrl;
+        this.baseUrl = env.inventory.vendors;
         this.action = null;
 
         this.GetItem(new HttpParams()).subscribe((vendors)=>{
@@ -46,9 +46,15 @@ export class VendorComponent extends BaseComponent<Vendor[]> implements OnInit{
     editVendor(vendor:any){
         //debugger
         //console.log(vendor);
-        this.router.navigateByUrl('/admin/vendor-detail', { 
-            state: {vendorId: vendor.id}
-        });
+        // this.router.navigateByUrl('/admin/vendor-detail', { 
+        //     state: {vendorId: vendor.id}
+        // });
+
+        this.router.navigateByUrl('/admin/vendor-detail/' + vendor.id);
+    }
+
+    addNewVendor(){
+        this.router.navigateByUrl('/admin/vendor-detail/0');
     }
     
 }

@@ -9,12 +9,16 @@ export const environment = {
     clientId : "menuAngularUI",
     redirectUri: window.location.origin,
     idpAuthority : "https://localhost:5006",
-    scope :"openid profile IdentityServerApi basketApi inventoryApi"
+    scope :"openid profile inventory.write inventory.read IdentityServerApi"
 
   },
   idsConfig:{
     imageServerPath:'https://localhost:5005/images/'
-  }
-  ,
-  inventoryBaseUrl:"https://localhost:5003/api/vendors",
+  },
+  inventory:{
+    baseUrl:"https://localhost:5003/api/",
+    vendor:"https://localhost:5003/api/vendor",
+    vendors:"https://localhost:5003/api/vendors",
+    category:"https://localhost:5003/api/category"
+  },
 };

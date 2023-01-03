@@ -19,6 +19,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {PasswordModule} from 'primeng/password';
 import {CalendarModule} from 'primeng/calendar';
 import {GMapModule} from 'primeng/gmap';
+import {ToolbarModule} from 'primeng/toolbar';
 
 @NgModule({
     imports:[ButtonModule,
@@ -41,7 +42,8 @@ import {GMapModule} from 'primeng/gmap';
         RadioButtonModule,
         PasswordModule,
         CalendarModule,
-        GMapModule],
+        GMapModule,
+        ToolbarModule],
     exports:[ButtonModule,
         TabMenuModule,
         MessageModule,
@@ -62,7 +64,8 @@ import {GMapModule} from 'primeng/gmap';
         RadioButtonModule,
         PasswordModule,
         CalendarModule,
-        GMapModule
+        GMapModule,
+        ToolbarModule
     ]
 })
 

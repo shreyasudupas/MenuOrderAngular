@@ -1,0 +1,34 @@
+<div>
+    <p-card header="Category Detail">
+        <form [formGroup]="categoryDetailForm">
+            <div class="p-fluid formgrid grid">
+                <div class="field col-12">
+                    <span class="p-float-label">
+                        <input id="float-input" type="text" class="w-full" pInputText formControlName="name"> 
+                        <label for="float-input">Name</label>
+                    </span>
+                </div>
+                <div class="field col-12 p-2">
+                    <span class="p-float-label">
+                        <input id="float-input" type="text" class="w-full" pInputText formControlName="description"> 
+                        <label for="float-input">Description</label>
+                    </span>
+                </div>
+                <div class="field-radiobutton col-6">
+                    <p-radioButton name="active" [value]="true"  formControlName="active" inputId="active"></p-radioButton>
+                    <label for="active">Active</label>
+                </div>
+                <div class="field-radiobutton col-6">
+                    <p-radioButton name="active" [value]="false"  formControlName="active" inputId="inActive"></p-radioButton>
+                    <label for="inActive">InActive</label>
+                </div>
+                <div class="col-12">
+                    <button pButton pRipple type="button" label="Save" class="p-button-rounded w-full"></button>
+                </div>
+            </div>
+        </form>
+        <div class="col-12">
+            <button pButton pRipple type="button" label="Back" class="p-button-rounded p-button-secondary w-full" (click)="goBack()"></button>
+        </div>
+    </p-card>
+</div>

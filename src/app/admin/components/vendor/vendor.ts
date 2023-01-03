@@ -1,8 +1,10 @@
+import { Category } from "../categories/category";
+
 export interface Vendor{
     id:string;
     vendorName:string;
     vendorDescription:string;
-    category:string;
+    categories:Category[];
     type:string;
     rating:number;
     state:string;

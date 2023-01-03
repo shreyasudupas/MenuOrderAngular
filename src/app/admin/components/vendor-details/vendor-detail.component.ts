@@ -3,23 +3,28 @@ import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { MessageService } from "primeng/api";
 import { BaseComponent } from "src/app/common/components/base/base.component";
 import { RequestResource, ResourceServiceForkRequest } from "src/app/common/models/resourceServiceForkRequest";
 import { State } from "src/app/common/models/state";
 import { CommonDataSharingService } from "src/app/common/services/common-datasharing.service";
 import { MenuService } from "src/app/common/services/menu.service";
 import { environment } from "src/environments/environment";
+import { Vendor } from "../vendor/vendor";
 import { RegisteredLocationReponse } from "./registerLocation";
 
 @Component({
     selector: 'vendor-detail',
-    templateUrl: './vendor-detail.component.html'
+    templateUrl: './vendor-detail.component.html',
+    providers: [MessageService]
 })
-export class VendorDetailComponent extends BaseComponent<any> implements OnInit{
+
+export class VendorDetailComponent extends BaseComponent<Vendor> implements OnInit{
 vendorId!:string;
 categories:any[] = [];
 selectedCategory!:string;
 vendorDetailForm!: FormGroup;
+header:string='';
 //options:any;
 forkRequest: ResourceServiceForkRequest = new ResourceServiceForkRequest();
 locations:RegisteredLocationReponse[]=[];
@@ -27,6 +32,8 @@ stateDropDownValues:any[]=[];
 cityDropDownListValues:any[]=[];
 areaDropDownListValues:any[]=[];
 currentState:State={ id:0,name:'',cities:[] };
+vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendorName:'',vendorDescription:'',area:'',city:'',categories:[],
+    closeTime: new Date(),openTime: new Date(),coordinates:{ latitude:0.0,longitude:0.0 },rating:0,type:'',state :'' };
 
     constructor(
         public menuService:MenuService,
@@ -34,7 +41,8 @@ currentState:State={ id:0,name:'',cities:[] };
         public commonBroadcastService:CommonDataSharingService,
         private activatedRoute:ActivatedRoute,
         private router:Router,
-        private fb: FormBuilder){
+        private fb: FormBuilder,
+        private messageService: MessageService){
             super(menuService,httpclient,commonBroadcastService)
 
             this.categories = [
@@ -50,19 +58,18 @@ currentState:State={ id:0,name:'',cities:[] };
 
         this.InitilizeMenu();
 
-        let vendoreIdState = history.state.vendorId;
+        this.vendorId = this.activatedRoute.snapshot.params['vendorId'];
 
-        if(vendoreIdState !== undefined){
-            this.vendorId = vendoreIdState;
+        if(this.vendorId === '0'){
+            this.header = 'Add Vendor Details'
         }else{
-                //alert('undefined')
+            this.header = 'Edit Vendor Details'
         }
 
         this.vendorDetailForm = this.fb.group({
-            vendorId: [''],
+            id: [''],
             vendorName: ['',Validators.required],
             vendorDescription: ['',Validators.required],
-            category: ['',Validators.required],
             type: ['',Validators.required],
             state: ['',Validators.required],
             city: ['',Validators.required],
@@ -74,7 +81,6 @@ currentState:State={ id:0,name:'',cities:[] };
             active: [false]
         });
 
-        //this.setFormDefaultValue();
         // this.options = {
         //     center: {lat: 36.890257, lng: 30.707417},
         //     zoom: 12
@@ -88,7 +94,15 @@ currentState:State={ id:0,name:'',cities:[] };
         };
         this.forkRequest.requestParamter.push(request1);
 
-        this.getForkItems(this.forkRequest).subscribe(([locationResponse])=>{
+        let request2:RequestResource = {
+            httpMethod:'get',
+            requestUrl: environment.inventory.vendor + '/'  + this.vendorId,
+            body: null
+        }
+        this.forkRequest.requestParamter.push(request2);
+
+        this.getForkItems(this.forkRequest).subscribe(([locationResponse,vendorByIdResponse])=>{
+            //debugger;
             //console.log(locationResponse);
             this.locations = locationResponse;
 
@@ -100,7 +114,37 @@ currentState:State={ id:0,name:'',cities:[] };
             //reset area and city
             this.cityDropDownListValues=[];
             this.areaDropDownListValues=[];
-            
+
+            //console.log(vendorByIdResponse);
+            if(vendorByIdResponse != "Error occurred"){
+                this.vendorDetail = {...this.vendorDetail, categories: vendorByIdResponse.categories, id: vendorByIdResponse.id , vendorName: vendorByIdResponse.vendorName,
+                    active: vendorByIdResponse.active,addressLine1: vendorByIdResponse.addressLine1, addressLine2: vendorByIdResponse.addressLine2,area: vendorByIdResponse.area,
+                    state: vendorByIdResponse.state, city: vendorByIdResponse.city, closeTime: new Date(vendorByIdResponse.closeTime),coordinates: vendorByIdResponse.coordinates,
+                    openTime: new Date(vendorByIdResponse.openTime), rating: vendorByIdResponse.rating, type: vendorByIdResponse.type
+                    , vendorDescription: vendorByIdResponse.vendorDescription }
+
+                this.vendorDetailForm.setValue({
+                    id: this.vendorDetail.id,
+                    vendorName: this.vendorDetail.vendorName,
+                    vendorDescription: this.vendorDetail.vendorDescription,
+                    type: this.vendorDetail.type,
+                    state: this.vendorDetail.state,
+                    city: this.vendorDetail.city,
+                    area: this.vendorDetail.area,
+                    addressLine1: this.vendorDetail.addressLine1,
+                    addressLine2: this.vendorDetail.addressLine2,
+                    openTime: this.vendorDetail.openTime,
+                    closeTime: this.vendorDetail.closeTime,
+                    active: this.vendorDetail.active
+                });
+
+                //get cities and states dropdown update
+                let state = this.stateDropDownValues.find(s=>s.label == this.vendorDetail.state);
+                this.getCities({ value: state.value});
+
+                let city = this.cityDropDownListValues.find(c=>c.label == this.vendorDetail.city);
+                this.getAreas({ value: city.value});
+            }
         });
     }
 
@@ -112,31 +156,48 @@ currentState:State={ id:0,name:'',cities:[] };
         this.router.navigateByUrl('/admin/vendor');
     }
 
-    setFormDefaultValue = () => {
-        this.vendorDetailForm.setValue({
-            vendorId: '',
-            vendorName: '',
-            vendorDescription: '',
-            category: '',
-            type: '',
-            state: '',
-            city: '',
-            area: '',
-            addressLine1: '',
-            addressLine2: '',
-            openTime: new Date(),
-            closeTime: new Date(),
-            active: false
-        })
-    }
+    onSubmitVendorDetails = (forms: FormGroup) => {
+        if (forms.valid) {
+            //alert('Form is valid' + forms.value);
 
-    onSubmitVendorDetails = (forms:FormGroup) => {
-        if(forms.valid){
-            alert('Form is valid');
+            if (this.vendorId === '0') {
+                this.baseUrl = environment.inventory.vendor;
+                this.action = null;
+
+                let body = {
+                    VendorDetail: forms.value
+                };
+
+                this.Create(body).subscribe((result) => {
+                    //debugger;
+                    if (result !== null) {
+                        this.vendorId = this.vendorDetail.id;
+
+                        this.router.navigateByUrl('admin/vendor-detail/' + this.vendorId);
+                    }
+                });
+            } else {
+                this.baseUrl = environment.inventory.vendor;
+                this.action = null;
+
+                let body = {
+                    VendorDetail: forms.value
+                };
+
+                this.UpdateItem(body).subscribe((result) => {
+                    //debugger;
+                    if (result !== null) {
+                        this.showInfo();
+                    } else {
+                        this.showError();
+                    }
+                });
+            }
         }
     }
 
     getCities = (event:any) => {
+        //debugger
         let stateName = event.value;
         let getState = this.locations.find(item=> item.state.name == stateName);
         this.cityDropDownListValues=[];
@@ -165,5 +226,20 @@ currentState:State={ id:0,name:'',cities:[] };
                 areas.forEach(a=> this.areaDropDownListValues.push({label:a.areaName,value:a.areaName}));
             }
         }
+    }
+
+    goToCategory = (id:string) => {
+        this.router.navigateByUrl('/admin/category/' + id,
+        {
+            state: { vendorId: this.vendorId }
+        });
+    }
+
+    showInfo() {
+        this.messageService.add({severity:'info', summary: 'Info', detail: 'Vendor Updated Successfully'});
+    }
+
+    showError() {
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Error in Updating the Vendor'});
     }
 }

@@ -140,6 +140,11 @@ export class MenuService{
                         visible: false
                     },
                     {
+                        label: 'CategoryDetail',
+                        icon: 'pi pi-fw pi-calendar',
+                        visible:false
+                    },
+                    {
                         label: 'Settings', 
                         icon: 'pi pi-fw pi-cog'
                     }

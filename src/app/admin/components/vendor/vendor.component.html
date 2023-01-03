@@ -1,5 +1,10 @@
 <div>
     <p-card header="Vendor List">
+        <p-toolbar>
+            <div class="p-toolbar-group-start">
+                <p-button label="New" icon="pi pi-plus" class="mr-2" (click)="addNewVendor()"></p-button>
+            </div>
+        </p-toolbar>
         
         <p-table [value]="vendorList" [tableStyle]="{'min-width': '50rem'}">
             <ng-template pTemplate="header">

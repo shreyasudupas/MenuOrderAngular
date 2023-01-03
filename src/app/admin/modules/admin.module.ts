@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VendorComponent } from '../components/vendor/vendor.component';
 import { PrimeNGModule } from 'src/app/common/module/primeng.module';
 import { VendorDetailComponent } from '../components/vendor-details/vendor-detail.component';
+import { CategoryDetailComponent } from '../components/categories/category-detail.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { VendorDetailComponent } from '../components/vendor-details/vendor-detai
     AdminDashboardComponent,
     HomeComponent,
     VendorComponent,
-    VendorDetailComponent
+    VendorDetailComponent,
+    CategoryDetailComponent
   ],
   imports: [
     CommonModule,
