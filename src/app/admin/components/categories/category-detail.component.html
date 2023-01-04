@@ -1,12 +1,19 @@
 <div>
+    <p-toast></p-toast>
     <p-card header="Category Detail">
-        <form [formGroup]="categoryDetailForm">
+        <form [formGroup]="categoryDetailForm" (ngSubmit)="submitCategoryDetailForm(categoryDetailForm)">
             <div class="p-fluid formgrid grid">
                 <div class="field col-12">
                     <span class="p-float-label">
                         <input id="float-input" type="text" class="w-full" pInputText formControlName="name"> 
                         <label for="float-input">Name</label>
                     </span>
+                    <div *ngIf="formControlValidation('name')" class="text-danger">
+                            Please provide a name.
+                    </div>
+                    <!-- <div *ngIf="formControlValidation1()" class="text-danger">
+                        Please provide the name.
+                    </div> -->
                 </div>
                 <div class="field col-12 p-2">
                     <span class="p-float-label">
@@ -23,7 +30,7 @@
                     <label for="inActive">InActive</label>
                 </div>
                 <div class="col-12">
-                    <button pButton pRipple type="button" label="Save" class="p-button-rounded w-full"></button>
+                    <button pButton pRipple type="submit" label="Save" class="p-button-rounded w-full"></button>
                 </div>
             </div>
         </form>

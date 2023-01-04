@@ -157,19 +157,17 @@
                         <th>Description</th>
                         <th>Active</th>
                         <th>Edit</th>
-                        <th>Disable</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-category>
                     <tr>
                         <td>{{category.name}}</td>
                         <td>{{category.description}}</td>
-                        <td>{{category.active}}</td>
                         <td>
-                            <button pButton pRipple type="button" icon="pi pi-user-plus" class="p-button-rounded"></button>
+                            <p-checkbox [(ngModel)]="category.active" [binary]="true" [disabled]="true" inputId="active"></p-checkbox>
                         </td>
                         <td>
-                            <button pButton pRipple type="button" icon="pi pi-user-minus" class="p-button-rounded p-button-danger"></button>
+                            <button pButton pRipple type="button" (click)="goToEditCategoryPage(category.id)" icon="pi pi-user-plus" class="p-button-rounded"></button>
                         </td>
                     </tr>
                 </ng-template>
