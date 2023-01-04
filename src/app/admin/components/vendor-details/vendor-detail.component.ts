@@ -168,12 +168,34 @@ vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendo
                     VendorDetail: forms.value
                 };
 
-                this.Create(body).subscribe((result) => {
-                    //debugger;
-                    if (result !== null) {
-                        this.vendorId = this.vendorDetail.id;
+                this.Create(body).subscribe({
+                    next: result => {
+                        //debugger;
+                        if (result !== null) {
 
-                        this.router.navigateByUrl('admin/vendor-detail/' + this.vendorId);
+                            this.vendorDetail = {
+                                ...this.vendorDetail, categories: result.categories, id: result.id, vendorName: result.vendorName,
+                                active: result.active, addressLine1: result.addressLine1, addressLine2: result.addressLine2, area: result.area,
+                                state: result.state, city: result.city, closeTime: new Date(result.closeTime), coordinates: result.coordinates,
+                                openTime: new Date(result.openTime), rating: result.rating, type: result.type
+                                , vendorDescription: result.vendorDescription
+                            }
+
+                            this.vendorId = this.vendorDetail.id;
+
+                            window.history.replaceState({}, '', `admin/vendor-detail/${this.vendorId}`);
+
+                            this.showInfo('Vendor successfully added');
+
+                            //this.router.navigateByUrl('admin/vendor-detail/' + this.vendorId);
+                        }
+                    },
+                    error: error => {
+                        console.log(error);
+                        this.showError('Error in adding the Vendor');
+                    },
+                    complete: () => {
+                        console.log('Request complete');
                     }
                 });
             } else {
@@ -184,12 +206,19 @@ vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendo
                     VendorDetail: forms.value
                 };
 
-                this.UpdateItem(body).subscribe((result) => {
-                    //debugger;
-                    if (result !== null) {
-                        this.showInfo();
-                    } else {
-                        this.showError();
+                this.UpdateItem(body).subscribe({
+                    next: result => {
+                        //debugger;
+                        if (result !== null) {
+                            this.showInfo('Vendor Updated Successfully');
+                        } else {
+                            this.showError('Error in Updating the Vendor');
+                        }
+                    },
+                    error: error => {
+                        console.log(error);
+
+                        this.showError('Error in Updating VendorDetail');
                     }
                 });
             }
@@ -235,11 +264,11 @@ vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendo
         });
     }
 
-    showInfo() {
-        this.messageService.add({severity:'info', summary: 'Info', detail: 'Vendor Updated Successfully'});
+    showInfo(message:string) {
+        this.messageService.add({severity:'info', summary: 'Info', detail: message });
     }
 
-    showError() {
-        this.messageService.add({severity:'error', summary: 'Error', detail: 'Error in Updating the Vendor'});
+    showError(message:string) {
+        this.messageService.add({severity:'error', summary: 'Error', detail: message });
     }
 }
