@@ -145,6 +145,16 @@ export class MenuService{
                         visible:false
                     },
                     {
+                        label: 'Food Type',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink:['./food-type-list']
+                    },
+                    {
+                        label: 'FoodtypeDetails',
+                        icon: 'pi pi-fw pi-calendar',
+                        visible: false
+                    },
+                    {
                         label: 'Settings', 
                         icon: 'pi pi-fw pi-cog'
                     }

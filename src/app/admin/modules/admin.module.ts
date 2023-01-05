@@ -11,6 +11,8 @@ import { VendorComponent } from '../components/vendor/vendor.component';
 import { PrimeNGModule } from 'src/app/common/module/primeng.module';
 import { VendorDetailComponent } from '../components/vendor-details/vendor-detail.component';
 import { CategoryDetailComponent } from '../components/categories/category-detail.component';
+import { FoodTypeListComponent } from '../components/food-type-list/food-type-list.component';
+import { FoodtypeDetailsComponent } from '../components/food-type-details/food-type-details.component';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import { CategoryDetailComponent } from '../components/categories/category-detai
     HomeComponent,
     VendorComponent,
     VendorDetailComponent,
-    CategoryDetailComponent
+    CategoryDetailComponent,
+    FoodTypeListComponent,
+    FoodtypeDetailsComponent
   ],
   imports: [
     CommonModule,

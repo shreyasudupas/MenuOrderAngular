@@ -27,9 +27,9 @@ vendorId:string='';
         private activatedRoute:ActivatedRoute,
         private route:Router,
         private fb:FormBuilder,
-        private messageService:MessageService
+        messageService:MessageService
     ){
-        super(menuService,httpclient,commonBroadcastService)   
+        super(menuService,httpclient,commonBroadcastService,messageService)   
     }
 
     ngOnInit(): void {
@@ -115,13 +115,5 @@ vendorId:string='';
 
     formControlValidation(name:string){
         return (this.categoryDetailForm.get(name)?.invalid && (this.categoryDetailForm.get(name)?.dirty || this.categoryDetailForm.get(name)?.touched));
-    }
-
-    showInfo(message:string) {
-        this.messageService.add({severity:'info', summary: 'Info', detail: message });
-    }
-
-    showError(message:string) {
-        this.messageService.add({severity:'error', summary: 'Error', detail: message });
     }
 }

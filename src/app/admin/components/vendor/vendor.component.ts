@@ -6,10 +6,12 @@ import { CommonDataSharingService } from 'src/app/common/services/common-datasha
 import { MenuService } from 'src/app/common/services/menu.service';
 import { Vendor } from './vendor';
 import { environment as env } from 'src/environments/environment';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector:'app-vendor',
-    templateUrl: './vendor.component.html'
+    templateUrl: './vendor.component.html',
+    providers:[MessageService]
 })
 
 export class VendorComponent extends BaseComponent<Vendor[]> implements OnInit{
@@ -19,9 +21,10 @@ export class VendorComponent extends BaseComponent<Vendor[]> implements OnInit{
         public override httpclient:HttpClient,
         public broadcastService:CommonDataSharingService,
         private activatedRoute:ActivatedRoute,
-        private router: Router
+        private router: Router,
+        messageService:MessageService
     ){
-        super(menuService,httpclient,broadcastService)
+        super(menuService,httpclient,broadcastService,messageService)
     }
 
     vendorList:Vendor[]=[];

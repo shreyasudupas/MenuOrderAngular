@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from '../components/admin-dashboard/admin-dashboard.component';
 import { CategoryDetailComponent } from '../components/categories/category-detail.component';
+import { FoodtypeDetailsComponent } from '../components/food-type-details/food-type-details.component';
+import { FoodTypeListComponent } from '../components/food-type-list/food-type-list.component';
 import { HomeComponent } from '../components/home/admin-home.component';
 import { VendorDetailComponent } from '../components/vendor-details/vendor-detail.component';
 import { VendorComponent } from '../components/vendor/vendor.component';
@@ -20,6 +22,12 @@ const routes: Routes = [
     },
     {
       path:'category/:categoryId', component: CategoryDetailComponent
+    },
+    {
+      path:'food-type-list', component: FoodTypeListComponent
+    },
+    {
+      path:'food-type-details/:foodtypeId', component: FoodtypeDetailsComponent
     },
     { 
       path:'',

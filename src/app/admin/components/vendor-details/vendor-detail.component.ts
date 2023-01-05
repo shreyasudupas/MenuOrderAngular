@@ -41,8 +41,8 @@ vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendo
         private activatedRoute:ActivatedRoute,
         private router:Router,
         private fb: FormBuilder,
-        private messageService: MessageService){
-            super(menuService,httpclient,commonBroadcastService)
+        messageService: MessageService){
+            super(menuService,httpclient,commonBroadcastService,messageService)
 
             this.categories = [
                 { label: 'Vegetarian',value: 'Veg'},
@@ -261,14 +261,6 @@ vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendo
         {
             state: { vendorId: this.vendorId }
         });
-    }
-
-    showInfo(message:string) {
-        this.messageService.add({severity:'info', summary: 'Info', detail: message });
-    }
-
-    showError(message:string) {
-        this.messageService.add({severity:'error', summary: 'Error', detail: message });
     }
 
     goToEditCategoryPage = (id:string) => {

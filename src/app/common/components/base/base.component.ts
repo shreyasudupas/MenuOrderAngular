@@ -1,4 +1,5 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
+import { MessageService } from "primeng/api";
 import { Observable } from "rxjs";
 import { MenuActiveItem } from "../../models/menuModel";
 import { ResourceServiceForkRequest } from "../../models/resourceServiceForkRequest";
@@ -16,8 +17,10 @@ export class BaseComponent<T> extends ResourceService<T>{
     public baseUrl!:string;
     
 
-    constructor(public _menuService:MenuService,public override httpclient:HttpClient
-        ,public _commonBroadcastService:CommonDataSharingService){
+    constructor(public _menuService:MenuService,
+        public override httpclient:HttpClient,
+        public _commonBroadcastService:CommonDataSharingService,
+        public messageService:MessageService){
         super(httpclient);
         
     }
@@ -90,5 +93,11 @@ export class BaseComponent<T> extends ResourceService<T>{
         return this.deleteItem(queryParams);
     }
 
+    showInfo(message:string) {
+        this.messageService.add({severity:'info', summary: 'Info', detail: message });
+    }
 
+    showError(message:string) {
+        this.messageService.add({severity:'error', summary: 'Error', detail: message });
+    }
 }

@@ -1,0 +1,27 @@
+<div>
+    <p-card header="Food Type List">
+        <p-table [value]="foodtypeList" [scrollable]="true" scrollHeight="400px" [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="caption">
+                <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="goToDetailPage('0')"></button>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>FoodType Name</th>
+                    <th>Active</th>
+                    <th>Edit</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-foodtype>
+                <tr>
+                    <td>{{foodtype.typeName}}</td>
+                    <td>
+                        <p-checkbox name="active" [(ngModel)]="foodtype.active" [binary]="true" [disabled]="true"></p-checkbox>
+                    </td>
+                    <td>
+                        <button pButton pRipple type="button" icon="pi pi-user-edit" class="p-button-rounded" (click)="goToDetailPage(foodtype.id)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-card>
+</div>

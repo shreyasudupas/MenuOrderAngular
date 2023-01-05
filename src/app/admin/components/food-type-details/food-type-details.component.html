@@ -1,0 +1,42 @@
+<p-card [header]="header">
+    <p-toast></p-toast>
+    <form [formGroup]="foodTypeForm" (ngSubmit)="submitForm(foodTypeForm)">
+        <div class="p-fluid formgrid  grid">
+            <div class="field col-12">
+                <span class="p-float-label field">
+                    <input id="typeName" type="text" formControlName="typeName" pInputText class="w-full"> 
+                    <label for="typeName">FoodType Name</label>
+                </span>
+                <div *ngIf="formControlValidation('typeName')" class="ng-invalid ng-dirty">
+                    Please provide a food type name.
+                </div>
+            </div>
+            <div class="field-radiobutton col-6">
+                <p-radioButton name="active" [value]="true"  formControlName="active" inputId="active"></p-radioButton>
+                <label for="active">Active</label>
+            </div>
+            <div class="field-radiobutton col-6">
+                <p-radioButton name="active" [value]="false"  formControlName="active" inputId="inActive"></p-radioButton>
+                <label for="inActive">InActive</label>
+            </div>
+            <div class="field col-12">
+                <button pButton 
+                    pRipple 
+                    type="submit" 
+                    label="Save" 
+                    class="p-button-rounded p-button-primary w-full"
+                    ></button>
+            </div>
+        </div>
+    </form>
+    <div class="grid">
+        <div class="col-12">
+            <button pButton 
+            pRipple 
+            type="button" 
+            label="Back" 
+            class="p-button-rounded p-button-secondary w-full"
+            (click)="goBack()"></button>
+        </div>
+    </div>
+</p-card>
