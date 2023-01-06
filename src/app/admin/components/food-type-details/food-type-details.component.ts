@@ -15,7 +15,7 @@ import { FoodType } from './food-type';
     providers:[MessageService]
 })
 
-export class FoodtypeDetailsComponent extends BaseComponent<FoodType> implements OnInit {
+export class FoodTypeDetailsComponent extends BaseComponent<FoodType> implements OnInit {
 foodTypeDetail:FoodType = { id:'',typeName:'',active:true };
 foodTypeForm!:FormGroup;
 header:string='';

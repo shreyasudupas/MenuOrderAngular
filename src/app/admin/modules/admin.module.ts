@@ -12,7 +12,9 @@ import { PrimeNGModule } from 'src/app/common/module/primeng.module';
 import { VendorDetailComponent } from '../components/vendor-details/vendor-detail.component';
 import { CategoryDetailComponent } from '../components/categories/category-detail.component';
 import { FoodTypeListComponent } from '../components/food-type-list/food-type-list.component';
-import { FoodtypeDetailsComponent } from '../components/food-type-details/food-type-details.component';
+import { FoodTypeDetailsComponent } from '../components/food-type-details/food-type-details.component';
+import { CuisineListDetails } from '../components/cuisine-type-list/cuisine-type-list.component';
+import { CuisineDetailsComponent } from '../components/cuisine-type-details/cuisine-details.component';
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import { FoodtypeDetailsComponent } from '../components/food-type-details/food-t
     VendorDetailComponent,
     CategoryDetailComponent,
     FoodTypeListComponent,
-    FoodtypeDetailsComponent
+    FoodTypeDetailsComponent,
+    CuisineListDetails,
+    CuisineDetailsComponent
   ],
   imports: [
     CommonModule,

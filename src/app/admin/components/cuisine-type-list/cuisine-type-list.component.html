@@ -1,0 +1,27 @@
+<div>
+    <p-card header="Cuisine List">
+        <p-table [value]="cuisineList" [scrollable]="true" scrollHeight="400px" [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="caption">
+                <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="goToDetailPage('0')"></button>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Cuisine Name</th>
+                    <th>Active</th>
+                    <th>Edit</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-cuisine>
+                <tr>
+                    <td>{{cuisine.cuisineName}}</td>
+                    <td>
+                        <p-checkbox name="active" [(ngModel)]="cuisine.active" [binary]="true" [disabled]="true"></p-checkbox>
+                    </td>
+                    <td>
+                        <button pButton pRipple type="button" icon="pi pi-user-edit" class="p-button-rounded" (click)="goToDetailPage(cuisine.id)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-card>
+</div>

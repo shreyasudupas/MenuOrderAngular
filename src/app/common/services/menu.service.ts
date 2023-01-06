@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MenuItem } from 'primeng/api';
 import { MenuActiveItem, MenuNavigationModel } from '../models/menuModel';
 import { AuthService } from './auth.service';
 
@@ -13,61 +14,52 @@ export class MenuService{
 
     menu!: MenuActiveItem;
 
-    getActiveMenuItemInTheList(componentName:any):MenuActiveItem {
-        
-        if(componentName != null){
-            let name:string = componentName;
-            var getFirstName = name.split(/(?=[A-Z])/);
+    getActiveMenuItemInTheList(componentName: any): MenuActiveItem {
 
-            //compare the name with the first name
-            var role = this.authService.GetUserRole();
-            let menuTempList: MenuNavigationModel[] = this.getMenuItemList();
-            
-            var findParentMenuListId = menuTempList.findIndex(item => item.parent == role);
+        //compare the name with the first name
+        var role = this.authService.GetUserRole();
+        let menuTempList: MenuNavigationModel[] = this.getMenuItemList();
 
-                if(findParentMenuListId > -1){
-                    let componentName:string;
+        var findParentMenuListId = menuTempList.findIndex(item => item.parent == role);
+        let menuLists: MenuItem[] = menuTempList[findParentMenuListId].items.map((menuItem) => {
+            let item: MenuItem = {
+                label: menuItem.label,
+                icon: menuItem.icon,
+                routerLink: menuItem.routerLink,
+                visible: menuItem.visible
+            };
+            return item;
+        });
 
-                    if(getFirstName.length > 2){
-                        componentName = getFirstName[0] + getFirstName[1];
-                    }else{
-                        componentName = getFirstName[0];
-                    }
+        if (findParentMenuListId > -1) {
 
-                    //compare first name of the component and label
-                    var CurrentMenuId = menuTempList[findParentMenuListId].items.findIndex(item => item.label == componentName);
-    
-                    if(CurrentMenuId > -1){
-                        menuTempList[findParentMenuListId].items[CurrentMenuId].visible = true;
-    
-                        this.menu = {
-                            activeMenu : menuTempList[findParentMenuListId].items[CurrentMenuId],
-                            itemList : menuTempList[findParentMenuListId].items
-                        };
-    
-                        return this.menu;
-                    }
-                    else{
-                        //default to user home
-                        this.menu = {
-                            activeMenu : menuTempList[findParentMenuListId].items[0],
-                            itemList : menuTempList[findParentMenuListId].items
-                        };
-    
-                        return this.menu;
-                    }
-                } else {
-                    //if profile doesnt match user or admin then default to home user
-                    this.menu = {
-                        activeMenu : menuTempList[0].items[0],
-                        itemList : menuTempList[0].items
-                    };
-                    return this.menu;
-                }   
-        }else{
+            //compare first name of the component and label
+            var CurrentMenuId = menuTempList[findParentMenuListId].items.findIndex(item => item.componentName == componentName);
+
+            if (CurrentMenuId > -1) {
+                let currentMenuItem = menuTempList[findParentMenuListId].items[CurrentMenuId];
+                menuLists = menuLists.map(menu => menu.label == currentMenuItem.label ? { label: menu.label, icon: menu.icon, routerLink: menu.routerLink, visible: true } : { ...menu });
+
+
+                this.menu = {
+                    activeMenu: menuLists[CurrentMenuId],
+                    itemList: menuLists
+                };
+
+                return this.menu;
+            } else {
+                //default to user home
+                this.menu = {
+                    activeMenu: menuLists[0],
+                    itemList: menuLists
+                };
+
+                return this.menu;
+            }
+        } else {
             this.defaultMenu();
-        };
-        return this.menu;
+            return this.menu;
+        }
     }
 
     private defaultMenu = () => {
@@ -88,36 +80,44 @@ export class MenuService{
                     {
                         label: 'Home',
                         icon: 'pi pi-fw pi-home',
-                        routerLink: ['./home']
+                        routerLink: ['./home'],
+                        componentName:'HomeComponent',
+                        visible:true
                     },
                     {
                         label: 'Vendor',
                         icon: 'pi pi-fw pi-calendar',
-                        routerLink:['./vendorlist']
+                        routerLink:['./vendorlist'],
+                        componentName:'VendorComponent',
+                        visible:true
                     },
                     {
                         label: 'Menu', 
                         icon: 'pi pi-fw pi-calendar',
-                        visible:false
+                        visible:false,
+                        componentName:'MenuComponent',
+                        routerLink:null
                     },
                     {
                         label: 'Cart', 
                         icon: 'pi pi-fw pi-calendar',
-                        visible:false
+                        visible:false,
+                        componentName:'MenuComponent',
+                        routerLink:null
                     },
                     {
                         label: 'Profile', 
                         icon: 'pi pi-fw pi-pencil',
-                        routerLink:['./user-profile']
+                        routerLink:['./user-profile'],
+                        componentName:'',
+                        visible:true
                     },
                     {
                         label: 'Payment', 
                         icon: 'pi pi-fw pi-file',
-                        routerLink:['./user-payment']
-                    },
-                    {
-                        label: 'Settings', 
-                        icon: 'pi pi-fw pi-cog'
+                        routerLink:['./user-payment'],
+                        componentName:'MenuComponent',
+                        visible:false
                     }
                 ]
             },
@@ -127,36 +127,58 @@ export class MenuService{
                     {
                         label: 'Home',
                         icon: 'pi pi-fw pi-home',
-                        routerLink: ['./home']
+                        routerLink: ['./home'],
+                        componentName:'HomeComponent',
+                        visible:true
                     },
                     {
                         label: 'Vendor',
                         icon: 'pi pi-fw pi-calendar',
-                        routerLink:['./vendor']
+                        routerLink:['./vendor'],
+                        componentName:'VendorComponent',
+                        visible:true
                     },
                     {
                         label: 'VendorDetail',
                         icon: 'pi pi-fw pi-calendar',
-                        visible: false
+                        visible: false,
+                        componentName:'VendorDetailComponent',
+                        routerLink:['']
                     },
                     {
                         label: 'CategoryDetail',
                         icon: 'pi pi-fw pi-calendar',
-                        visible:false
+                        visible:false,
+                        componentName:'CategoryDetailComponent',
+                        routerLink:null
                     },
                     {
                         label: 'Food Type',
                         icon: 'pi pi-fw pi-calendar',
-                        routerLink:['./food-type-list']
+                        routerLink:['./food-type-list'],
+                        componentName:'FoodTypeComponent',
+                        visible:true
                     },
                     {
-                        label: 'FoodtypeDetails',
+                        label: 'Food Type Details',
                         icon: 'pi pi-fw pi-calendar',
-                        visible: false
+                        visible: false,
+                        componentName:'FoodTypeDetailsComponent',
+                        routerLink:null
                     },
                     {
-                        label: 'Settings', 
-                        icon: 'pi pi-fw pi-cog'
+                        label: 'Cuisine List',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink:['./cuisine-list'],
+                        componentName:'CuisineListDetails',
+                        visible:true
+                    },
+                    {
+                        label: 'Cuisine Type Details',
+                        icon: 'pi pi-fw pi-calendar',
+                        visible: false,
+                        componentName:'CuisineDetailsComponent',
+                        routerLink:null
                     }
                 ]
             }
