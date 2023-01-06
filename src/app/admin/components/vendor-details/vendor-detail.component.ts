@@ -16,6 +16,7 @@ import { RegisteredLocationReponse } from "./registerLocation";
 @Component({
     selector: 'vendor-detail',
     templateUrl: './vendor-detail.component.html',
+    styleUrls:['./vendor-detail.component.scss'],
     providers: [MessageService]
 })
 

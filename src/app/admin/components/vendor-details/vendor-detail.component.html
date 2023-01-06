@@ -1,178 +1,153 @@
 <!-- {{vendorId}} -->
 <p-toast></p-toast>
-<p-card [header]="header">
-    <form [formGroup]="vendorDetailForm" (ngSubmit)="onSubmitVendorDetails(vendorDetailForm)">
-        <div class="p-fluid formgrid  grid">
-            <div class="field col-12">
-                <span class="p-float-label field">
-                    <input id="vendorName" type="text" formControlName="vendorName" pInputText class="w-full"> 
-                    <label for="vendorName">Vendor Name</label>
-                </span>
-                <div *ngIf="formControlValidation('vendorName')"
-                class="ng-invalid ng-dirty">
-                    Please provide a name.
-                </div>
-            </div>
-            <div class="field col-12">
-                <span class="p-float-label field">
-                    <input id="vendorDescription" type="text" formControlName="vendorDescription" pInputText class="w-full"> 
-                    <label for="vendorDescription">Vendor Description</label>
-                </span>
-                <div *ngIf="formControlValidation('vendorDescription')"
-                    class="ng-invalid ng-dirty">
-                    Please provide a Description.
-                </div>
-            </div>
-            
-            <div class="field col-12">
-                <p-multiSelect [options]="cuisineDropDownList" 
-                               formControlName="cuisineType"
-                               defaultLabel="Select a Cuisine Type" 
-                               optionLabel="cuisineName" 
-                               optionValue="cuisineName"
-                               display="chip">
-                </p-multiSelect>
-                
-            </div>
-            <div class="field col-12">
-                <p-dropdown [options]="stateDropDownValues" 
-                        id="state" 
-                        placeholder="Select State" 
-                        optionLabel="label" 
-                        optionValue="value"
-                        autoWidth="false"
-                        [style]="{'width':'100%'}"
-                        formControlName="state"
-                        (onChange)="getCities($event)"
-                        ></p-dropdown>
-                <div *ngIf="formControlValidation('state')"
-                    class="ng-invalid ng-dirty">
-                    Please choose a state.
-                </div>
-            </div>
-            <div class="field col-12">
-                <p-dropdown [options]="cityDropDownListValues" 
-                        id="city"
-                        placeholder="Select City" 
-                        optionLabel="label" 
-                        optionValue="value"
-                        autoWidth="false"
-                        [style]="{'width':'100%'}"
-                        formControlName="city"
-                        (onChange)="getAreas($event)"
-                        ></p-dropdown>
-                <div *ngIf="formControlValidation('city')"
-                    class="ng-invalid ng-dirty">
-                    Please choose a city.
-                </div>
-            </div>
-            <div class="field col-12">
-                <p-dropdown [options]="areaDropDownListValues" 
-                        id="area"
-                        placeholder="Select Area" 
-                        optionLabel="label" 
-                        optionValue="value"
-                        autoWidth="false"
-                        [style]="{'width':'100%'}"
-                        formControlName="area"
-                        ></p-dropdown>
-                <div *ngIf="formControlValidation('area')"
-                    class="ng-invalid ng-dirty">
-                    Please choose a area.
-                </div>
-            </div>
-            <div class="field col-12">
-                <span class="p-float-label">
-                    <input id="addressLine1" type="text" formControlName="addressLine1" pInputText  class="w-full"> 
-                    <label for="addressLine1">AddressLine 1</label>
-                </span>
-                <div *ngIf="formControlValidation('addressLine1')"
-                    class="ng-invalid ng-dirty">
-                    Please enter addressLine 1.
-                </div>
-            </div>
-            <div class="field col-12">
-                <span class="p-float-label">
-                    <input id="addressLine2" type="text" formControlName="addressLine2" pInputText  class="w-full"> 
-                    <label for="addressLine2">AddressLine 2</label>
-                </span>
-            </div>
-            <div class="field col-6">
-                <label for="openTimings">Open Timings</label>
-                <p-calendar formControlName="openTime"  [timeOnly]="true"  [hourFormat]="'12'" inputId="openTimings"></p-calendar>
-            </div>
-            <div class="field col-6">
-                <label for="closeTimings">Close Timings</label>
-                <p-calendar formControlName="closeTime"  [timeOnly]="true" [hourFormat]="'12'" inputId="closeTimings"></p-calendar>
-            </div>
-            <div class="field-radiobutton col-6">
-                <p-radioButton name="active" [value]="true"  formControlName="active" inputId="active"></p-radioButton>
-                <label for="active">Active</label>
-            </div>
-            <div class="field-radiobutton col-6">
-                <p-radioButton name="active" [value]="false"  formControlName="active" inputId="inActive"></p-radioButton>
-                <label for="inActive">InActive</label>
-            </div>
-            <div class="field col-12">
-                <!-- <p-gmap [options]="options" [style]="{'width':'100%','height':'320px'}" ></p-gmap> -->
-            </div>
-            <div class="field col-12">
-                <button pButton 
-                    pRipple 
-                    type="submit" 
-                    label="Save" 
-                    class="p-button-rounded p-button-primary w-full"
-                    ></button>
-            </div>
-        </div>
-    </form>
-    
-    <div class="grid">
-        <div class="col-12">
-            <button pButton 
-            pRipple 
-            type="button" 
-            label="Back" 
-            class="p-button-rounded p-button-secondary w-full"
-            (click)="goBackToVendor()"></button>
-        </div>
-    </div>
 
-    <div *ngIf="vendorId !== '0'">
-        <div class="p-3">
-            <p-table [value]="vendorDetail.categories">
-                <ng-template pTemplate="caption">
-                    <div class="flex align-items-center justify-content-between">
-                        <h5 class="m-0">Manage Categories</h5>
+<p-card [header]="header">
+    <p-scrollTop></p-scrollTop>
+    <p-scrollPanel [style]="{width: '100%', height: '600px'}" styleClass="custombar">
+        <form [formGroup]="vendorDetailForm" (ngSubmit)="onSubmitVendorDetails(vendorDetailForm)">
+            <div class="p-fluid formgrid  grid">
+                <div class="field col-12">
+                    <span class="p-float-label field">
+                        <input id="vendorName" type="text" formControlName="vendorName" pInputText class="w-full">
+                        <label for="vendorName">Vendor Name</label>
+                    </span>
+                    <div *ngIf="formControlValidation('vendorName')" class="ng-invalid ng-dirty">
+                        Please provide a name.
                     </div>
-                </ng-template>
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Active</th>
-                        <th>Edit</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-category>
-                    <tr>
-                        <td>{{category.name}}</td>
-                        <td>{{category.description}}</td>
-                        <td>
-                            <p-checkbox [(ngModel)]="category.active" [binary]="true" [disabled]="true" inputId="active"></p-checkbox>
-                        </td>
-                        <td>
-                            <button pButton pRipple type="button" (click)="goToEditCategoryPage(category.id)" icon="pi pi-user-plus" class="p-button-rounded"></button>
-                        </td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="summary">
-                    <div class="flex align-items-center justify-content-between">
-                        <p-button label="Add Category" (click)="goToCategory('0')"></p-button>
+                </div>
+                <div class="field col-12">
+                    <span class="p-float-label field">
+                        <input id="vendorDescription" type="text" formControlName="vendorDescription" pInputText
+                            class="w-full">
+                        <label for="vendorDescription">Vendor Description</label>
+                    </span>
+                    <div *ngIf="formControlValidation('vendorDescription')" class="ng-invalid ng-dirty">
+                        Please provide a Description.
                     </div>
-                </ng-template>
-            </p-table>
+                </div>
+
+                <div class="field col-12">
+                    <p-multiSelect [options]="cuisineDropDownList" formControlName="cuisineType"
+                        defaultLabel="Select a Cuisine Type" optionLabel="cuisineName" optionValue="cuisineName"
+                        display="chip">
+                    </p-multiSelect>
+
+                </div>
+                <div class="field col-12">
+                    <p-dropdown [options]="stateDropDownValues" id="state" placeholder="Select State"
+                        optionLabel="label" optionValue="value" autoWidth="false" [style]="{'width':'100%'}"
+                        formControlName="state" (onChange)="getCities($event)"></p-dropdown>
+                    <div *ngIf="formControlValidation('state')" class="ng-invalid ng-dirty">
+                        Please choose a state.
+                    </div>
+                </div>
+                <div class="field col-12">
+                    <p-dropdown [options]="cityDropDownListValues" id="city" placeholder="Select City"
+                        optionLabel="label" optionValue="value" autoWidth="false" [style]="{'width':'100%'}"
+                        formControlName="city" (onChange)="getAreas($event)"></p-dropdown>
+                    <div *ngIf="formControlValidation('city')" class="ng-invalid ng-dirty">
+                        Please choose a city.
+                    </div>
+                </div>
+                <div class="field col-12">
+                    <p-dropdown [options]="areaDropDownListValues" id="area" placeholder="Select Area"
+                        optionLabel="label" optionValue="value" autoWidth="false" [style]="{'width':'100%'}"
+                        formControlName="area"></p-dropdown>
+                    <div *ngIf="formControlValidation('area')" class="ng-invalid ng-dirty">
+                        Please choose a area.
+                    </div>
+                </div>
+                <div class="field col-12 p-2">
+                    <span class="p-float-label">
+                        <input id="addressLine1" type="text" formControlName="addressLine1" pInputText class="w-full">
+                        <label for="addressLine1">AddressLine 1</label>
+                    </span>
+                    <div *ngIf="formControlValidation('addressLine1')" class="ng-invalid ng-dirty">
+                        Please enter addressLine 1.
+                    </div>
+                </div>
+                <div class="field col-12">
+                    <span class="p-float-label">
+                        <input id="addressLine2" type="text" formControlName="addressLine2" pInputText class="w-full">
+                        <label for="addressLine2">AddressLine 2</label>
+                    </span>
+                </div>
+                <div class="field col-6">
+                    <label for="openTimings">Open Timings</label>
+                    <p-calendar formControlName="openTime" [timeOnly]="true" [hourFormat]="'12'"
+                        inputId="openTimings"></p-calendar>
+                </div>
+                <div class="field col-6">
+                    <label for="closeTimings">Close Timings</label>
+                    <p-calendar formControlName="closeTime" [timeOnly]="true" [hourFormat]="'12'"
+                        inputId="closeTimings"></p-calendar>
+                </div>
+                <div class="field-radiobutton col-6">
+                    <p-radioButton name="active" [value]="true" formControlName="active"
+                        inputId="active"></p-radioButton>
+                    <label for="active">Active</label>
+                </div>
+                <div class="field-radiobutton col-6">
+                    <p-radioButton name="active" [value]="false" formControlName="active"
+                        inputId="inActive"></p-radioButton>
+                    <label for="inActive">InActive</label>
+                </div>
+                <div class="field col-12">
+                    <!-- <p-gmap [options]="options" [style]="{'width':'100%','height':'320px'}" ></p-gmap> -->
+                </div>
+                <div class="field col-12">
+                    <button pButton pRipple type="submit" label="Save"
+                        class="p-button-rounded p-button-primary w-full"></button>
+                </div>
+            </div>
+        </form>
+
+        <div class="grid">
+            <div class="col-12">
+                <button pButton pRipple type="button" label="Back" class="p-button-rounded p-button-secondary w-full"
+                    (click)="goBackToVendor()"></button>
+            </div>
         </div>
-    </div>
-    
+
+        <p-scrollTop target="parent" styleClass="custom-scrolltop" [threshold]="100" icon="pi pi-arrow-up"></p-scrollTop>
+
+        <div *ngIf="vendorId !== '0'">
+            <div class="p-3">
+                <p-table [value]="vendorDetail.categories">
+                    <ng-template pTemplate="caption">
+                        <div class="flex align-items-center justify-content-between">
+                            <h5 class="m-0">Manage Categories</h5>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Active</th>
+                            <th>Edit</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-category>
+                        <tr>
+                            <td>{{category.name}}</td>
+                            <td>{{category.description}}</td>
+                            <td>
+                                <p-checkbox [(ngModel)]="category.active" [binary]="true" [disabled]="true"
+                                    inputId="active"></p-checkbox>
+                            </td>
+                            <td>
+                                <button pButton pRipple type="button" (click)="goToEditCategoryPage(category.id)"
+                                    icon="pi pi-user-plus" class="p-button-rounded"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary">
+                        <div class="flex align-items-center justify-content-between">
+                            <p-button label="Add Category" (click)="goToCategory('0')"></p-button>
+                        </div>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </p-scrollPanel>
 </p-card>

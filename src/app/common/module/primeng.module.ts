@@ -21,6 +21,8 @@ import {CalendarModule} from 'primeng/calendar';
 import {GMapModule} from 'primeng/gmap';
 import {ToolbarModule} from 'primeng/toolbar';
 import {MultiSelectModule} from 'primeng/multiselect';
+import {ScrollTopModule} from 'primeng/scrolltop';
+import { ScrollPanelModule } from "primeng/scrollpanel";
 
 @NgModule({
     imports:[ButtonModule,
@@ -45,7 +47,9 @@ import {MultiSelectModule} from 'primeng/multiselect';
         CalendarModule,
         GMapModule,
         ToolbarModule,
-        MultiSelectModule
+        MultiSelectModule,
+        ScrollTopModule,
+        ScrollPanelModule
     ],
     exports:[ButtonModule,
         TabMenuModule,
@@ -69,7 +73,9 @@ import {MultiSelectModule} from 'primeng/multiselect';
         CalendarModule,
         GMapModule,
         ToolbarModule,
-        MultiSelectModule
+        MultiSelectModule,
+        ScrollTopModule,
+        ScrollPanelModule
     ]
 })
 
