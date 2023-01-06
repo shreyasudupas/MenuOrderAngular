@@ -9,6 +9,7 @@ import { State } from "src/app/common/models/state";
 import { CommonDataSharingService } from "src/app/common/services/common-datasharing.service";
 import { MenuService } from "src/app/common/services/menu.service";
 import { environment } from "src/environments/environment";
+import { CuisineType } from "../cuisine-type-details/cuisine-type";
 import { Vendor } from "../vendor/vendor";
 import { RegisteredLocationReponse } from "./registerLocation";
 
@@ -20,7 +21,6 @@ import { RegisteredLocationReponse } from "./registerLocation";
 
 export class VendorDetailComponent extends BaseComponent<Vendor> implements OnInit{
 vendorId!:string;
-categories:any[] = [];
 selectedCategory!:string;
 vendorDetailForm!: FormGroup;
 header:string='';
@@ -30,9 +30,10 @@ locations:RegisteredLocationReponse[]=[];
 stateDropDownValues:any[]=[];
 cityDropDownListValues:any[]=[];
 areaDropDownListValues:any[]=[];
+cuisineDropDownList:CuisineType[]=[];
 currentState:State={ id:0,name:'',cities:[] };
 vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendorName:'',vendorDescription:'',area:'',city:'',categories:[],
-    closeTime: new Date(),openTime: new Date(),coordinates:{ latitude:0.0,longitude:0.0 },rating:0,type:'',state :'' };
+    closeTime: new Date(),openTime: new Date(),coordinates:{ latitude:0.0,longitude:0.0 },rating:0,cuisineType:[],state :'' };
 
     constructor(
         public menuService:MenuService,
@@ -43,12 +44,6 @@ vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendo
         private fb: FormBuilder,
         messageService: MessageService){
             super(menuService,httpclient,commonBroadcastService,messageService)
-
-            this.categories = [
-                { label: 'Vegetarian',value: 'Veg'},
-                { label: 'NonVegetarian', value: 'NonVeg' },
-                { label: 'Veg/NonVegetarian', value: 'Both' },
-            ]
     }
 
     ngOnInit(): void {
@@ -69,7 +64,7 @@ vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendo
             id: [''],
             vendorName: ['',Validators.required],
             vendorDescription: ['',Validators.required],
-            type: ['',Validators.required],
+            cuisineType: [ [] ],
             state: ['',Validators.required],
             city: ['',Validators.required],
             area: ['',Validators.required],
@@ -100,33 +95,45 @@ vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendo
         }
         this.forkRequest.requestParamter.push(request2);
 
-        this.getForkItems(this.forkRequest).subscribe(([locationResponse,vendorByIdResponse])=>{
+        let request3:RequestResource = {
+            httpMethod:'get',
+            requestUrl: environment.inventory.cuisineType + '/list?isActive=true' ,
+            body: null
+        }
+        this.forkRequest.requestParamter.push(request3);
+
+        this.getForkItems(this.forkRequest).subscribe(([locationResponse,vendorByIdResponse,cuisineList])=>{
             //debugger;
+            let error = 'Error occurred';
             //console.log(locationResponse);
-            this.locations = locationResponse;
+            if(locationResponse != error){
+                this.locations = locationResponse;
 
-            //add states to dropdown
-            this.locations.forEach(location=>{
-                this.stateDropDownValues.push({label:location.state.name,value:location.state.name});
-            });
-
-            //reset area and city
-            this.cityDropDownListValues=[];
-            this.areaDropDownListValues=[];
+                //add states to dropdown
+                this.locations.forEach(location=>{
+                    this.stateDropDownValues.push({label:location.state.name,value:location.state.name});
+                });
+    
+                //reset area and city
+                this.cityDropDownListValues=[];
+                this.areaDropDownListValues=[];
+            }else{
+                this.showError('Unable to Get Location details right now');
+            }
 
             //console.log(vendorByIdResponse);
-            if(vendorByIdResponse != "Error occurred"){
+            if(vendorByIdResponse != error){
                 this.vendorDetail = {...this.vendorDetail, categories: vendorByIdResponse.categories, id: vendorByIdResponse.id , vendorName: vendorByIdResponse.vendorName,
                     active: vendorByIdResponse.active,addressLine1: vendorByIdResponse.addressLine1, addressLine2: vendorByIdResponse.addressLine2,area: vendorByIdResponse.area,
                     state: vendorByIdResponse.state, city: vendorByIdResponse.city, closeTime: new Date(vendorByIdResponse.closeTime),coordinates: vendorByIdResponse.coordinates,
-                    openTime: new Date(vendorByIdResponse.openTime), rating: vendorByIdResponse.rating, type: vendorByIdResponse.type
+                    openTime: new Date(vendorByIdResponse.openTime), rating: vendorByIdResponse.rating, cuisineType: vendorByIdResponse.cuisineType
                     , vendorDescription: vendorByIdResponse.vendorDescription }
 
                 this.vendorDetailForm.setValue({
                     id: this.vendorDetail.id,
                     vendorName: this.vendorDetail.vendorName,
                     vendorDescription: this.vendorDetail.vendorDescription,
-                    type: this.vendorDetail.type,
+                    cuisineType: this.vendorDetail.cuisineType,
                     state: this.vendorDetail.state,
                     city: this.vendorDetail.city,
                     area: this.vendorDetail.area,
@@ -143,6 +150,19 @@ vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendo
 
                 let city = this.cityDropDownListValues.find(c=>c.label == this.vendorDetail.city);
                 this.getAreas({ value: city.value});
+            }else{
+                this.showError('Unable to Get vendor details right now');
+            }
+
+            if(cuisineList !== error){
+                //console.log(cuisineList);
+                this.cuisineDropDownList = cuisineList;
+
+                // this.vendorDetailForm.patchValue({
+                //     cuisineList
+                // })
+            }else{
+                this.showError('Unable to Get cuisine details right now');
             }
         });
     }
@@ -176,7 +196,7 @@ vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendo
                                 ...this.vendorDetail, categories: result.categories, id: result.id, vendorName: result.vendorName,
                                 active: result.active, addressLine1: result.addressLine1, addressLine2: result.addressLine2, area: result.area,
                                 state: result.state, city: result.city, closeTime: new Date(result.closeTime), coordinates: result.coordinates,
-                                openTime: new Date(result.openTime), rating: result.rating, type: result.type
+                                openTime: new Date(result.openTime), rating: result.rating, cuisineType: result.cuisineType
                                 , vendorDescription: result.vendorDescription
                             }
 

@@ -25,19 +25,14 @@
             </div>
             
             <div class="field col-12">
-                <p-dropdown [options]="categories" 
-                        id="type" 
-                        placeholder="Select a Type of Restaurant" 
-                        optionLabel="label" 
-                        optionValue="value"
-                        autoWidth="false"
-                        [style]="{'width':'100%'}"
-                        formControlName="type"
-                        ></p-dropdown>
-                <div *ngIf="formControlValidation('type')"
-                    class="ng-invalid ng-dirty">
-                    Please choose a type of Vendor.
-                </div>
+                <p-multiSelect [options]="cuisineDropDownList" 
+                               formControlName="cuisineType"
+                               defaultLabel="Select a Cuisine Type" 
+                               optionLabel="cuisineName" 
+                               optionValue="cuisineName"
+                               display="chip">
+                </p-multiSelect>
+                
             </div>
             <div class="field col-12">
                 <p-dropdown [options]="stateDropDownValues" 

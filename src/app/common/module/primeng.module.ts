@@ -20,6 +20,7 @@ import {PasswordModule} from 'primeng/password';
 import {CalendarModule} from 'primeng/calendar';
 import {GMapModule} from 'primeng/gmap';
 import {ToolbarModule} from 'primeng/toolbar';
+import {MultiSelectModule} from 'primeng/multiselect';
 
 @NgModule({
     imports:[ButtonModule,
@@ -43,7 +44,9 @@ import {ToolbarModule} from 'primeng/toolbar';
         PasswordModule,
         CalendarModule,
         GMapModule,
-        ToolbarModule],
+        ToolbarModule,
+        MultiSelectModule
+    ],
     exports:[ButtonModule,
         TabMenuModule,
         MessageModule,
@@ -65,7 +68,8 @@ import {ToolbarModule} from 'primeng/toolbar';
         PasswordModule,
         CalendarModule,
         GMapModule,
-        ToolbarModule
+        ToolbarModule,
+        MultiSelectModule
     ]
 })
 
