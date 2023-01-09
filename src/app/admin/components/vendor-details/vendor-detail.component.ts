@@ -290,4 +290,8 @@ vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendo
             state: { vendorId: this.vendorId  }
         });
     }
+
+    goToMenuPage = () => {
+        
+    }
 }
