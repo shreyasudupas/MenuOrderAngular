@@ -19,6 +19,7 @@ export class CategoryDetailComponent extends BaseComponent<Category> implements 
 categoryDetailForm!:FormGroup;
 id:string='';
 vendorId:string='';
+disableCategoryName:boolean = false;
 
     constructor(
         private menuService:MenuService,
@@ -41,6 +42,8 @@ vendorId:string='';
             id: [''],
             name: ['',Validators.required],
             description: [''],
+            openTime: [new Date(),Validators.required],
+            closeTime: [new Date(),Validators.required],
             active: [false]
         });
 
@@ -65,10 +68,13 @@ vendorId:string='';
                     id: result.id,
                     name: result.name,
                     description: result.description,
-                    active: result.active
+                    active: result.active,
+                    openTime: new Date(result.openTime),
+                    closeTime: new Date(result.closeTime)
                 });
 
                 this.showInfo('Category Updated');
+                this.categoryDetailForm.controls['name'].disable()
             },
             error: error => {
                 this.showError('Unable to get category detail');
@@ -87,30 +93,69 @@ vendorId:string='';
 
     submitCategoryDetailForm = (forms:FormGroup) => {
         if(forms.valid){
-
-            this.baseUrl = environment.inventory.vendor + '/add/category';
-            this.action = null;
-            let body = {
-                VendorId: this.vendorId,
-                newCategory: forms.value
-            };
-
-            this.Create(body).subscribe({
-                next: result=>{
-                    if(result != null){
-                        this.route.navigateByUrl('admin/vendor-detail/'+this.vendorId);
-                    }else{
-                        this.showError('Error in saving the category detail');
-                    }
-                },
-                error: error => {
-                    console.log(error);
-                    this.showError('Error in Posting the details');
-                }
-            });
+            if(this.vendorId === undefined){
+                this.showInfo('Please go back to the vendor list page');
+            }else if(this.vendorId === '0'){
+                this.addCatgoryVendor(forms);
+            }else {
+                this.updateCatgoryVendor(forms);
+            }
+            
         }else{
             this.showError('Enter Required Form values');
         }
+    }
+
+    addCatgoryVendor = (forms:FormGroup) => {
+        this.baseUrl = environment.inventory.vendor + '/add/category';
+        this.action = null;
+        let formValue = forms.value;
+        formValue = {...formValue, openTime: formValue.openTime.toTimeString().split(' ')[0],closeTime: formValue.closeTime.toTimeString().split(' ')[0]}
+
+        let body = {
+            VendorId: this.vendorId,
+            newCategory: formValue
+        };
+
+        this.Create(body).subscribe({
+            next: result=>{
+                if(result != null){
+                    this.route.navigateByUrl('admin/vendor-detail/'+this.vendorId);
+                }else{
+                    this.showError('Error in saving the category detail');
+                }
+            },
+            error: error => {
+                console.log(error);
+                this.showError('Error in Posting the details');
+            }
+        });
+    }
+
+    updateCatgoryVendor = (forms:FormGroup) => {
+        this.baseUrl = environment.inventory.vendor + '/update/category';
+        this.action = null;
+        let formValue = forms.value;
+        formValue = {...formValue, openTime: formValue.openTime.toTimeString().split(' ')[0],closeTime: formValue.closeTime.toTimeString().split(' ')[0]}
+
+        let body = {
+            VendorId: this.vendorId,
+            Category: formValue
+        };
+
+        this.UpdateItem(body).subscribe({
+            next: result=>{
+                if(result != null){
+                    this.showInfo('Item Updated succesfully');
+                }else{
+                    this.showError('Error in saving the category detail');
+                }
+            },
+            error: error => {
+                console.log(error);
+                this.showError('Error in Posting the details');
+            }
+        });
     }
 
     formControlValidation(name:string){

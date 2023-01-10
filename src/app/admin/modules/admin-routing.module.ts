@@ -7,6 +7,7 @@ import { CuisineListDetails } from '../components/cuisine-type-list/cuisine-type
 import { FoodTypeDetailsComponent } from '../components/food-type-details/food-type-details.component';
 import { FoodTypeListComponent } from '../components/food-type-list/food-type-list.component';
 import { HomeComponent } from '../components/home/admin-home.component';
+import { MenuDetailsComponent } from '../components/menu-details/menu-details.component';
 import { VendorDetailComponent } from '../components/vendor-details/vendor-detail.component';
 import { VendorComponent } from '../components/vendor/vendor.component';
 import { AdminGaurd } from '../gaurds/admin-gaurd';
@@ -36,6 +37,9 @@ const routes: Routes = [
     },
     {
       path:'cuisine-details/:cuisineId', component: CuisineDetailsComponent
+    },
+    {
+      path:'vendor-detail/:vendorId/menu-details/:menuDetailsId', component: MenuDetailsComponent
     },
     { 
       path:'',

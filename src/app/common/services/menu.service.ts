@@ -146,6 +146,13 @@ export class MenuService{
                         routerLink:['']
                     },
                     {
+                        label: 'Menu Details',
+                        icon: 'pi pi-fw pi-calendar',
+                        visible: false,
+                        componentName:'MenuDetailsComponent',
+                        routerLink:null
+                    },
+                    {
                         label: 'CategoryDetail',
                         icon: 'pi pi-fw pi-calendar',
                         visible:false,

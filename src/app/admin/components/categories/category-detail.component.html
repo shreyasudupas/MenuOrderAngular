@@ -5,8 +5,8 @@
             <div class="p-fluid formgrid grid">
                 <div class="field col-12">
                     <span class="p-float-label">
-                        <input id="float-input" type="text" class="w-full" pInputText formControlName="name"> 
-                        <label for="float-input">Name</label>
+                        <input id="name" type="text" class="w-full" pInputText formControlName="name"> 
+                        <label for="name">Name</label>
                     </span>
                     <div *ngIf="formControlValidation('name')" class="text-danger">
                             Please provide a name.
@@ -20,6 +20,16 @@
                         <input id="float-input" type="text" class="w-full" pInputText formControlName="description"> 
                         <label for="float-input">Description</label>
                     </span>
+                </div>
+                <div class="field col-6">
+                    <label for="openTimings">Open Timings</label>
+                    <p-calendar formControlName="openTime" [timeOnly]="true" [hourFormat]="'12'"
+                        inputId="openTimings"></p-calendar>
+                </div>
+                <div class="field col-6">
+                    <label for="closeTimings">Close Timings</label>
+                    <p-calendar formControlName="closeTime" [timeOnly]="true" [hourFormat]="'12'"
+                        inputId="closeTimings"></p-calendar>
                 </div>
                 <div class="field-radiobutton col-6">
                     <p-radioButton name="active" [value]="true"  formControlName="active" inputId="active"></p-radioButton>

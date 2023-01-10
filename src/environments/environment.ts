@@ -21,6 +21,7 @@ export const environment = {
     vendors:"https://localhost:5003/api/vendors",
     category:"https://localhost:5003/api/category",
     foodtype:"https://localhost:5003/api/foodtype",
-    cuisineType:"https://localhost:5003/api/cuisine"
+    cuisineType:"https://localhost:5003/api/cuisine",
+    vendorMenu:"https://localhost:5003/api/vendorMenus"
   },
 };

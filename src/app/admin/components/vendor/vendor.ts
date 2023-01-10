@@ -13,8 +13,8 @@ export interface Vendor{
     coordinates:Coordinate;
     addressLine1:string;
     addressLine2:string;
-    openTime:Date;
-    closeTime:Date;
+    openTime:string;
+    closeTime:string;
     active:boolean;
 }
 

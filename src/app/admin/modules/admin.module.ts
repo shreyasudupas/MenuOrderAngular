@@ -15,6 +15,7 @@ import { FoodTypeListComponent } from '../components/food-type-list/food-type-li
 import { FoodTypeDetailsComponent } from '../components/food-type-details/food-type-details.component';
 import { CuisineListDetails } from '../components/cuisine-type-list/cuisine-type-list.component';
 import { CuisineDetailsComponent } from '../components/cuisine-type-details/cuisine-details.component';
+import { MenuDetailsComponent } from '../components/menu-details/menu-details.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { CuisineDetailsComponent } from '../components/cuisine-type-details/cuis
     FoodTypeListComponent,
     FoodTypeDetailsComponent,
     CuisineListDetails,
-    CuisineDetailsComponent
+    CuisineDetailsComponent,
+    MenuDetailsComponent
   ],
   imports: [
     CommonModule,
