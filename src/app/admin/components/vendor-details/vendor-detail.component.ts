@@ -168,7 +168,7 @@ vendorMenuItems:MenuDetails[]=[];
 
         let request4:RequestResource = {
             httpMethod:'get',
-            requestUrl: environment.inventory.vendorMenu + "/menuItems/list/" + this.vendorId,
+            requestUrl: environment.inventory.vendorMenu + '/list/' + this.vendorId,
             body: null
         }
         this.forkRequest.requestParamter.push(request4);
