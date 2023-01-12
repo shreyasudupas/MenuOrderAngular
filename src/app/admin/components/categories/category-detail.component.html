@@ -1,5 +1,6 @@
 <div>
     <p-toast></p-toast>
+    <p-breadcrumb [model]="breadItems"></p-breadcrumb>
     <p-card header="Category Detail">
         <form [formGroup]="categoryDetailForm" (ngSubmit)="submitCategoryDetailForm(categoryDetailForm)">
             <div class="p-fluid formgrid grid">

@@ -2,7 +2,7 @@ import { DatePipe, Time } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { BaseComponent } from "src/app/common/components/base/base.component";
 import { RequestResource, ResourceServiceForkRequest } from "src/app/common/models/resourceServiceForkRequest";
@@ -21,7 +21,7 @@ import { RegisteredLocationReponse } from "./registerLocation";
     selector: 'vendor-detail',
     templateUrl: './vendor-detail.component.html',
     styleUrls:['./vendor-detail.component.scss'],
-    providers: [MessageService,DatePipe]
+    providers: [MessageService]
 })
 
 export class VendorDetailComponent extends BaseComponent<Vendor> implements OnInit{
@@ -39,7 +39,11 @@ cuisineDropDownList:CuisineType[]=[];
 currentState:State={ id:0,name:'',cities:[] };
 vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendorName:'',vendorDescription:'',area:'',city:'',categories:[],
     closeTime: '',openTime: '',coordinates:{ latitude:0.0,longitude:0.0 },rating:0,cuisineType:[],state :'' };
-vendorMenuItems:MenuDetails[]=[];
+categoryTab:boolean = true;
+menuDetailTab:boolean = true;
+previousUrl: string='';
+currentUrl: string;
+
 
     constructor(
         public menuService:MenuService,
@@ -48,9 +52,17 @@ vendorMenuItems:MenuDetails[]=[];
         private activatedRoute:ActivatedRoute,
         private router:Router,
         private fb: FormBuilder,
-        messageService: MessageService,
-        private datePipe: DatePipe){
+        messageService: MessageService){
             super(menuService,httpclient,commonBroadcastService,messageService)
+
+            this.currentUrl = this.router.url;
+            router.events.subscribe(event => {
+              if (event instanceof NavigationEnd) {        
+                this.previousUrl = this.currentUrl;
+                this.currentUrl = event.url;
+              };
+            });  
+            console.log(`Current Url: ${this.currentUrl} Previous Url: ${this.previousUrl}`)
     }
 
     ngOnInit(): void {
@@ -65,6 +77,8 @@ vendorMenuItems:MenuDetails[]=[];
             this.header = 'Add Vendor Details'
         }else{
             this.header = 'Edit Vendor Details'
+            this.categoryTab = false;
+            this.menuDetailTab = false;
         }
 
         this.vendorDetailForm = this.fb.group({
@@ -171,9 +185,9 @@ vendorMenuItems:MenuDetails[]=[];
             requestUrl: environment.inventory.vendorMenu + '/list/' + this.vendorId,
             body: null
         }
-        this.forkRequest.requestParamter.push(request4);
+        
 
-        this.getForkItems(this.forkRequest).subscribe(([locationResponse,vendorByIdResponse,cuisineList,vendorMenuItemsList])=>{
+        this.getForkItems(this.forkRequest).subscribe(([locationResponse,vendorByIdResponse,cuisineList])=>{
             //debugger;
             let error = 'Error occurred';
             //console.log(locationResponse);
@@ -234,14 +248,6 @@ vendorMenuItems:MenuDetails[]=[];
                 // })
             }else{
                 this.showError('Unable to Get cuisine details right now');
-            }
-
-            if(vendorMenuItemsList !== error){
-                this.vendorMenuItems = vendorMenuItemsList;
-
-                //console.log(this.vendorMenuItems);
-            }else{
-                this.showError('Unable to get vendor menu list');
             }
         });
     }
@@ -356,23 +362,5 @@ vendorMenuItems:MenuDetails[]=[];
                 areas.forEach(a=> this.areaDropDownListValues.push({label:a.areaName,value:a.areaName}));
             }
         }
-    }
-
-    goToCategory = (id:string) => {
-        this.router.navigateByUrl('/admin/category/' + id,
-        {
-            state: { vendorId: this.vendorId }
-        });
-    }
-
-    goToEditCategoryPage = (id:string) => {
-        this.router.navigateByUrl('/admin/category/' + id,
-        {
-            state: { vendorId: this.vendorId  }
-        });
-    }
-
-    goToMenuPage = (menuId:string) => {
-        this.router.navigateByUrl('/admin/vendor-detail/'+this.vendorId + '/menu-details/'+ menuId);
     }
 }

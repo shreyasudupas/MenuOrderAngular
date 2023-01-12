@@ -24,6 +24,8 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {ScrollTopModule} from 'primeng/scrolltop';
 import { ScrollPanelModule } from "primeng/scrollpanel";
 import {InputNumberModule} from 'primeng/inputnumber';
+import {BreadcrumbModule} from 'primeng/breadcrumb';
+import {TabViewModule} from 'primeng/tabview';
 
 @NgModule({
     imports:[ButtonModule,
@@ -51,7 +53,9 @@ import {InputNumberModule} from 'primeng/inputnumber';
         MultiSelectModule,
         ScrollTopModule,
         ScrollPanelModule,
-        InputNumberModule
+        InputNumberModule,
+        BreadcrumbModule,
+        TabViewModule
     ],
     exports:[ButtonModule,
         TabMenuModule,
@@ -78,7 +82,9 @@ import {InputNumberModule} from 'primeng/inputnumber';
         MultiSelectModule,
         ScrollTopModule,
         ScrollPanelModule,
-        InputNumberModule
+        InputNumberModule,
+        BreadcrumbModule,
+        TabViewModule
     ]
 })
 

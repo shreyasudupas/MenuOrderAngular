@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { BaseComponent } from 'src/app/common/components/base/base.component';
 import { RequestResource, ResourceServiceForkRequest } from 'src/app/common/models/resourceServiceForkRequest';
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
@@ -25,6 +25,7 @@ menuDetailForm!:FormGroup;
 categoryDropdownList:Category[]=[];
 foodTypeDropDownList:FoodType[]=[];
 forkRequest: ResourceServiceForkRequest = new ResourceServiceForkRequest();
+breadItems: MenuItem[]=[];
 
     constructor(
         public menuService:MenuService,
@@ -44,6 +45,16 @@ forkRequest: ResourceServiceForkRequest = new ResourceServiceForkRequest();
 
         this.vendorId = this.activatedRoute.snapshot.params['vendorId'];
         this.menuDetailsId = this.activatedRoute.snapshot.params['menuDetailsId'];
+
+        this.breadItems = [
+            {label: 'Vendor Detail' , command: (event) => {
+                if(this.vendorId !== '0' || this.vendorId !== undefined)
+                    this.router.navigate(['admin/vendor-detail/' + this.vendorId])
+                else
+                this.router.navigate(['admin/vendor']);
+            }},
+            {label: 'Menu Detail'}
+        ];
 
         this.menuDetailForm = this.fb.group({
             id:[''],

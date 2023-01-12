@@ -7,5 +7,6 @@ export interface MenuDetails{
     category:string;
     price:number;
     discount:number;
+    rating:number;
     active:boolean;
 }

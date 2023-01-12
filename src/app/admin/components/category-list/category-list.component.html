@@ -1,0 +1,36 @@
+<div class="p-3">
+    <p-table [value]="categories" [scrollable]="true" scrollHeight="400px">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Manage Categories</h5>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Active</th>
+                <th>Edit</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-category>
+            <tr>
+                <td>{{category.name}}</td>
+                <td>{{category.description}}</td>
+                <td>
+                    <p-checkbox [(ngModel)]="category.active" [binary]="true" [disabled]="true"
+                        inputId="active"></p-checkbox>
+                </td>
+                <td>
+                    <button pButton pRipple type="button" (click)="goToCategory(category.id)"
+                        icon="pi pi-user-plus" class="p-button-rounded"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                <p-button label="Add Category" (click)="goToCategory('0')"></p-button>
+            </div>
+        </ng-template>
+    </p-table>
+</div>

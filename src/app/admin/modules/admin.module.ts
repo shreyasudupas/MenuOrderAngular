@@ -16,6 +16,8 @@ import { FoodTypeDetailsComponent } from '../components/food-type-details/food-t
 import { CuisineListDetails } from '../components/cuisine-type-list/cuisine-type-list.component';
 import { CuisineDetailsComponent } from '../components/cuisine-type-details/cuisine-details.component';
 import { MenuDetailsComponent } from '../components/menu-details/menu-details.component';
+import { CategoryListComponent } from '../components/category-list/category-list.component';
+import { VendorMenuList } from '../components/vendor-menu-list/vendor-menu-list.component';
 
 
 @NgModule({
@@ -29,7 +31,9 @@ import { MenuDetailsComponent } from '../components/menu-details/menu-details.co
     FoodTypeDetailsComponent,
     CuisineListDetails,
     CuisineDetailsComponent,
-    MenuDetailsComponent
+    MenuDetailsComponent,
+    CategoryListComponent,
+    VendorMenuList
   ],
   imports: [
     CommonModule,

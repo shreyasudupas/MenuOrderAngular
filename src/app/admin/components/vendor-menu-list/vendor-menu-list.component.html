@@ -1,0 +1,54 @@
+<div class="p-fluid grid">
+    <div class="col-12">
+        <p-table [value]="vendorMenuItems" sortField="itemName" sortMode="single" [scrollable]="true"
+            scrollHeight="400px" rowGroupMode="subheader" groupRowsBy="category"
+            [tableStyle]="{'min-width': '60rem'}">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <h5 class="m-0">Vendor Menu Items</h5>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Food Type</th>
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th>Active</th>
+                    <th>Edit</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="groupheader" let-menuItem>
+                <tr pRowGroupHeader>
+                    <td colspan="7">
+                        <span class="font-bold ml-2">{{menuItem.category}}</span>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-menuItem let-rowIndex="rowIndex">
+                <tr>
+                    <td></td>
+                    <td>{{ menuItem.itemName }}</td>
+                    <td>{{ menuItem.foodType }}</td>
+                    <td>{{ menuItem.price }}</td>
+                    <td>{{ menuItem.discount }}</td>
+                    <td>
+                        <div class="badges">
+                            <p-badge [value]="menuItem.active" severity="success"
+                                styleClass="mr-2"></p-badge>
+                        </div>
+                    </td>
+                    <td>
+                        <button pButton pRipple type="button" (click)="goToMenuPage(menuItem.id)"
+                            icon="pi pi-user-plus" class="p-button-rounded"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="col-12">
+        <p-button label="Add Menu Item" icon="pi pi-plus" class="mr-2"
+            (click)="goToMenuPage('0')"></p-button>
+    </div>
+</div>

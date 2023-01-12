@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { BaseComponent } from 'src/app/common/components/base/base.component';
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
 import { MenuService } from 'src/app/common/services/menu.service';
@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 import { Category } from './category';
 
 @Component({
-    selector:'category-list',
+    selector:'category-detail',
     templateUrl:'./category-detail.component.html',
     providers: [ MessageService ]
 })
@@ -20,6 +20,7 @@ categoryDetailForm!:FormGroup;
 id:string='';
 vendorId:string='';
 disableCategoryName:boolean = false;
+breadItems: MenuItem[]=[];
 
     constructor(
         private menuService:MenuService,
@@ -50,6 +51,16 @@ disableCategoryName:boolean = false;
         this.id = this.activatedRoute.snapshot.params['categoryId'];
 
         this.vendorId = history.state.vendorId;
+
+        this.breadItems = [
+            {label: 'Vendor Detail' , command: (event) => {
+                if(this.vendorId !== '0' || this.vendorId !== undefined)
+                    this.route.navigate(['admin/vendor-detail/' + this.vendorId])
+                else
+                this.route.navigate(['admin/vendor']);
+            }},
+            {label: 'Category Detail'}
+        ];
 
         if(this.id !== '0'){
             this.getCategoryById(this.id);
