@@ -83,7 +83,7 @@ export class BaseComponent<T> extends ResourceService<T>{
         return this.updateItem(body);
     }
 
-    public delete(queryParams: HttpParams): Observable<T> {
+    public DeleteItem(queryParams: HttpParams): Observable<T> {
         if(this.action == undefined || this.action == null){
             this.requestUri = this.baseUrl;
         }

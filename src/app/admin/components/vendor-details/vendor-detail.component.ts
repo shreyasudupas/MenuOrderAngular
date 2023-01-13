@@ -9,8 +9,6 @@ import { RequestResource, ResourceServiceForkRequest } from "src/app/common/mode
 import { State } from "src/app/common/models/state";
 import { CommonDataSharingService } from "src/app/common/services/common-datasharing.service";
 import { MenuService } from "src/app/common/services/menu.service";
-import { convertDateToTime } from "src/app/common/utilities/functions/convertDateToTime";
-import { convertTimeToDate } from "src/app/common/utilities/functions/convertTimeToDate";
 import { environment } from "src/environments/environment";
 import { CuisineType } from "../cuisine-type-details/cuisine-type";
 import { MenuDetails } from "../menu-details/menu-details";

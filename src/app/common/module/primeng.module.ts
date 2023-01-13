@@ -26,6 +26,9 @@ import { ScrollPanelModule } from "primeng/scrollpanel";
 import {InputNumberModule} from 'primeng/inputnumber';
 import {BreadcrumbModule} from 'primeng/breadcrumb';
 import {TabViewModule} from 'primeng/tabview';
+import {FileUploadModule} from 'primeng/fileupload';
+import {DialogModule} from 'primeng/dialog';
+import {ConfirmPopupModule} from 'primeng/confirmpopup';
 
 @NgModule({
     imports:[ButtonModule,
@@ -55,7 +58,10 @@ import {TabViewModule} from 'primeng/tabview';
         ScrollPanelModule,
         InputNumberModule,
         BreadcrumbModule,
-        TabViewModule
+        TabViewModule,
+        FileUploadModule,
+        DialogModule,
+        ConfirmPopupModule
     ],
     exports:[ButtonModule,
         TabMenuModule,
@@ -84,7 +90,10 @@ import {TabViewModule} from 'primeng/tabview';
         ScrollPanelModule,
         InputNumberModule,
         BreadcrumbModule,
-        TabViewModule
+        TabViewModule,
+        FileUploadModule,
+        DialogModule,
+        ConfirmPopupModule
     ]
 })
 

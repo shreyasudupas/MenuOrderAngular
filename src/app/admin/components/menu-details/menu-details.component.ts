@@ -15,7 +15,10 @@ import { MenuDetails } from './menu-details';
 @Component({
     selector:'menu-details',
     templateUrl: './menu-details.component.html',
-    providers: [MessageService]
+    styleUrls:['./menu-details.component.css'],
+    providers: [
+        MessageService
+    ]
 })
 
 export class MenuDetailsComponent extends BaseComponent<MenuDetails> implements OnInit{
@@ -26,6 +29,7 @@ categoryDropdownList:Category[]=[];
 foodTypeDropDownList:FoodType[]=[];
 forkRequest: ResourceServiceForkRequest = new ResourceServiceForkRequest();
 breadItems: MenuItem[]=[];
+imageUploadDialog:boolean= false;
 
     constructor(
         public menuService:MenuService,
@@ -179,17 +183,21 @@ breadItems: MenuItem[]=[];
                 UpdateVendorMenu : forms.value
             };
 
-            this.UpdateItem(body).subscribe({
-                next: result => {
-                    if(result!=null && result.id != ''){
-                        this.showInfo('form updated success');
-                    }else {
-                        this.showError('Error in submitting the form');
-                    }
-                }
-            })
+            // this.UpdateItem(body).subscribe({
+            //     next: result => {
+            //         if(result!=null && result.id != ''){
+            //             this.showInfo('form updated success');
+            //         }else {
+            //             this.showError('Error in submitting the form');
+            //         }
+            //     }
+            // })
         }else{
             this.showError('Enter Required details in the form');
         }
+    }
+    
+    callTest = () => {
+        this.imageUploadDialog=true
     }
 }

@@ -1,3 +1,4 @@
+<p-confirmPopup></p-confirmPopup>
 <div class="p-fluid grid">
     <div class="col-12">
         <p-table [value]="vendorMenuItems" sortField="itemName" sortMode="single" [scrollable]="true"
@@ -17,11 +18,12 @@
                     <th>Discount</th>
                     <th>Active</th>
                     <th>Edit</th>
+                    <th>Delete</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="groupheader" let-menuItem>
                 <tr pRowGroupHeader>
-                    <td colspan="7">
+                    <td colspan="8">
                         <span class="font-bold ml-2">{{menuItem.category}}</span>
                     </td>
                 </tr>
@@ -42,6 +44,10 @@
                     <td>
                         <button pButton pRipple type="button" (click)="goToMenuPage(menuItem.id)"
                             icon="pi pi-user-plus" class="p-button-rounded"></button>
+                    </td>
+                    <td>
+                        <button pButton pRipple type="button" (click)="confirm($event,menuItem)"
+                            icon="pi pi-user-minus" class="p-button-rounded p-button-danger"></button>
                     </td>
                 </tr>
             </ng-template>

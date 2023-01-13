@@ -1,0 +1,19 @@
+.image-upload{
+    position: relative;
+    height: 80px;
+    width:100%;
+    outline-color: black;
+    border: 2px solid #969696;
+    background: rgb(240, 234, 234);
+}
+
+.image-upload:hover{
+    background-color: #ddcdcd;
+}
+
+.upload-image-div{
+    position: relative;
+    top:20%;
+    text-align:center;
+    display:block;
+}
