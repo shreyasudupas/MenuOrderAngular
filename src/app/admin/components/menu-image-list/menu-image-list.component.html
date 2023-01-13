@@ -1,0 +1,12 @@
+<p-card header="Menu Image List">
+    <p-dataView [value]="imageList">
+        <ng-template let-image pTemplate="gridItem">
+            <div class="col-12 md:col-4">
+                <div class="product-grid-item-content">
+                    <img [src]="image.data" [alt]="image.itemName"/>
+                    <div class="product-name">{{image.itemName}}</div>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</p-card>

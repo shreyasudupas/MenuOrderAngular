@@ -18,6 +18,7 @@ import { CuisineDetailsComponent } from '../components/cuisine-type-details/cuis
 import { MenuDetailsComponent } from '../components/menu-details/menu-details.component';
 import { CategoryListComponent } from '../components/category-list/category-list.component';
 import { VendorMenuList } from '../components/vendor-menu-list/vendor-menu-list.component';
+import { MenuImageListComponent } from '../components/menu-image-list/menu-image-list.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { VendorMenuList } from '../components/vendor-menu-list/vendor-menu-list.
     CuisineDetailsComponent,
     MenuDetailsComponent,
     CategoryListComponent,
-    VendorMenuList
+    VendorMenuList,
+    MenuImageListComponent
   ],
   imports: [
     CommonModule,
