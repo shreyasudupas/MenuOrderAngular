@@ -188,6 +188,13 @@ export class MenuService{
                         visible:true
                     },
                     {
+                        label: 'Image Details',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink:null,
+                        componentName:'MenuImageDetailsDashboardComponent',
+                        visible:false
+                    },
+                    {
                         label: 'Cuisine Type Details',
                         icon: 'pi pi-fw pi-calendar',
                         visible: false,

@@ -1,12 +1,42 @@
 <p-card header="Menu Image List">
-    <p-dataView [value]="imageList">
-        <ng-template let-image pTemplate="gridItem">
-            <div class="col-12 md:col-4">
-                <div class="product-grid-item-content">
-                    <img [src]="image.data" [alt]="image.itemName"/>
-                    <div class="product-name">{{image.itemName}}</div>
+    <!-- <p-dataView [value]="imageList">
+        <ng-template let-image pTemplate="listItem">
+            <div class="col-12">
+                <div>
+                    <img [src]="'data:image/png;base64, '+ image.data" style="height:120px;width:140px" [alt]="image.itemName"/>
+                    <div class="grid">
+                        <div class="col-12">
+                            <div>
+                                {{image.itemName}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </ng-template>
-    </p-dataView>
+    </p-dataView> -->
+    <p-table [value]="imageList.imageData" [paginator]="true" [rows]="4" [totalRecords]="totalRecords" [tableStyle]="{'min-width': '50rem'}"
+     [lazy]="true" (onLazyLoad)="loadImages($event)" [loading]="loading">
+        <ng-template pTemplate="caption">
+            <button pButton pRipple icon="pi pi-plus" type="button" label="New" class="p-button-success p-button-text" (click)="goToDetailPage('0')"></button>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Image</th>
+                <th>Item Name</th>
+                <th>Edit</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-image>
+            <tr>
+                <td>
+                    <img [src]="'data:image/png;base64, '+ image.data" style="height:120px;width:140px" [alt]="image.itemName"/>
+                </td>
+                <td class="text-lg">{{image.itemName}}</td>
+                <td>
+                    <button pButton pRipple type="button" icon="pi pi-user-edit" class="p-button-rounded" (click)="goToDetailPage(image.id)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
 </p-card>

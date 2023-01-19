@@ -1,0 +1,13 @@
+<p-card>
+    <p-steps [model]="items" [readonly]="false" [activeIndex]="activeIndex"></p-steps>
+</p-card>
+
+
+<div *ngIf="activeDetails;else activeUpload">
+    <menu-image-details [menuImageId]="menuImageId" [menuDetailForm]="menuFormDetails" (activeItem)="updateActiveIndex($event)"
+    (formUpdate)="updateForms($event)"></menu-image-details>
+</div>
+
+<ng-template #activeUpload>
+    <menu-image-upload-detail [menuDetailForm]="menuFormDetails" (activeDetailPage)="updateActiveIndex($event)"></menu-image-upload-detail>
+</ng-template>

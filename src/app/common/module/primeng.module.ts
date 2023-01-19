@@ -29,6 +29,8 @@ import {TabViewModule} from 'primeng/tabview';
 import {FileUploadModule} from 'primeng/fileupload';
 import {DialogModule} from 'primeng/dialog';
 import {ConfirmPopupModule} from 'primeng/confirmpopup';
+import {StepsModule} from 'primeng/steps';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 @NgModule({
     imports:[ButtonModule,
@@ -61,7 +63,9 @@ import {ConfirmPopupModule} from 'primeng/confirmpopup';
         TabViewModule,
         FileUploadModule,
         DialogModule,
-        ConfirmPopupModule
+        ConfirmPopupModule,
+        StepsModule,
+        InputTextareaModule
     ],
     exports:[ButtonModule,
         TabMenuModule,
@@ -93,7 +97,9 @@ import {ConfirmPopupModule} from 'primeng/confirmpopup';
         TabViewModule,
         FileUploadModule,
         DialogModule,
-        ConfirmPopupModule
+        ConfirmPopupModule,
+        StepsModule,
+        InputTextareaModule
     ]
 })
 

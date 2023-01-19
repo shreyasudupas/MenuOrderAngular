@@ -19,6 +19,9 @@ import { MenuDetailsComponent } from '../components/menu-details/menu-details.co
 import { CategoryListComponent } from '../components/category-list/category-list.component';
 import { VendorMenuList } from '../components/vendor-menu-list/vendor-menu-list.component';
 import { MenuImageListComponent } from '../components/menu-image-list/menu-image-list.component';
+import { MenuImageDetailsDashboardComponent } from '../components/menu-image-details/dashboard/menu-image-details-dashboard.component';
+import { MenuImageDetailsComponent } from '../components/menu-image-details/menu-image-details/menu-image-details.component';
+import { MenuImageUploadComponent } from '../components/menu-image-details/image-upload-details/menu-image-upload.component';
 
 
 @NgModule({
@@ -35,7 +38,10 @@ import { MenuImageListComponent } from '../components/menu-image-list/menu-image
     MenuDetailsComponent,
     CategoryListComponent,
     VendorMenuList,
-    MenuImageListComponent
+    MenuImageListComponent,
+    MenuImageDetailsDashboardComponent,
+    MenuImageDetailsComponent,
+    MenuImageUploadComponent
   ],
   imports: [
     CommonModule,

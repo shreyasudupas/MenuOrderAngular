@@ -1,0 +1,39 @@
+<p-card class="p-3" [header]="header">
+    
+    <form [formGroup]="menuDetailForm" (ngSubmit)="submitForm(menuDetailForm)">
+        <div class="p-fluid formgrid grid">
+            <div class="field col-12">
+                <span class="p-float-label">
+                    <input id="float-input" type="text" pInputText formControlName="itemName"> 
+                    <label for="float-input">Item Name</label>
+                </span>
+            </div>
+            <div class="field col-12 p-2">
+                <span class="p-float-label">
+                    <textarea id="float-description" [rows]="5" [cols]="30" formControlName="description" pInputTextarea [autoResize]="true"></textarea>
+                    <label for="float-description">Description</label>
+                </span>
+            </div>
+            <div class="field-radiobutton p-2 col-6">
+                <p-radioButton name="active" [value]="true" formControlName="active"
+                    inputId="active"></p-radioButton>
+                <label for="active">Active</label>
+            </div>
+            <div class="field-radiobutton col-6">
+                <p-radioButton name="active" [value]="false" formControlName="active"
+                    inputId="inActive"></p-radioButton>
+                <label for="inActive">InActive</label>
+            </div>
+            <div class="field col-12">
+                <button pButton pRipple type="submit" label="Next"
+                        class="p-button-rounded p-button-primary w-full"></button>
+            </div>
+        </div>        
+    </form>
+    <div class="p-fluid grid">
+        <div class="col-12">
+            <button pButton pRipple type="button" label="Back" class="p-button-rounded p-button-secondary w-full"
+                (click)="goBack()"></button>
+        </div>
+    </div> 
+</p-card>

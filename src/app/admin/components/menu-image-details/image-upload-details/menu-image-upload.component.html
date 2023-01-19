@@ -1,0 +1,33 @@
+<p-toast></p-toast>
+<p-card header="Upload the Menu Image">
+    <div class="p-fluid grid">
+        <div class="col-12">
+            <p-fileUpload #imageMenu mode="basic" name="file" 
+                        accept="image/*" 
+                        label="Upload"
+                        chooseLabel="Upload" 
+                        class="mr-2 inline-block"
+                        [customUpload]="true" 
+                        (uploadHandler)="myUploader($event,imageMenu)">
+            </p-fileUpload>
+        </div>
+        <div class="col-12">
+            <div *ngIf="formControlValue('data') != '';else  showPreviewImage ">
+                <img [src]="'data:image/png;base64, '+ formControlValue('data')" style="height:120px;width:140px" [alt]="formControlValue('itemName')"/>
+            </div>
+            <ng-template #showPreviewImage>
+                <div *ngIf="uploadFile !== undefined">
+                    <img style="height:120px;width:140px" [src]="url"/>
+                </div>
+            </ng-template>
+        </div>
+        <div class="col-12">
+            <button pButton pRipple type="button" label="Previous Step" class="p-button-rounded p-button-secondary w-full"
+            (click)="goToPreviousStep()"></button>
+        </div>
+        <div class="col-12">
+            <button pButton pRipple type="button" label="Submit" class="p-button-rounded p-button-primary w-full"
+            (click)="submit()"></button>
+        </div>
+    </div>
+</p-card>

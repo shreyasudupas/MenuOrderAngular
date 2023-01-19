@@ -8,6 +8,7 @@ import { FoodTypeDetailsComponent } from '../components/food-type-details/food-t
 import { FoodTypeListComponent } from '../components/food-type-list/food-type-list.component';
 import { HomeComponent } from '../components/home/admin-home.component';
 import { MenuDetailsComponent } from '../components/menu-details/menu-details.component';
+import { MenuImageDetailsDashboardComponent } from '../components/menu-image-details/dashboard/menu-image-details-dashboard.component';
 import { MenuImageListComponent } from '../components/menu-image-list/menu-image-list.component';
 import { VendorDetailComponent } from '../components/vendor-details/vendor-detail.component';
 import { VendorComponent } from '../components/vendor/vendor.component';
@@ -44,6 +45,9 @@ const routes: Routes = [
     },
     {
       path:'image-menu-list', component: MenuImageListComponent
+    },
+    {
+      path:'image-menu-details/:menuImageId', component: MenuImageDetailsDashboardComponent
     },
     { 
       path:'',
