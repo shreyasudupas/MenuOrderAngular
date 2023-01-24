@@ -22,6 +22,7 @@ import { MenuImageListComponent } from '../components/menu-image-list/menu-image
 import { MenuImageDetailsDashboardComponent } from '../components/menu-image-details/dashboard/menu-image-details-dashboard.component';
 import { MenuImageDetailsComponent } from '../components/menu-image-details/menu-image-details/menu-image-details.component';
 import { MenuImageUploadComponent } from '../components/menu-image-details/image-upload-details/menu-image-upload.component';
+import { ImmageSelectionListComponent } from '../components/image-selection-list/image-selection-list.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { MenuImageUploadComponent } from '../components/menu-image-details/image
     MenuImageListComponent,
     MenuImageDetailsDashboardComponent,
     MenuImageDetailsComponent,
-    MenuImageUploadComponent
+    MenuImageUploadComponent,
+    ImmageSelectionListComponent
   ],
   imports: [
     CommonModule,

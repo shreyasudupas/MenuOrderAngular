@@ -11,6 +11,10 @@
     background-color: #ddcdcd;
 }
 
+.pointer{
+    cursor: pointer;
+}
+
 .upload-image-div{
     position: relative;
     top:20%;

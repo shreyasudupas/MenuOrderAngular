@@ -1,4 +1,5 @@
 <p-breadcrumb [model]="breadItems"></p-breadcrumb>
+<p-toast></p-toast>
 <p-card header="Edit Menu Details">
     <form [formGroup]="menuDetailForm" (ngSubmit)="submitVendorMenuItem(menuDetailForm)">
         <div class="p-fluid grid">
@@ -35,9 +36,12 @@
             <div class="field col-12 p-2">
                 <div class="image-upload" >
                     <div class="upload-image-div">
-                        <i class="pi pi-cloud-upload" style="font-size: 2rem" (click)="callTest()"></i>
+                        <i class="pi pi-cloud-upload pointer" style="font-size: 2rem" (click)="callImageUploaderDialog()"></i>
                         <label>Upload a image</label>
                     </div>
+                </div>
+                <div *ngIf="showPreviewImage">
+                    <img [src]="imageUrl" [alt]="menuDetailForm.value.itemName" style="height:120px;width:140px" />
                 </div>
             </div>
             <div class="field col-6" >
@@ -77,12 +81,11 @@
     </div>
 </p-card>
 
-<p-dialog header="Header" [(visible)]="imageUploadDialog" [style]="{width: '50vw'}">
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-        cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="imageUploadDialog=false" label="Ok" styleClass="p-button-text"></p-button>
-    </ng-template>
-</p-dialog>
+<div *ngIf="itemName !== ''">
+    <p-dialog header="Image Selection List" [(visible)]="imageUploadDialog" [style]="{width: '50vw'}" [maximizable]="true">
+        <image-selection-list [itemName]="itemName" 
+                            [alreadySelectedImageId]="currentImageId" 
+                            (sendImageSelection)="getImageSelection($event)"
+                            (sendDialogClose)="closeImageDialog($event)"></image-selection-list>
+    </p-dialog>
+</div>

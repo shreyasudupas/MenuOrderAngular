@@ -1,0 +1,24 @@
+<p-table [value]="imageList" [scrollable]="true" scrollHeight="500px" selectionMode="single"  [(selection)]="selectedItem" dataKey="id" 
+    [tableStyle]="{'min-width': '50rem'}" (onRowUnselect)="onRowUnselect($event)" (onRowSelect)="onRowSelect($event)">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>ItemName</th>
+            <th>Image</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-itemData>
+        <tr [pSelectableRow]="itemData">
+            <td>{{itemData.itemName}}</td>
+            <td>
+                <img [src]="'data:image/png;base64, '+ itemData.data" style="height:120px;width:140px" [alt]="itemData.itemName"/>
+            </td>
+            <td>{{itemData.description}}</td>
+            <td></td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <p-button icon="pi pi-check" (click)="updateImage()" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-table>

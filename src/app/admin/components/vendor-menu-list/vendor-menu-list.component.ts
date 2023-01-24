@@ -55,14 +55,14 @@ export class VendorMenuList extends BaseComponent<MenuDetails> implements OnInit
                 if(result === true){
                     this.vendorMenuItems = this.vendorMenuItems.filter(x=>x.id != menuItem.id);
 
-                    this.showInfo(`Successfully Removed ${menuItem.imageLocation}`);
+                    this.showInfo(`Successfully Removed ${menuItem.itemName}`);
                 }else{
-                    this.showError(`Error when removing ${menuItem.imageLocation}`);
+                    this.showError(`Error when removing ${menuItem.itemName}`);
                 }
             },
             error: error => {
                 console.log(error);
-                this.showError(`Error when removing ${menuItem.imageLocation}`)
+                this.showError(`Error when removing ${menuItem.itemName}`)
             }
         });
     }

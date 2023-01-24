@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import { Category } from '../categories/category';
 import { FoodType } from '../food-type-details/food-type';
 import { MenuDetails } from './menu-details';
+import { ImageData } from 'src/app/admin/components/menu-image-details/image-response';
 
 @Component({
     selector:'menu-details',
@@ -30,6 +31,10 @@ foodTypeDropDownList:FoodType[]=[];
 forkRequest: ResourceServiceForkRequest = new ResourceServiceForkRequest();
 breadItems: MenuItem[]=[];
 imageUploadDialog:boolean= false;
+showPreviewImage:boolean = false;
+imageUrl:string = '';
+itemName:string= "";
+currentImageId:string='';
 
     constructor(
         public menuService:MenuService,
@@ -64,7 +69,7 @@ imageUploadDialog:boolean= false;
             id:[''],
             vendorId:[this.vendorId],
             itemName: ['',Validators.required],
-            imageLocation:[''],
+            imageId:[''],
             foodType: ['',Validators.required],
             category: ['',Validators.required],
             price: [0,Validators.required],
@@ -77,6 +82,10 @@ imageUploadDialog:boolean= false;
         if(this.menuDetailsId !== '0'){
             this.callVendorMenuItemDetail(this.menuDetailsId);
         }
+    }
+
+    callMenuDetailForm = (name:string) => {
+        return this.menuDetailForm.controls['name'].value;
     }
     
     goBack = () => {
@@ -124,19 +133,31 @@ imageUploadDialog:boolean= false;
 
         this.GetItem(new HttpParams()).subscribe({
             next: result => {
-                this.menuDetailForm.setValue({
-                    id: result.id,
-                    vendorId: this.vendorId,
-                    itemName: result.itemName,
-                    imageLocation: result.imageLocation,
-                    foodType: result.foodType,
-                    category: result.category,
-                    price: result.price,
-                    discount: result.discount,
-                    active: result.active
-                });
+                if(result != null){
+                    this.menuDetailForm.setValue({
+                        id: result.id,
+                        vendorId: this.vendorId,
+                        itemName: result.itemName,
+                        imageId: result.imageData,
+                        foodType: result.foodType,
+                        category: result.category,
+                        price: result.price,
+                        discount: result.discount,
+                        active: result.active
+                    });
+    
+                    if(result.imageData !== ''){
+                        this.showPreviewImage = true;
 
-                this.showInfo('Item retrival success');
+                        this.imageUrl = 'data:image/png;base64, ' + result.imageData;
+
+                        this.currentImageId = result.imageId;
+                    }
+                    this.showInfo('Item retrival success');
+
+                    this.itemName = result.itemName;
+                }
+                
             },
             error: error => {
                 console.log(error);
@@ -183,21 +204,47 @@ imageUploadDialog:boolean= false;
                 UpdateVendorMenu : forms.value
             };
 
-            // this.UpdateItem(body).subscribe({
-            //     next: result => {
-            //         if(result!=null && result.id != ''){
-            //             this.showInfo('form updated success');
-            //         }else {
-            //             this.showError('Error in submitting the form');
-            //         }
-            //     }
-            // })
+            this.UpdateItem(body).subscribe({
+                next: result => {
+                    if(result!=null && result.id != ''){
+                        this.showInfo('form updated success');
+                    }else {
+                        this.showError('Error in submitting the form');
+                    }
+                }
+            });
+
         }else{
             this.showError('Enter Required details in the form');
         }
     }
+
+    getImageSelection = ($event:ImageData) => {
+        //console.log('Item gor From Parent' + JSON.stringify($event));
+        if($event !== null){
+
+            this.menuDetailForm.patchValue({
+                imageId: $event.id
+            });
+
+            //update preview image
+            this.imageUrl = 'data:image/png;base64, ' + $event.data;
+            this.showPreviewImage = true;
+        }else{
+            
+            this.menuDetailForm.patchValue({
+                imageId: ''
+            });
+
+            this.showPreviewImage = false;
+        }
+    }
     
-    callTest = () => {
+    callImageUploaderDialog = () => {
         this.imageUploadDialog=true
+    }
+
+    closeImageDialog = ($event:boolean) => {
+        this.imageUploadDialog = $event;
     }
 }
