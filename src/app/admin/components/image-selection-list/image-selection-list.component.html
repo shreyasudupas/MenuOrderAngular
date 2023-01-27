@@ -19,6 +19,13 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="summary">
-        <p-button icon="pi pi-check" (click)="updateImage()" label="Ok" styleClass="p-button-text"></p-button>
+        <div class="grid">
+            <div class="col">
+                <button pButton pRipple icon="pi pi-user-add" type="button" label="Submit" (click)="updateImage()"></button>
+            </div>
+            <div class="col">
+                <button pButton pRipple type="button" icon="pi pi-envelope" label="Send Request to Admin" class="p-button-danger"></button>
+            </div>
+        </div>
     </ng-template>
 </p-table>

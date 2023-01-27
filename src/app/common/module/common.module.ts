@@ -3,13 +3,15 @@ import { CommonModule } from '@angular/common';
 import { PrimeNGModule } from 'src/app/common/module/primeng.module';
 import { MenuBarComponent } from '../components/menu/menu-bar.component';
 import { ProfileComponent } from '../components/profile/profile.component';
+import { NotificationComponent } from '../components/notification/notification.component';
 
 
 
 @NgModule({
   declarations: [
     MenuBarComponent,
-    ProfileComponent
+    ProfileComponent,
+    NotificationComponent
   ],
   imports: [
     CommonModule,
@@ -17,7 +19,8 @@ import { ProfileComponent } from '../components/profile/profile.component';
   ],
   exports:[
     MenuBarComponent,
-    ProfileComponent
+    ProfileComponent,
+    NotificationComponent
   ]
 })
 export class SharedModule { }
