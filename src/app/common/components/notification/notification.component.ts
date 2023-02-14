@@ -4,6 +4,7 @@ import { LazyLoadEvent, MessageService } from 'primeng/api';
 import { Notification } from 'src/app/common/components/notification/notification';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
+import { SignalrService } from '../../services/signalr.service';
 
 @Component({
     selector: 'notification',
@@ -23,10 +24,14 @@ export class NotificationComponent implements OnInit{
     constructor(private notificationService:NotificationService,
         private authService:AuthService
         ,private router:Router
-        ,private messageService:MessageService){  
+        ,private messageService:MessageService
+        ,public signalRService: SignalrService){  
     }
 
     ngOnInit(): void {
+
+        this.signalRService.startConnection();
+        this.signalRService.addNotificationCountListener();
 
         let user = this.authService.getUserInformation();
         if(user !== null){
@@ -36,13 +41,16 @@ export class NotificationComponent implements OnInit{
 
             this.notificationService.getNotificationCount(this.userId).subscribe({
                 next: result => {
-                    this.newNotificationCount = result.toString();
+                    //this.newNotificationCount = result.toString();
+                    console.log(result);
                 },
                 error: err => {
                     console.log('error in fetching notification count');
                 }
             });
         }
+
+        
         
     }
 
