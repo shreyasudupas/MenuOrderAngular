@@ -32,6 +32,7 @@ import {ConfirmPopupModule} from 'primeng/confirmpopup';
 import {StepsModule} from 'primeng/steps';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
+import {VirtualScrollerModule} from 'primeng/virtualscroller';
 
 @NgModule({
     imports:[ButtonModule,
@@ -67,7 +68,8 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
         ConfirmPopupModule,
         StepsModule,
         InputTextareaModule,
-        OverlayPanelModule
+        OverlayPanelModule,
+        VirtualScrollerModule
     ],
     exports:[ButtonModule,
         TabMenuModule,
@@ -102,7 +104,8 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
         ConfirmPopupModule,
         StepsModule,
         InputTextareaModule,
-        OverlayPanelModule
+        OverlayPanelModule,
+        VirtualScrollerModule
     ]
 })
 

@@ -1,0 +1,11 @@
+:host ::ng-deep .p-tabview-panels{
+    padding: 0px !important; 
+}
+
+.product-item{
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    width: 100%;
+    flex-wrap: nowrap;
+}

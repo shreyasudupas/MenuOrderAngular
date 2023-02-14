@@ -1,15 +1,38 @@
-<p-button icon="pi pi-bell" badge="8" styleClass="p-button" (click)="op.toggle($event)"></p-button>
+<p-toast></p-toast>
+<!-- <p-button icon="pi pi-bell" badge="newNotificationCount" styleClass="p-button" (click)="op.toggle($event)"></p-button> -->
+<i class="pi pi-bell mr-4 p-text-secondary" pBadge style="font-size: 2rem" [value]="newNotificationCount" severity="danger" (click)="op.toggle($event)"></i>
 
-<p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '450px'}">
+<p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '720px'}">
     <ng-template pTemplate>
-        <h4>Notification</h4>
-        <p-tabView>
-            <p-tabPanel header="New">
-               Content 1
-            </p-tabPanel>
-            <p-tabPanel header="Old">
-                Content 2
-            </p-tabPanel>
-        </p-tabView>
+        <h4>Notifications</h4>
+        <!--VirtualScrollItem is a Height of a row to use in calculations of virtual scrolling. -->
+        <p-table [value]="notificationsList" selectionMode="multiple" [loading]="loading"
+            [(selection)]="selectedNotification" dataKey="id" [tableStyle]="{'min-width': '10rem'}" [scrollable]="true"
+            scrollHeight="250px" [rows]="5" [lazy]="true" [virtualScroll]="true" [virtualScrollItemSize]="50"
+            (onLazyLoad)="loadNotifcationLazy($event)" (onRowUnselect)="onNotificationUnselect($event)">
+            <ng-template pTemplate="body" let-notification let-rowIndex="rowIndex">
+                <tr style="height:26px" [pSelectableRow]="notification" [pSelectableRowIndex]="rowIndex"
+                    [pSelectableRowDisabled]="notification.read">
+                    <td>
+                        <div *ngIf="notification.link !== ''; else basicNotification">
+                            <div class="grid grid-nogutter">
+                                <div class="col-10 grid-nogutter">
+                                    {{notification.description}}
+                                </div>
+                                <div class="col-2 grid-nogutter">
+                                    <button type="button" class="btn btn-primary btn-sm"
+                                        (click)="goToPage(notification)">Go To link</button>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-template #basicNotification>
+                            {{notification.description}}
+                        </ng-template>
+                        <div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
     </ng-template>
 </p-overlayPanel>
