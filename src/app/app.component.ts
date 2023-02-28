@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './common/services/auth.service';
+import { SignalrService } from './common/services/signalr.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ export class AppComponent implements OnInit{
   isUserAuthenticated:boolean = false;
   title="app";
 
-  constructor(public _authService: AuthService,public route:Router) {
+  constructor(public _authService: AuthService,public route:Router,public signalrService:SignalrService) {
     
     this._authService.loginChanged.subscribe(userAuthenticated => {
       this.isUserAuthenticated = userAuthenticated;
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit{
   }
 
   public logout = () => {
+    this.signalrService.disconnectNotification();
     this._authService.logout();
   }
 

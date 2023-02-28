@@ -8,6 +8,8 @@ import { CommonDataSharingService } from 'src/app/common/services/common-datasha
 import { MenuService } from 'src/app/common/services/menu.service';
 import { environment } from 'src/environments/environment';
 import { ImageData } from 'src/app/admin/components/menu-image-details/image-response';
+import { Notification } from 'src/app/common/components/notification/notification';
+import { AuthService } from 'src/app/common/services/auth.service';
 
 @Component({
     selector: 'image-selection-list',
@@ -29,7 +31,8 @@ export class ImmageSelectionListComponent extends BaseComponent<ImageData> imple
         private activatedRoute:ActivatedRoute,
         private router:Router,
         private fb: FormBuilder,
-        messageService: MessageService){
+        messageService: MessageService,
+        private authService:AuthService){
             super(menuService,httpclient,commonBroadcastService,messageService)
     }
 
@@ -80,6 +83,30 @@ export class ImmageSelectionListComponent extends BaseComponent<ImageData> imple
 
         this.sendImageSelection.emit(this.selectedItem);
         this.sendDialogClose.emit(false);
+    }
+
+    callNotificationToAdmin = () => {
+        let body = {
+            id:'',
+            title:'Photo Request',
+            description: 'Vendor has requested for food item ' + this.itemName,
+            userId: this.authService.getUserInformation().profile["userId"],
+            role: "admin",
+            recordedTimeStamp: Date.now,
+            link: 'admin/image-list',
+            sendAll:true,
+            read:false
+        };
+        let url = environment.notification;
+
+        this.httpclient.post(url,body).subscribe({
+            next: result => {
+                console.log('Result Notification:' + result);
+            },
+            error: err => {
+                console.log(err);
+            }
+        });
     }
     
 }

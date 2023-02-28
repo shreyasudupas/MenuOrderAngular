@@ -1,6 +1,6 @@
 <p-toast></p-toast>
 <!-- <p-button icon="pi pi-bell" badge="newNotificationCount" styleClass="p-button" (click)="op.toggle($event)"></p-button> -->
-<i class="pi pi-bell mr-4 p-text-secondary" pBadge style="font-size: 2rem" [value]="newNotificationCount" severity="danger" (click)="op.toggle($event)"></i>
+<i class="pi pi-bell mr-4 p-text-secondary" pBadge style="font-size: 2rem" [value]="signalRService.data" severity="danger" (click)="op.toggle($event)"></i>
 
 <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '720px'}">
     <ng-template pTemplate>

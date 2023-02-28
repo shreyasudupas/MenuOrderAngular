@@ -19,7 +19,6 @@ export class NotificationComponent implements OnInit{
     loading:boolean=false;
     userId:string='';
     @ViewChild('op') overlayId;
-    newNotificationCount:any;
 
     constructor(private notificationService:NotificationService,
         private authService:AuthService
@@ -42,7 +41,8 @@ export class NotificationComponent implements OnInit{
             this.notificationService.getNotificationCount(this.userId).subscribe({
                 next: result => {
                     //this.newNotificationCount = result.toString();
-                    console.log(result);
+                    this.signalRService.data = result;
+                    //console.log(result);
                 },
                 error: err => {
                     console.log('error in fetching notification count');
@@ -120,5 +120,9 @@ export class NotificationComponent implements OnInit{
                 console.log(error);
             }
         })
+    }
+
+    ngOnDestroy(){
+        this.signalRService.disconnectNotification();
     }
 }
