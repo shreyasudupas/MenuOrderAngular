@@ -45,7 +45,7 @@ export class SignalrService {
       });
     }
 
-    public disconnectNotification = () => {
-      this.hubConnection.off("SendUserNotification");
+    public disconnectHubConnection = () => {
+      this.hubConnection.stop().then(()=>console.log('connection closed')).catch(err=>console.log(err));
     }
 }

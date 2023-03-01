@@ -30,7 +30,7 @@ export class AppComponent implements OnInit{
   }
 
   public logout = () => {
-    this.signalrService.disconnectNotification();
+    this.signalrService.disconnectHubConnection();
     this._authService.logout();
   }
 

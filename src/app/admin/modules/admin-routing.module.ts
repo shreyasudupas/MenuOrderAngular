@@ -12,15 +12,17 @@ import { MenuImageDetailsDashboardComponent } from '../components/menu-image-det
 import { MenuImageListComponent } from '../components/menu-image-list/menu-image-list.component';
 import { VendorDetailComponent } from '../components/vendor-details/vendor-detail.component';
 import { VendorComponent } from '../components/vendor/vendor.component';
-import { AdminGaurd } from '../gaurds/admin-gaurd';
+import { AdminAuthGaurd } from 'src/app/common/gaurds/admin-routing-gaurd';
+import { Role } from 'src/app/common/models/role';
+import { ForbiddenComponent } from 'src/app/common/components/forbidden/forbidden.component';
 
 const routes: Routes = [
-  { path:'', component: AdminDashboardComponent,canActivate:[AdminGaurd], data: { roles: ['admin'] }, children: [
+  { path:'', component: AdminDashboardComponent,canActivate:[AdminAuthGaurd], data: { roles: [Role.Admin] }, children: [
     {
       path: 'home', component: HomeComponent
     },
     {
-      path:'vendor', component: VendorComponent
+      path:'vendor', component: VendorComponent , canActivate:[AdminAuthGaurd]
     },
     {
       path:'vendor-detail/:vendorId', component: VendorDetailComponent
@@ -44,7 +46,7 @@ const routes: Routes = [
       path:'vendor-detail/:vendorId/menu-details/:menuDetailsId', component: MenuDetailsComponent
     },
     {
-      path:'image-menu-list', component: MenuImageListComponent
+      path:'image-menu-list', component: MenuImageListComponent, canActivate: [AdminAuthGaurd]
     },
     {
       path:'image-menu-details/:menuImageId', component: MenuImageDetailsDashboardComponent
@@ -54,7 +56,10 @@ const routes: Routes = [
       redirectTo:'home',
       pathMatch:'full' 
     }
-]}
+  ]},
+  {
+    path: 'forbidden' , component: ForbiddenComponent
+  }
 ];
 
 @NgModule({

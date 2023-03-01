@@ -123,6 +123,6 @@ export class NotificationComponent implements OnInit{
     }
 
     ngOnDestroy(){
-        this.signalRService.disconnectNotification();
+        this.signalRService.disconnectHubConnection();
     }
 }
