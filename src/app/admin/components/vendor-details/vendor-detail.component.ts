@@ -36,7 +36,7 @@ areaDropDownListValues:any[]=[];
 cuisineDropDownList:CuisineType[]=[];
 currentState:State={ id:0,name:'',cities:[] };
 vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendorName:'',vendorDescription:'',area:'',city:'',categories:[],
-    closeTime: '',openTime: '',coordinates:{ latitude:0.0,longitude:0.0 },rating:0,cuisineType:[],state :'' };
+    closeTime: '',openTime: '',coordinates:{ latitude:0.0,longitude:0.0 },rating:0,cuisineType:[],state :'',vendorEmail:'' };
 categoryTab:boolean = true;
 menuDetailTab:boolean = true;
 previousUrl: string='';
@@ -83,6 +83,7 @@ currentUrl: string;
             id: [''],
             vendorName: ['',Validators.required],
             vendorDescription: ['',Validators.required],
+            vendorEmail:['',Validators.required],
             cuisineType: [ [] ],
             state: ['',Validators.required],
             city: ['',Validators.required],
@@ -210,12 +211,13 @@ currentUrl: string;
                     active: vendorByIdResponse.active,addressLine1: vendorByIdResponse.addressLine1, addressLine2: vendorByIdResponse.addressLine2,area: vendorByIdResponse.area,
                     state: vendorByIdResponse.state, city: vendorByIdResponse.city, closeTime: vendorByIdResponse.closeTime,coordinates: vendorByIdResponse.coordinates,
                     openTime: vendorByIdResponse.openTime, rating: vendorByIdResponse.rating, cuisineType: vendorByIdResponse.cuisineType
-                    , vendorDescription: vendorByIdResponse.vendorDescription }
+                    , vendorDescription: vendorByIdResponse.vendorDescription,vendorEmail: vendorByIdResponse.vendorEmail }
 
                 this.vendorDetailForm.setValue({
                     id: this.vendorDetail.id,
                     vendorName: this.vendorDetail.vendorName,
                     vendorDescription: this.vendorDetail.vendorDescription,
+                    vendorEmail: this.vendorDetail.vendorEmail,
                     cuisineType: this.vendorDetail.cuisineType,
                     state: this.vendorDetail.state,
                     city: this.vendorDetail.city,

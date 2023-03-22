@@ -4,6 +4,7 @@ export interface Vendor{
     id:string;
     vendorName:string;
     vendorDescription:string;
+    vendorEmail:string;
     categories:Category[];
     cuisineType:string[];
     rating:number;

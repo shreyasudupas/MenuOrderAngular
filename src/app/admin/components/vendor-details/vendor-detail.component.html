@@ -20,6 +20,16 @@
                         </div>
                         <div class="field col-12">
                             <span class="p-float-label field">
+                                <input id="vendorEmail" type="email" formControlName="vendorEmail" pInputText
+                                    class="w-full">
+                                <label for="vendorEmail">Vendor Email</label>
+                            </span>
+                            <div *ngIf="formControlValidation('vendorEmail')" class="ng-invalid ng-dirty">
+                                Please provide a email.
+                            </div>
+                        </div>
+                        <div class="field col-12">
+                            <span class="p-float-label field">
                                 <input id="vendorDescription" type="text" formControlName="vendorDescription" pInputText
                                     class="w-full">
                                 <label for="vendorDescription">Vendor Description</label>

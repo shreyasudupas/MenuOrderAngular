@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
-import { AdminGaurd } from '../../common/gaurds/admin-gaurd';
 import { SharedModule } from 'src/app/common/module/common.module';
 import { AdminDashboardComponent } from '../components/admin-dashboard/admin-dashboard.component';
 import { HomeComponent } from '../components/home/admin-home.component';
@@ -23,6 +22,7 @@ import { MenuImageDetailsDashboardComponent } from '../components/menu-image-det
 import { MenuImageDetailsComponent } from '../components/menu-image-details/menu-image-details/menu-image-details.component';
 import { MenuImageUploadComponent } from '../components/menu-image-details/image-upload-details/menu-image-upload.component';
 import { ImmageSelectionListComponent } from '../components/image-selection-list/image-selection-list.component';
+import { AdminAuthGaurd } from 'src/app/common/gaurds/admin-routing-gaurd';
 
 
 @NgModule({
@@ -53,6 +53,6 @@ import { ImmageSelectionListComponent } from '../components/image-selection-list
     PrimeNGModule,
     ReactiveFormsModule
   ],
-  providers: [ AdminGaurd ]
+  providers: [ AdminAuthGaurd ]
 })
 export class AdminModule { }
