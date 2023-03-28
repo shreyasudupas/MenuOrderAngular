@@ -15,6 +15,7 @@ import { VendorComponent } from '../components/vendor/vendor.component';
 import { AdminAuthGaurd } from 'src/app/common/gaurds/admin-routing-gaurd';
 import { Role } from 'src/app/common/models/role';
 import { ForbiddenComponent } from 'src/app/common/components/forbidden/forbidden.component';
+import { InviteUserToVendorComponent } from '../components/invite-users-to-vendor/invite-user-vendor-component';
 
 const routes: Routes = [
   { path:'', component: AdminDashboardComponent,canActivate:[AdminAuthGaurd], data: { roles: [Role.Admin] }, children: [
@@ -50,6 +51,9 @@ const routes: Routes = [
     },
     {
       path:'image-menu-details/:menuImageId', component: MenuImageDetailsDashboardComponent
+    },
+    {
+      path: 'invite-user-to-vendor' , component: InviteUserToVendorComponent
     },
     { 
       path:'',

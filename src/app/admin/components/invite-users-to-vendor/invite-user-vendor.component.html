@@ -1,0 +1,34 @@
+<p-card header="Invite Users to Vendor">
+    
+    <form [formGroup]="registerUserForm" (ngSubmit)="onSubmitAdmin(registerUserForm)">
+        <div class="p-fluid formgrid grid">
+            <div class="field col-12">
+                <p-dropdown [options]="vendors" 
+                            formControlName="vendorName"
+                            placeholder="Select a Vendor" 
+                            optionLabel="label" 
+                            optionValue="value"
+                            [filter]="true"
+                             filterBy="label"
+                            [showClear]="true">
+    
+                </p-dropdown>
+                <div *ngIf="formControlValidation('vendorName')" class="ng-invalid ng-dirty">
+                    Please select a vendor name.
+                </div>
+            </div>
+            <div class="field col-12">
+                <span class="p-float-label field">
+                    <input id="float-input" type="email" 
+                            pInputText
+                            formControlName="email"> 
+                    <label for="float-input">Enter the email</label>
+                </span>
+                <div *ngIf="formControlValidation('email')" class="ng-invalid ng-dirty">
+                    Please provide a email.
+                </div>
+            </div>
+        </div>
+        <button pButton pRipple type="submit" label="Send Email"></button>
+    </form>
+</p-card>

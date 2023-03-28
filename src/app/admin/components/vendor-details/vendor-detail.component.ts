@@ -35,8 +35,8 @@ cityDropDownListValues:any[]=[];
 areaDropDownListValues:any[]=[];
 cuisineDropDownList:CuisineType[]=[];
 currentState:State={ id:0,name:'',cities:[] };
-vendorDetail:Vendor = { id:'',active:false,addressLine1:'',addressLine2:'',vendorName:'',vendorDescription:'',area:'',city:'',categories:[],
-    closeTime: '',openTime: '',coordinates:{ latitude:0.0,longitude:0.0 },rating:0,cuisineType:[],state :'',vendorEmail:'' };
+vendorDetail:Vendor = { id:'',vendorName:'',vendorDescription:'',vendorEmail:'',categories:[],cuisineType:[],rating:0,state:'',city:'',area:'',
+coordinates:null,addressLine1:'',addressLine2:'',openTime:'',closeTime:'',active:false,sendEmailNotification:false };
 categoryTab:boolean = true;
 menuDetailTab:boolean = true;
 previousUrl: string='';
@@ -362,5 +362,9 @@ currentUrl: string;
                 areas.forEach(a=> this.areaDropDownListValues.push({label:a.areaName,value:a.areaName}));
             }
         }
+    }
+
+    sendEmailNotification() {
+
     }
 }

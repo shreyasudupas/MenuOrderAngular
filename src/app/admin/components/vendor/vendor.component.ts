@@ -15,6 +15,7 @@ import { MessageService } from 'primeng/api';
 })
 
 export class VendorComponent extends BaseComponent<Vendor[]> implements OnInit{
+    activeList:any[];
 
     constructor(
         private menuService:MenuService,
@@ -44,6 +45,11 @@ export class VendorComponent extends BaseComponent<Vendor[]> implements OnInit{
                 this.vendorList = vendors
             }
         });
+
+        this.activeList = [
+            {label: 'True', value: 'true'},
+            {label: 'False', value: 'false'},
+        ]
     }
 
     editVendor(vendor:any){

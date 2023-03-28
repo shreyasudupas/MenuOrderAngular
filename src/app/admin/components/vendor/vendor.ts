@@ -17,6 +17,7 @@ export interface Vendor{
     openTime:string;
     closeTime:string;
     active:boolean;
+    sendEmailNotification:boolean;
 }
 
 export interface Coordinate{

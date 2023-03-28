@@ -38,7 +38,8 @@ export class MenuService{
 
             if (CurrentMenuId > -1) {
                 let currentMenuItem = menuTempList[findParentMenuListId].items[CurrentMenuId];
-                menuLists = menuLists.map(menu => menu.label == currentMenuItem.label ? { label: menu.label, icon: menu.icon, routerLink: menu.routerLink, visible: true } : { ...menu });
+                menuLists = menuLists.map(menu => menu.label == currentMenuItem.label ? 
+                    { label: menu.label, icon: menu.icon, routerLink: menu.routerLink, visible: true } : { ...menu });
 
 
                 this.menu = {
@@ -200,6 +201,13 @@ export class MenuService{
                         visible: false,
                         componentName:'CuisineDetailsComponent',
                         routerLink:null
+                    },
+                    {
+                        label: 'Invite User To Vendor',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink:['./invite-user-to-vendor'],
+                        componentName:'InviteUserToVendorComponent',
+                        visible:true
                     }
                 ]
             }

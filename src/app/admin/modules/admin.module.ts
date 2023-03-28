@@ -23,6 +23,7 @@ import { MenuImageDetailsComponent } from '../components/menu-image-details/menu
 import { MenuImageUploadComponent } from '../components/menu-image-details/image-upload-details/menu-image-upload.component';
 import { ImmageSelectionListComponent } from '../components/image-selection-list/image-selection-list.component';
 import { AdminAuthGaurd } from 'src/app/common/gaurds/admin-routing-gaurd';
+import { InviteUserToVendorComponent } from '../components/invite-users-to-vendor/invite-user-vendor-component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { AdminAuthGaurd } from 'src/app/common/gaurds/admin-routing-gaurd';
     MenuImageDetailsDashboardComponent,
     MenuImageDetailsComponent,
     MenuImageUploadComponent,
-    ImmageSelectionListComponent
+    ImmageSelectionListComponent,
+    InviteUserToVendorComponent
   ],
   imports: [
     CommonModule,
