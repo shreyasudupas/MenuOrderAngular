@@ -1,0 +1,33 @@
+<p-toast></p-toast>
+
+<div class="grid">
+    <div class="col-12">
+        <p-toolbar>
+            <div class="p-toolbar-group-left">
+                <button pButton pRipple type="button" label="Add Users" icon="pi pi-user-plus"></button>
+            </div>
+        </p-toolbar>
+    </div>
+</div>
+<p-table [value]="vendorMapping" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Username</th>
+            <th>Verfication Notification</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-vendorMap>
+        <tr>
+            <td>{{vendorMap.username}}</td>
+            <td>
+                <div *ngIf="vendorMap.enabled == false;else showEnable">
+                    <button pButton pRipple type="button" label="Send Verfication Notification" (click)="updateVendorUserIdMapping(vendorMap)"></button>
+                </div>
+                <ng-template #showEnable>
+                    {{vendorMap.enabled}}
+                </ng-template>
+            </td>
+            <td></td>
+        </tr>
+    </ng-template>
+</p-table>

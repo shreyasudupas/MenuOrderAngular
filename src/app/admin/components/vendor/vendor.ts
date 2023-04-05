@@ -4,7 +4,6 @@ export interface Vendor{
     id:string;
     vendorName:string;
     vendorDescription:string;
-    vendorEmail:string;
     categories:Category[];
     cuisineType:string[];
     rating:number;
@@ -17,7 +16,6 @@ export interface Vendor{
     openTime:string;
     closeTime:string;
     active:boolean;
-    sendEmailNotification:boolean;
 }
 
 export interface Coordinate{

@@ -1,17 +1,17 @@
-import { DatePipe, Time } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { BaseComponent } from "src/app/common/components/base/base.component";
+import { EmailTypeEnum } from "src/app/common/enums/emailenum";
 import { RequestResource, ResourceServiceForkRequest } from "src/app/common/models/resourceServiceForkRequest";
 import { State } from "src/app/common/models/state";
+import { WelcomeVendorModel } from "src/app/common/models/welcomeVendorModel";
 import { CommonDataSharingService } from "src/app/common/services/common-datasharing.service";
 import { MenuService } from "src/app/common/services/menu.service";
 import { environment } from "src/environments/environment";
 import { CuisineType } from "../cuisine-type-details/cuisine-type";
-import { MenuDetails } from "../menu-details/menu-details";
 import { Vendor } from "../vendor/vendor";
 import { RegisteredLocationReponse } from "./registerLocation";
 
@@ -35,8 +35,8 @@ cityDropDownListValues:any[]=[];
 areaDropDownListValues:any[]=[];
 cuisineDropDownList:CuisineType[]=[];
 currentState:State={ id:0,name:'',cities:[] };
-vendorDetail:Vendor = { id:'',vendorName:'',vendorDescription:'',vendorEmail:'',categories:[],cuisineType:[],rating:0,state:'',city:'',area:'',
-coordinates:null,addressLine1:'',addressLine2:'',openTime:'',closeTime:'',active:false,sendEmailNotification:false };
+vendorDetail:Vendor = { id:'',vendorName:'',vendorDescription:'',categories:[],cuisineType:[],rating:0,state:'',city:'',area:'',
+coordinates:null,addressLine1:'',addressLine2:'',openTime:'',closeTime:'',active:false };
 categoryTab:boolean = true;
 menuDetailTab:boolean = true;
 previousUrl: string='';
@@ -83,7 +83,6 @@ currentUrl: string;
             id: [''],
             vendorName: ['',Validators.required],
             vendorDescription: ['',Validators.required],
-            vendorEmail:['',Validators.required],
             cuisineType: [ [] ],
             state: ['',Validators.required],
             city: ['',Validators.required],
@@ -211,13 +210,12 @@ currentUrl: string;
                     active: vendorByIdResponse.active,addressLine1: vendorByIdResponse.addressLine1, addressLine2: vendorByIdResponse.addressLine2,area: vendorByIdResponse.area,
                     state: vendorByIdResponse.state, city: vendorByIdResponse.city, closeTime: vendorByIdResponse.closeTime,coordinates: vendorByIdResponse.coordinates,
                     openTime: vendorByIdResponse.openTime, rating: vendorByIdResponse.rating, cuisineType: vendorByIdResponse.cuisineType
-                    , vendorDescription: vendorByIdResponse.vendorDescription,vendorEmail: vendorByIdResponse.vendorEmail }
+                    , vendorDescription: vendorByIdResponse.vendorDescription }
 
                 this.vendorDetailForm.setValue({
                     id: this.vendorDetail.id,
                     vendorName: this.vendorDetail.vendorName,
                     vendorDescription: this.vendorDetail.vendorDescription,
-                    vendorEmail: this.vendorDetail.vendorEmail,
                     cuisineType: this.vendorDetail.cuisineType,
                     state: this.vendorDetail.state,
                     city: this.vendorDetail.city,
@@ -309,27 +307,40 @@ currentUrl: string;
                 let formValue = forms.value;
                 formValue = {...formValue, openTime: formValue.openTime.toTimeString().split(' ')[0],closeTime: formValue.closeTime.toTimeString().split(' ')[0]}
 
+                this.vendorDetail = {
+                    ...this.vendorDetail, categories: formValue.categories, id: formValue.id, vendorName: formValue.vendorName,
+                    active: formValue.active, addressLine1: formValue.addressLine1, addressLine2: formValue.addressLine2, area: formValue.area,
+                    state: formValue.state, city: formValue.city, closeTime: formValue.closeTime, coordinates: formValue.coordinates,
+                    openTime: formValue.openTime, rating: formValue.rating, cuisineType: formValue.cuisineType
+                    , vendorDescription: formValue.vendorDescription
+                };
+
                 let body = {
                     VendorDetail: formValue
                 };
 
-                this.UpdateItem(body).subscribe({
-                    next: result => {
-                        //debugger;
-                        if (result !== null) {
-                            this.showInfo('Vendor Updated Successfully');
-                        } else {
-                            this.showError('Error in Updating the Vendor');
-                        }
-                    },
-                    error: error => {
-                        console.log(error);
-
-                        this.showError('Error in Updating VendorDetail');
-                    }
-                });
+                this.updateVendor(body);
             }
         }
+    }
+
+    updateVendor(body:any){
+
+        this.UpdateItem(body).subscribe({
+            next: result => {
+                //debugger;
+                if (result !== null) {
+                    this.showInfo('Vendor Updated Successfully');
+                } else {
+                    this.showError('Error in Updating the Vendor');
+                }
+            },
+            error: error => {
+                console.log(error);
+
+                this.showError('Error in Updating VendorDetail');
+            }
+        });
     }
 
     getCities = (event:any) => {
@@ -364,7 +375,5 @@ currentUrl: string;
         }
     }
 
-    sendEmailNotification() {
-
-    }
+    
 }

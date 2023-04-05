@@ -20,16 +20,6 @@
                         </div>
                         <div class="field col-12">
                             <span class="p-float-label field">
-                                <input id="vendorEmail" type="email" formControlName="vendorEmail" pInputText
-                                    class="w-full">
-                                <label for="vendorEmail">Vendor Email</label>
-                            </span>
-                            <div *ngIf="formControlValidation('vendorEmail')" class="ng-invalid ng-dirty">
-                                Please provide a email.
-                            </div>
-                        </div>
-                        <div class="field col-12">
-                            <span class="p-float-label field">
                                 <input id="vendorDescription" type="text" formControlName="vendorDescription" pInputText
                                     class="w-full">
                                 <label for="vendorDescription">Vendor Description</label>
@@ -133,14 +123,17 @@
                         <button pButton pRipple type="button" label="Back"
                             class="p-button-rounded p-button-secondary w-full" (click)="goBackToVendor()"></button>
                     </div>
-                    <div class="col-12">
-                        <p-button label="Notifiy Email to User" icon="pi pi-calendar" (click)="sendEmailNotification()"></p-button>
-                    </div>
                 </div>
 
                 <p-scrollTop target="parent" styleClass="custom-scrolltop" [threshold]="100"
                     icon="pi pi-arrow-up"></p-scrollTop>
             </p-scrollPanel>
+        </p-tabPanel>
+        <p-tabPanel header="Add Users">
+            <div *ngIf="vendorDetail.id !== undefined && vendorDetail.id != '' ">
+                <vendor-user-list [vendorId]="vendorDetail.id"
+                                  [vendorName]="vendorDetail.vendorName"></vendor-user-list>
+            </div>
         </p-tabPanel>
         <p-tabPanel header="Category Details" [disabled]="categoryTab">
             <category-list [categories]="vendorDetail.categories" [vendorId]="vendorId"></category-list>
