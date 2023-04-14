@@ -17,6 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { GlobalErrorHandler } from './common/services/global-error.service';
 import { AuthInterceptor } from './common/interceptor/auth.interceptor';
 import { NotificationService } from './common/services/notification.service';
+import { EncryptDecryptService } from './common/services/encryptDecrypt.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { NotificationService } from './common/services/notification.service';
   providers: [
     { provide: ErrorHandler,useClass:GlobalErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    NotificationService
+    NotificationService,
+    EncryptDecryptService
   ],
   bootstrap: [AppComponent]
 })

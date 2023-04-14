@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { BaseComponent } from 'src/app/common/components/base/base.component';
@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { VendorUserIdMapping } from './vendor-user-mapping';
 import { WelcomeVendorModel } from 'src/app/common/models/welcomeVendorModel';
 import { EmailTypeEnum } from 'src/app/common/enums/emailenum';
+import { EncryptDecryptService } from 'src/app/common/services/encryptDecrypt.service';
 
 @Component({
     selector: 'vendor-user-list',
@@ -21,6 +22,9 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
     @Input() vendorId:string;
     @Input() vendorName:string;
     vendorMapping: VendorUserIdMapping[]=[];
+    displayAddUserToVendor:boolean;
+    inviteForm:FormGroup;
+    runProgressSpinner:boolean;
 
     constructor(
         public menuService:MenuService,
@@ -29,7 +33,8 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
         private activatedRoute:ActivatedRoute,
         private router:Router,
         private fb: FormBuilder,
-        messageService: MessageService){
+        messageService: MessageService,
+        private encryptDecryptService:EncryptDecryptService){
             super(menuService,httpclient,commonBroadcastService,messageService)
     }
 
@@ -37,6 +42,10 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
 
         if(this.vendorId !== undefined){
             this.listAllVendorUserMapping();
+
+            this.inviteForm = this.fb.group({
+                email: ['',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]]
+            });
         }
     }
 
@@ -100,6 +109,50 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
                 console.log('Error when sending Verfication mail API, error: '+  err);
             }
         })
+    }
+
+    addUserDialog(){
+        this.displayAddUserToVendor = true;
+    }
+
+    inviteUser(inviteForm:FormGroup){
+    this.runProgressSpinner = true;
+
+        if(this.inviteForm.valid)
+        {
+            let url = environment.idsConfig.vendormail + 'send-register-vendor';
+            let body = {
+                subject:'Registeration for Vendor MenuApp',
+                templateType: EmailTypeEnum.RegisterVendor,
+                vendorName: this.vendorName,
+                vendorId: this.encryptDecryptService.encryptUsingAES256(this.vendorId),
+                toAddress:this.inviteForm.controls['email'].value
+            };
+
+            this.httpclient.post(url,body).subscribe({
+                next: result => {
+                    if(result == true){
+                        this.showInfo('Mail sent successfully');
+
+                        this.displayAddUserToVendor=false;
+                        this.runProgressSpinner= false;
+                        this.inviteForm.setValue({
+                            email:''
+                        });
+                    }else{
+                        this.showError('Error is sending the mail');
+                        this.runProgressSpinner= false;
+                    }
+                }
+            });
+        }
+    }
+
+    callHide(){
+        //console.log('Hide called');
+        this.inviteForm.setValue({
+            email:''
+        });
     }
     
 }

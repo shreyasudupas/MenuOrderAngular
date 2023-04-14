@@ -27,5 +27,7 @@ export const environment = {
     vendorMenu:"https://localhost:5003/api/vendorMenus",
     imageMenu: "https://localhost:5003/api/menuimage"
   },
-  notification: 'https://localhost:5004/api/notification'
+  notification: 'https://localhost:5004/api/notification',
+  EncryptKey:'1203199320052021',
+  EncryptIV: '1203199320052021'
 };

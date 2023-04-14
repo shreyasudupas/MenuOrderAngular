@@ -24,6 +24,7 @@
     "@popperjs/core": "^2.10.2",
     "apollo-angular": "^4.1.1",
     "bootstrap": "^5.2.0",
+    "crypto-js": "^4.1.1",
     "graphql": "^16.6.0",
     "oidc-client": "^1.11.5",
     "primeflex": "^3.3.0",
