@@ -16,19 +16,13 @@ export class SigninRedirectCallbackComponent implements OnInit {
 
         this._authService.finishLogin().then(() => {
             //debugger
-            this._authService.CheckIfUserIsAppUser()
-            .then( res => {
-                if(res){
-                    this._router.navigate(['/user'],{ replaceUrl:true });
-                }
-            });
 
-            this._authService.CheckIfAdmin()
-            .then( res => {
-                if(res){
-                    this._router.navigate(['/admin'],{ replaceUrl:true });
-                }
-            });
-        })
+            let role = this._authService.GetUserRole();
+            let url = '/' + role;
+
+            this._router.navigate([url],{ replaceUrl: true});
+        });
+
+        
     }
 }

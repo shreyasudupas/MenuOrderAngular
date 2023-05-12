@@ -45,4 +45,16 @@ export class UserDataSharingService{
   }
 
   ///////////////////////////////////////////////////////
+  // getting vendor id
+  private globalVendorId = new BehaviorSubject<string>('');
+
+  updateVendorId(vendorId:string){
+    this.globalVendorId.next(vendorId);
+  }
+
+  getVendorId(){
+    return this.globalVendorId.asObservable();
+  }
+
+  //////////////////////////////////////////////////////
 }

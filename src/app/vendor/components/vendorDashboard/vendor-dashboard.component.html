@@ -1,0 +1,24 @@
+<!-- <h2>Welocome to the Vendor Page: {{vendorId}}</h2> -->
+<div class="p-fluid grid grid-nogutter">
+    <div class="col-2">
+        <img src="assets/Logo/MenuLogo1.png" height="70px" width="150px" alt="MenuLogo" class="Logo" />
+    </div>
+    <div class="col-8">
+        <app-menu-bar></app-menu-bar>
+    </div>
+    <div class="col-2">
+      <div class="col-8">
+        <!-- <notification></notification> -->
+      </div>
+    </div>
+    <div class="col-2">
+      <app-profile></app-profile>
+    </div>
+    <div class="col-9">
+        <div class="grid">
+            <div class="col-12 grid-noglutter p-3">
+              <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

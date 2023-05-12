@@ -210,6 +210,25 @@ export class MenuService{
                         visible:true
                     }
                 ]
+            },
+            {
+                parent :'vendor',
+                items : [
+                    {
+                        label: 'Home',
+                        icon: 'pi pi-fw pi-home',
+                        routerLink: ['./home'],
+                        componentName:'VendorHomeComponent',
+                        visible:true
+                    },
+                    {
+                        label: 'VendorDetail',
+                        icon: 'pi pi-fw pi-calendar',
+                        visible: true,
+                        componentName:'VendorDetailComponent',
+                        routerLink:['./Vendor']
+                    }
+                ]
             }
         ]; 
 

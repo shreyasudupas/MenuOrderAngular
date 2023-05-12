@@ -1,29 +1,31 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn:'root'
 })
 
-export class AdminAuthGaurd implements CanActivate{
-
+export class VendorAuthGaurd implements CanActivate{
+    
     constructor(public authService:AuthService,
         private router: Router,){}
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){
         
-        //debugger;
         const roles = route.data['roles'];
 
         if(this.checkIfUserIsAuthenticated()){
-            if(this.checkIfUserIsAdmin(roles)){
+            if(this.checkIfUserIsvendor(roles)){
                 return true;
             }else{
                 return false;
-            }
+            }           
         }
-        return false;
+        else{
+            return false;
+        }
     }
 
     async checkIfUserIsAuthenticated(){
@@ -37,7 +39,8 @@ export class AdminAuthGaurd implements CanActivate{
         return false;
     }
 
-    checkIfUserIsAdmin(role:string){
+    checkIfUserIsvendor(role:string){
+
         const userRole = this.authService.GetUserRole();
         if( role && role.indexOf(userRole) === -1){
             this.router.navigate(['forbidden']);
@@ -46,4 +49,5 @@ export class AdminAuthGaurd implements CanActivate{
             return true;
         }
     }
+
 }

@@ -101,5 +101,9 @@ export class AuthService {
       this._user = null;
       return this._userManager.signoutRedirectCallback();
     }
+
+    public GetVendorId(){
+      return this._user.profile['vendorId'];
+    }
   
 }
