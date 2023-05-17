@@ -25,9 +25,9 @@ export class BaseComponent<T> extends ResourceService<T>{
         
     }
 
-    public InitilizeMenu(){
+    public async InitilizeMenu(){
         //get menu list
-        this.activeMenuList = this._menuService.getActiveMenuItemInTheList(this.componentName);
+        this.activeMenuList = await this._menuService.getActiveMenuItemInTheList(this.componentName);
 
         //send updated list to component
         this._commonBroadcastService.sendUpdatedMenuList(this.activeMenuList);

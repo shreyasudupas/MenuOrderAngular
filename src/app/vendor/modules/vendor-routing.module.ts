@@ -4,11 +4,15 @@ import { VendorDashboardComponent } from "../components/vendorDashboard/vendor-d
 import { VendorAuthGaurd } from "src/app/common/gaurds/vendor-routing-gaurd";
 import { Role } from "src/app/common/models/role";
 import { VendorHomeComponent } from "../components/vendorHome/vendor-home.component";
+import { VendorDetailComponent } from "src/app/admin/components/vendor-details/vendor-detail.component";
 
 const routes:Routes = [
     { 
         path:'', component: VendorDashboardComponent, canActivate: [VendorAuthGaurd], data: { role:[ Role.Vendor ] } , children: [
             { path: 'home', component: VendorHomeComponent },
+            {
+                path:'vendor-detail/:vendorId', component: VendorDetailComponent
+            },
             { 
                 path:'',
                 redirectTo:'home',

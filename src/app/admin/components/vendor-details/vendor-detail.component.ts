@@ -1,19 +1,18 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { BaseComponent } from "src/app/common/components/base/base.component";
-import { EmailTypeEnum } from "src/app/common/enums/emailenum";
 import { RequestResource, ResourceServiceForkRequest } from "src/app/common/models/resourceServiceForkRequest";
 import { State } from "src/app/common/models/state";
-import { WelcomeVendorModel } from "src/app/common/models/welcomeVendorModel";
 import { CommonDataSharingService } from "src/app/common/services/common-datasharing.service";
 import { MenuService } from "src/app/common/services/menu.service";
 import { environment } from "src/environments/environment";
 import { CuisineType } from "../cuisine-type-details/cuisine-type";
 import { Vendor } from "../vendor/vendor";
 import { RegisteredLocationReponse } from "./registerLocation";
+import { NavigationService } from "src/app/common/services/navigation.service";
 
 @Component({
     selector: 'vendor-detail',
@@ -50,17 +49,9 @@ currentUrl: string;
         private activatedRoute:ActivatedRoute,
         private router:Router,
         private fb: FormBuilder,
-        messageService: MessageService){
+        messageService: MessageService,
+        public navigation:NavigationService){
             super(menuService,httpclient,commonBroadcastService,messageService)
-
-            this.currentUrl = this.router.url;
-            router.events.subscribe(event => {
-              if (event instanceof NavigationEnd) {        
-                this.previousUrl = this.currentUrl;
-                this.currentUrl = event.url;
-              };
-            });  
-            console.log(`Current Url: ${this.currentUrl} Previous Url: ${this.previousUrl}`)
     }
 
     ngOnInit(): void {
@@ -255,7 +246,8 @@ currentUrl: string;
     }
 
     goBackToVendor(){
-        this.router.navigateByUrl('/admin/vendor');
+        //this.router.navigateByUrl('/admin/vendor');
+        this.navigation.goBack();
     }
 
     onSubmitVendorDetails = (forms: FormGroup) => {

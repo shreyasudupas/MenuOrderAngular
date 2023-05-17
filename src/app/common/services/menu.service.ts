@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenuActiveItem, MenuNavigationModel } from '../models/menuModel';
 import { AuthService } from './auth.service';
+import { UserDataSharingService } from './user-datasharing.service';
+import { NavigationService } from './navigation.service';
 
 @Injectable({
     'providedIn':'root'
@@ -9,16 +11,18 @@ import { AuthService } from './auth.service';
 
 export class MenuService{
 
-    constructor(private authService:AuthService){
+    constructor(private authService:AuthService,
+        private userSharingService:UserDataSharingService,
+        public navigation:NavigationService){
     }
 
     menu!: MenuActiveItem;
 
-    getActiveMenuItemInTheList(componentName: any): MenuActiveItem {
+    async getActiveMenuItemInTheList(componentName: any): Promise<MenuActiveItem> {
 
         //compare the name with the first name
         var role = this.authService.GetUserRole();
-        let menuTempList: MenuNavigationModel[] = this.getMenuItemList();
+        let menuTempList: MenuNavigationModel[] = await this.getMenuItemList();
 
         var findParentMenuListId = menuTempList.findIndex(item => item.parent == role);
         let menuLists: MenuItem[] = menuTempList[findParentMenuListId].items.map((menuItem) => {
@@ -26,7 +30,8 @@ export class MenuService{
                 label: menuItem.label,
                 icon: menuItem.icon,
                 routerLink: menuItem.routerLink,
-                visible: menuItem.visible
+                visible: menuItem.visible,
+                command: ()=> this.navigation.startSaveHistory(menuItem.routeName)
             };
             return item;
         });
@@ -73,55 +78,57 @@ export class MenuService{
        };
     }
 
-    public getMenuItemList = ():MenuNavigationModel[] => {
+    public async getMenuItemList() :Promise<MenuNavigationModel[]> {
+        let vendorId = await this.vendorIdPromise();
+
         let menuList:MenuNavigationModel[] =  [
-            {
-                parent :'user',
-                items : [
-                    {
-                        label: 'Home',
-                        icon: 'pi pi-fw pi-home',
-                        routerLink: ['./home'],
-                        componentName:'HomeComponent',
-                        visible:true
-                    },
-                    {
-                        label: 'Vendor',
-                        icon: 'pi pi-fw pi-calendar',
-                        routerLink:['./vendorlist'],
-                        componentName:'VendorComponent',
-                        visible:true
-                    },
-                    {
-                        label: 'Menu', 
-                        icon: 'pi pi-fw pi-calendar',
-                        visible:false,
-                        componentName:'MenuComponent',
-                        routerLink:null
-                    },
-                    {
-                        label: 'Cart', 
-                        icon: 'pi pi-fw pi-calendar',
-                        visible:false,
-                        componentName:'MenuComponent',
-                        routerLink:null
-                    },
-                    {
-                        label: 'Profile', 
-                        icon: 'pi pi-fw pi-pencil',
-                        routerLink:['./user-profile'],
-                        componentName:'',
-                        visible:true
-                    },
-                    {
-                        label: 'Payment', 
-                        icon: 'pi pi-fw pi-file',
-                        routerLink:['./user-payment'],
-                        componentName:'MenuComponent',
-                        visible:false
-                    }
-                ]
-            },
+            // {
+            //     parent :'user',
+            //     items : [
+            //         {
+            //             label: 'Home',
+            //             icon: 'pi pi-fw pi-home',
+            //             routerLink: ['./home'],
+            //             componentName:'HomeComponent',
+            //             visible:true
+            //         },
+            //         {
+            //             label: 'Vendor',
+            //             icon: 'pi pi-fw pi-calendar',
+            //             routerLink:['./vendorlist'],
+            //             componentName:'VendorComponent',
+            //             visible:true
+            //         },
+            //         {
+            //             label: 'Menu', 
+            //             icon: 'pi pi-fw pi-calendar',
+            //             visible:false,
+            //             componentName:'MenuComponent',
+            //             routerLink:null
+            //         },
+            //         {
+            //             label: 'Cart', 
+            //             icon: 'pi pi-fw pi-calendar',
+            //             visible:false,
+            //             componentName:'MenuComponent',
+            //             routerLink:null
+            //         },
+            //         {
+            //             label: 'Profile', 
+            //             icon: 'pi pi-fw pi-pencil',
+            //             routerLink:['./user-profile'],
+            //             componentName:'',
+            //             visible:true
+            //         },
+            //         {
+            //             label: 'Payment', 
+            //             icon: 'pi pi-fw pi-file',
+            //             routerLink:['./user-payment'],
+            //             componentName:'MenuComponent',
+            //             visible:false
+            //         }
+            //     ]
+            // },
             {
                 parent :'admin',
                 items : [
@@ -130,84 +137,96 @@ export class MenuService{
                         icon: 'pi pi-fw pi-home',
                         routerLink: ['./home'],
                         componentName:'HomeComponent',
-                        visible:true
+                        visible:true,
+                        routeName:'admin/home'
                     },
                     {
                         label: 'Vendor',
                         icon: 'pi pi-fw pi-calendar',
                         routerLink:['./vendor'],
                         componentName:'VendorComponent',
-                        visible:true
+                        visible:true,
+                        routeName:'admin/vendor'
                     },
                     {
                         label: 'VendorDetail',
                         icon: 'pi pi-fw pi-calendar',
                         visible: false,
                         componentName:'VendorDetailComponent',
-                        routerLink:['']
+                        routerLink:[''],
+                        routeName:'/admin/vendor-details'
                     },
                     {
                         label: 'Menu Details',
                         icon: 'pi pi-fw pi-calendar',
                         visible: false,
                         componentName:'MenuDetailsComponent',
-                        routerLink:null
+                        routerLink:null,
+                        routeName:'admin/menu-details'
                     },
                     {
                         label: 'CategoryDetail',
                         icon: 'pi pi-fw pi-calendar',
                         visible:false,
                         componentName:'CategoryDetailComponent',
-                        routerLink:null
+                        routerLink:null,
+                        routeName:'admin/category-details'
                     },
                     {
                         label: 'Food Type',
                         icon: 'pi pi-fw pi-calendar',
                         routerLink:['./food-type-list'],
                         componentName:'FoodTypeComponent',
-                        visible:true
+                        visible:true,
+                        routeName:'admin/food-type-list'
                     },
                     {
                         label: 'Food Type Details',
                         icon: 'pi pi-fw pi-calendar',
                         visible: false,
                         componentName:'FoodTypeDetailsComponent',
-                        routerLink:null
+                        routerLink:null,
+                        routeName:'admin/food-types'
                     },
                     {
                         label: 'Cuisine List',
                         icon: 'pi pi-fw pi-calendar',
                         routerLink:['./cuisine-list'],
                         componentName:'CuisineListDetails',
-                        visible:true
+                        visible:true,
+                        routeName:'admin/cuisine-list'
                     },
                     {
                         label: 'Image List',
                         icon: 'pi pi-fw pi-calendar',
                         routerLink:['./image-menu-list'],
                         componentName:'MenuImageListComponent',
-                        visible:true
+                        visible:true,
+                        routeName:'admin/image-menu-list'
                     },
                     {
                         label: 'Image Details',
                         icon: 'pi pi-fw pi-calendar',
                         routerLink:null,
                         componentName:'MenuImageDetailsDashboardComponent',
-                        visible:false
+                        visible:false,
+                        routeName:'admin/menu-details'
                     },
                     {
                         label: 'Cuisine Type Details',
                         icon: 'pi pi-fw pi-calendar',
                         visible: false,
                         componentName:'CuisineDetailsComponent',
-                        routerLink:null
+                        routerLink:null,
+                        routeName:'admin/cuisine-details'
                     },
                     {
                         label: 'Invite User To Vendor',
                         icon: 'pi pi-fw pi-calendar',
                         routerLink:['./invite-user-to-vendor'],
                         componentName:'InviteUserToVendorComponent',
-                        visible:true
+                        visible:true,
+                        routeName:'admin/invite-user-to-vendor'
                     }
                 ]
             },
@@ -219,19 +238,44 @@ export class MenuService{
                         icon: 'pi pi-fw pi-home',
                         routerLink: ['./home'],
                         componentName:'VendorHomeComponent',
-                        visible:true
+                        visible:true,
+                        routeName:'vendor/home'
                     },
                     {
                         label: 'VendorDetail',
                         icon: 'pi pi-fw pi-calendar',
                         visible: true,
                         componentName:'VendorDetailComponent',
-                        routerLink:['./Vendor']
+                        routerLink:['./vendor-detail/' + vendorId ],
+                        routeName:'vendor/vendor-detail/' + vendorId
                     }
                 ]
             }
         ]; 
 
         return menuList;
+    }
+
+    public vendorIdPromise():Promise<string> {
+        return new Promise((resolve,reject)=>{
+            this.userSharingService.getVendorId().subscribe((result)=>{
+                if(result !== null && result !== undefined){
+                    resolve(result);     
+                }
+            },(err)=>{
+                console.log(err);
+                reject(err);
+            });
+        });
+    }
+
+    public getVendorId() {
+        let result:string='';
+
+        this.vendorIdPromise().then((res)=>{
+            result = res;
+        }).catch(err=>console.log(err));
+
+        return result;
     }
 }

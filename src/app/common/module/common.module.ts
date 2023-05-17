@@ -4,6 +4,11 @@ import { PrimeNGModule } from 'src/app/common/module/primeng.module';
 import { MenuBarComponent } from '../components/menu/menu-bar.component';
 import { ProfileComponent } from '../components/profile/profile.component';
 import { NotificationComponent } from '../components/notification/notification.component';
+import { VendorDetailComponent } from 'src/app/admin/components/vendor-details/vendor-detail.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { VendorUserListComponent } from 'src/app/admin/components/vendor-user-list/vendor-user-list.component';
+import { CategoryListComponent } from 'src/app/admin/components/category-list/category-list.component';
+import { VendorMenuList } from 'src/app/admin/components/vendor-menu-list/vendor-menu-list.component';
 
 
 
@@ -11,16 +16,26 @@ import { NotificationComponent } from '../components/notification/notification.c
   declarations: [
     MenuBarComponent,
     ProfileComponent,
-    NotificationComponent
+    NotificationComponent,
+    VendorDetailComponent,
+    VendorUserListComponent,
+    CategoryListComponent,
+    VendorMenuList
   ],
   imports: [
     CommonModule,
-    PrimeNGModule
+    PrimeNGModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports:[
     MenuBarComponent,
     ProfileComponent,
-    NotificationComponent
+    NotificationComponent,
+    VendorDetailComponent,
+    VendorUserListComponent,
+    CategoryListComponent,
+    VendorMenuList
   ]
 })
 export class SharedModule { }

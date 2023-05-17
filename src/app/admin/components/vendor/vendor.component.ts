@@ -7,6 +7,7 @@ import { MenuService } from 'src/app/common/services/menu.service';
 import { Vendor } from './vendor';
 import { environment as env } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
+import { NavigationService } from 'src/app/common/services/navigation.service';
 
 @Component({
     selector:'app-vendor',
@@ -23,7 +24,8 @@ export class VendorComponent extends BaseComponent<Vendor[]> implements OnInit{
         public broadcastService:CommonDataSharingService,
         private activatedRoute:ActivatedRoute,
         private router: Router,
-        messageService:MessageService
+        messageService:MessageService,
+        public navigation:NavigationService
     ){
         super(menuService,httpclient,broadcastService,messageService)
     }
@@ -58,11 +60,12 @@ export class VendorComponent extends BaseComponent<Vendor[]> implements OnInit{
         // this.router.navigateByUrl('/admin/vendor-detail', { 
         //     state: {vendorId: vendor.id}
         // });
-
+        this.navigation.startSaveHistory('/admin/vendor-detail/' + vendor.id);
         this.router.navigateByUrl('/admin/vendor-detail/' + vendor.id);
     }
 
     addNewVendor(){
+        this.navigation.startSaveHistory('/admin/vendor-detail/0');
         this.router.navigateByUrl('/admin/vendor-detail/0');
     }
     

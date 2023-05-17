@@ -18,4 +18,5 @@ export interface MenuItemModel{
     componentName:string;
     routerLink:any;
     visible:boolean;
+    routeName:string;
 }
