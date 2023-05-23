@@ -7,6 +7,7 @@ import { CommonDataSharingService } from 'src/app/common/services/common-datasha
 import { MenuService } from 'src/app/common/services/menu.service';
 import { environment } from 'src/environments/environment';
 import { MenuDetails } from '../menu-details/menu-details';
+import { AuthService } from 'src/app/common/services/auth.service';
 
 @Component({
     selector: 'vendor-menu-list',
@@ -26,7 +27,8 @@ export class VendorMenuList extends BaseComponent<MenuDetails> implements OnInit
         private activatedRoute:ActivatedRoute,
         private router:Router,
         messageService: MessageService,
-        private confirmationService: ConfirmationService){
+        private confirmationService: ConfirmationService,
+        public authService:AuthService){
             super(menuService,httpclient,commonBroadcastService,messageService)
     }
     
@@ -43,7 +45,9 @@ export class VendorMenuList extends BaseComponent<MenuDetails> implements OnInit
     }
 
     goToMenuPage = (menuId:string) => {
-        this.router.navigateByUrl('/admin/vendor-detail/'+this.vendorId + '/menu-details/'+ menuId);
+        let role = this.authService.GetUserRole();
+        let url = '/' + role + '/vendor-detail/';
+        this.router.navigateByUrl(url + this.vendorId + '/menu-details/'+ menuId);
     }
 
     deleteMenuItem = (menuItem:MenuDetails) => {

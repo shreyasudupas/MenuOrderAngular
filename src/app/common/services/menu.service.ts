@@ -170,7 +170,7 @@ export class MenuService{
                         visible:false,
                         componentName:'CategoryDetailComponent',
                         routerLink:null,
-                        routeName:'admin/category-details'
+                        routeName:'/category-details'
                     },
                     {
                         label: 'Food Type',
@@ -186,7 +186,7 @@ export class MenuService{
                         visible: false,
                         componentName:'FoodTypeDetailsComponent',
                         routerLink:null,
-                        routeName:'admin/food-types'
+                        routeName:'/food-types'
                     },
                     {
                         label: 'Cuisine List',
@@ -210,7 +210,7 @@ export class MenuService{
                         routerLink:null,
                         componentName:'MenuImageDetailsDashboardComponent',
                         visible:false,
-                        routeName:'admin/menu-details'
+                        routeName:'/menu-details'
                     },
                     {
                         label: 'Cuisine Type Details',
@@ -218,7 +218,7 @@ export class MenuService{
                         visible: false,
                         componentName:'CuisineDetailsComponent',
                         routerLink:null,
-                        routeName:'admin/cuisine-details'
+                        routeName:'/cuisine-details'
                     },
                     {
                         label: 'Invite User To Vendor',
@@ -248,7 +248,15 @@ export class MenuService{
                         componentName:'VendorDetailComponent',
                         routerLink:['./vendor-detail/' + vendorId ],
                         routeName:'vendor/vendor-detail/' + vendorId
-                    }
+                    },
+                    {
+                        label: 'CategoryDetail',
+                        icon: 'pi pi-fw pi-calendar',
+                        visible:false,
+                        componentName:'CategoryDetailComponent',
+                        routerLink:null,
+                        routeName:'/category-details'
+                    },
                 ]
             }
         ]; 

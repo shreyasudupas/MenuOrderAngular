@@ -9,6 +9,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VendorUserListComponent } from 'src/app/admin/components/vendor-user-list/vendor-user-list.component';
 import { CategoryListComponent } from 'src/app/admin/components/category-list/category-list.component';
 import { VendorMenuList } from 'src/app/admin/components/vendor-menu-list/vendor-menu-list.component';
+import { CategoryDetailComponent } from 'src/app/admin/components/categories/category-detail.component';
+import { MenuDetailsComponent } from 'src/app/admin/components/menu-details/menu-details.component';
+import { ImmageSelectionListComponent } from 'src/app/admin/components/image-selection-list/image-selection-list.component';
 
 
 
@@ -20,6 +23,9 @@ import { VendorMenuList } from 'src/app/admin/components/vendor-menu-list/vendor
     VendorDetailComponent,
     VendorUserListComponent,
     CategoryListComponent,
+    CategoryDetailComponent,
+    MenuDetailsComponent,
+    ImmageSelectionListComponent,
     VendorMenuList
   ],
   imports: [

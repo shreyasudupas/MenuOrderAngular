@@ -12,6 +12,8 @@ import { Category } from '../categories/category';
 import { FoodType } from '../food-type-details/food-type';
 import { MenuDetails } from './menu-details';
 import { ImageData } from 'src/app/admin/components/menu-image-details/image-response';
+import { NavigationService } from 'src/app/common/services/navigation.service';
+import { AuthService } from 'src/app/common/services/auth.service';
 
 @Component({
     selector:'menu-details',
@@ -35,6 +37,9 @@ showPreviewImage:boolean = false;
 imageUrl:string = '';
 itemName:string= "";
 currentImageId:string='';
+role:string;
+vendorUrl:string;
+
 
     constructor(
         public menuService:MenuService,
@@ -43,7 +48,9 @@ currentImageId:string='';
         private activatedRoute:ActivatedRoute,
         private router:Router,
         private fb: FormBuilder,
-        messageService: MessageService){
+        messageService: MessageService,
+        public navigation:NavigationService,
+        public authService:AuthService){
             super(menuService,httpclient,commonBroadcastService,messageService)
     }
 
@@ -55,12 +62,18 @@ currentImageId:string='';
         this.vendorId = this.activatedRoute.snapshot.params['vendorId'];
         this.menuDetailsId = this.activatedRoute.snapshot.params['menuDetailsId'];
 
+        this.navigation.startSaveHistory('/menu-details');
+
+        this.role = this.authService.GetUserRole();
+        this.vendorUrl = "/" + this.role + '/vendor-detail/';
+
         this.breadItems = [
             {label: 'Vendor Detail' , command: (event) => {
                 if(this.vendorId !== '0' || this.vendorId !== undefined)
-                    this.router.navigate(['admin/vendor-detail/' + this.vendorId])
-                else
-                this.router.navigate(['admin/vendor']);
+                    this.router.navigate([this.vendorUrl + this.vendorId])
+                else{
+                    console.log('No VendorId is present');
+                }
             }},
             {label: 'Menu Detail'}
         ];
@@ -90,9 +103,9 @@ currentImageId:string='';
     
     goBack = () => {
         if(this.vendorId !== '0' || this.vendorId !== undefined)
-            this.router.navigate(['admin/vendor-detail/' + this.vendorId]);
+            this.navigation.goBack();
         else    
-            this.router.navigate(['admin/vendor']);
+            console.log('No Vendor Present in Menu Details in page');
     }
 
     callMultipleApis = () => {
@@ -185,7 +198,7 @@ currentImageId:string='';
                     if(result!=null && result.id != ''){
                         this.showInfo('form updated success');
 
-                        window.history.replaceState({}, '', `admin/vendor-detail/${this.vendorId}/menu-details/${result.id}`);
+                        window.history.replaceState({}, '', `${this.vendorUrl}${this.vendorId}/menu-details/${result.id}`);
                     }else {
                         this.showError('Error in submitting the form');
                     }

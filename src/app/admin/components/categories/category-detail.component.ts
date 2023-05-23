@@ -8,6 +8,8 @@ import { CommonDataSharingService } from 'src/app/common/services/common-datasha
 import { MenuService } from 'src/app/common/services/menu.service';
 import { environment } from 'src/environments/environment';
 import { Category } from './category';
+import { NavigationService } from 'src/app/common/services/navigation.service';
+import { AuthService } from 'src/app/common/services/auth.service';
 
 @Component({
     selector:'category-detail',
@@ -21,6 +23,8 @@ id:string='';
 vendorId:string='';
 disableCategoryName:boolean = false;
 breadItems: MenuItem[]=[];
+role:string;
+vendorUrl:string;
 
     constructor(
         private menuService:MenuService,
@@ -29,7 +33,9 @@ breadItems: MenuItem[]=[];
         private activatedRoute:ActivatedRoute,
         private route:Router,
         private fb:FormBuilder,
-        messageService:MessageService
+        messageService:MessageService,
+        public navigation:NavigationService,
+        public authService:AuthService
     ){
         super(menuService,httpclient,commonBroadcastService,messageService)   
     }
@@ -38,6 +44,9 @@ breadItems: MenuItem[]=[];
         this.componentName = this.activatedRoute.snapshot.routeConfig?.component?.name;
 
         this.InitilizeMenu();
+
+        //these routes are adhoc routes since these component are hidden in menu UI hence passing explcitly
+        this.navigation.startSaveHistory('/category-details');
 
         this.categoryDetailForm = this.fb.group({
             id: [''],
@@ -52,12 +61,16 @@ breadItems: MenuItem[]=[];
 
         this.vendorId = history.state.vendorId;
 
+        this.role = this.authService.GetUserRole();
+        this.vendorUrl = "/" + this.role + '/vendor-detail/';
+
         this.breadItems = [
             {label: 'Vendor Detail' , command: (event) => {
                 if(this.vendorId !== '0' || this.vendorId !== undefined)
-                    this.route.navigate(['admin/vendor-detail/' + this.vendorId])
-                else
-                this.route.navigate(['admin/vendor']);
+                    this.route.navigate([this.vendorUrl + this.vendorId])
+                else{
+                    console.log('No Vendor ID Present in category detail page')
+                }
             }},
             {label: 'Category Detail'}
         ];
@@ -96,17 +109,18 @@ breadItems: MenuItem[]=[];
 
     goBack = () => {
         if(this.vendorId !== undefined){
-            this.route.navigateByUrl('/admin/vendor-detail/'+ this.vendorId);
-        }else{
-            this.route.navigateByUrl('/admin/vendor');
-        } 
+            this.navigation.goBack();
+        }else
+        {
+            console.log('unable to go back since no Vendor Id')
+        }
     }
 
     submitCategoryDetailForm = (forms:FormGroup) => {
         if(forms.valid){
             if(this.vendorId === undefined){
                 this.showInfo('Please go back to the vendor list page');
-            }else if(this.vendorId === '0'){
+            }else if(forms.get('id').value === ''){
                 this.addCatgoryVendor(forms);
             }else {
                 this.updateCatgoryVendor(forms);
@@ -131,7 +145,8 @@ breadItems: MenuItem[]=[];
         this.Create(body).subscribe({
             next: result=>{
                 if(result != null){
-                    this.route.navigateByUrl('admin/vendor-detail/'+this.vendorId);
+                    this.navigation.removeHistory();
+                    this.route.navigateByUrl(this.vendorUrl + this.vendorId);
                 }else{
                     this.showError('Error in saving the category detail');
                 }
