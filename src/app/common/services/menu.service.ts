@@ -82,53 +82,27 @@ export class MenuService{
         let vendorId = await this.vendorIdPromise();
 
         let menuList:MenuNavigationModel[] =  [
-            // {
-            //     parent :'user',
-            //     items : [
-            //         {
-            //             label: 'Home',
-            //             icon: 'pi pi-fw pi-home',
-            //             routerLink: ['./home'],
-            //             componentName:'HomeComponent',
-            //             visible:true
-            //         },
-            //         {
-            //             label: 'Vendor',
-            //             icon: 'pi pi-fw pi-calendar',
-            //             routerLink:['./vendorlist'],
-            //             componentName:'VendorComponent',
-            //             visible:true
-            //         },
-            //         {
-            //             label: 'Menu', 
-            //             icon: 'pi pi-fw pi-calendar',
-            //             visible:false,
-            //             componentName:'MenuComponent',
-            //             routerLink:null
-            //         },
-            //         {
-            //             label: 'Cart', 
-            //             icon: 'pi pi-fw pi-calendar',
-            //             visible:false,
-            //             componentName:'MenuComponent',
-            //             routerLink:null
-            //         },
-            //         {
-            //             label: 'Profile', 
-            //             icon: 'pi pi-fw pi-pencil',
-            //             routerLink:['./user-profile'],
-            //             componentName:'',
-            //             visible:true
-            //         },
-            //         {
-            //             label: 'Payment', 
-            //             icon: 'pi pi-fw pi-file',
-            //             routerLink:['./user-payment'],
-            //             componentName:'MenuComponent',
-            //             visible:false
-            //         }
-            //     ]
-            // },
+            {
+                parent :'user',
+                items : [
+                    {
+                        label: 'Home',
+                        icon: 'pi pi-fw pi-home',
+                        routerLink: ['./home'],
+                        componentName:'UserHomeComponent',
+                        visible:true,
+                        routeName:'user/home'
+                    },
+                    {
+                        label: 'Food',
+                        icon: 'pi pi-fw pi-home',
+                        routerLink: ['./food'],
+                        componentName:'FoodComponent',
+                        visible:true,
+                        routeName:'user/food'
+                    }
+                ]
+            },
             {
                 parent :'admin',
                 items : [
