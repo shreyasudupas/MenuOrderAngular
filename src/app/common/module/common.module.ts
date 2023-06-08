@@ -12,6 +12,7 @@ import { VendorMenuList } from 'src/app/admin/components/vendor-menu-list/vendor
 import { CategoryDetailComponent } from 'src/app/admin/components/categories/category-detail.component';
 import { MenuDetailsComponent } from 'src/app/admin/components/menu-details/menu-details.component';
 import { ImmageSelectionListComponent } from 'src/app/admin/components/image-selection-list/image-selection-list.component';
+import { VendorImageUploadComponent } from 'src/app/admin/components/vendor-image/vendor-image-upload.component';
 
 
 
@@ -26,7 +27,8 @@ import { ImmageSelectionListComponent } from 'src/app/admin/components/image-sel
     CategoryDetailComponent,
     MenuDetailsComponent,
     ImmageSelectionListComponent,
-    VendorMenuList
+    VendorMenuList,
+    VendorImageUploadComponent
   ],
   imports: [
     CommonModule,

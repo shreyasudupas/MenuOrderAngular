@@ -19,7 +19,6 @@ import { MenuImageUploadComponent } from '../components/menu-image-details/image
 import { AdminAuthGaurd } from 'src/app/common/gaurds/admin-routing-gaurd';
 import { InviteUserToVendorComponent } from '../components/invite-users-to-vendor/invite-user-vendor-component';
 
-
 @NgModule({
   declarations: [
     AdminDashboardComponent,

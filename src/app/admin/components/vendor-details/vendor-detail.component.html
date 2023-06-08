@@ -7,6 +7,16 @@
             <p-scrollTop></p-scrollTop>
             <p-scrollPanel [style]="{width: '100%', height: '600px'}" styleClass="custombar">
                 <form [formGroup]="vendorDetailForm" (ngSubmit)="onSubmitVendorDetails(vendorDetailForm)">
+                    <div class="p-fluid formgrid">
+                        <div class="field col-12">
+                            <div *ngIf="vendorImageUrl !== undefined">
+                                <img [src]="vendorImageUrl" 
+                                     alt="default Vendor Image"
+                                     width="140px"
+                                     height="120px"/>
+                            </div>
+                        </div>
+                    </div>
                     <div class="p-fluid formgrid  grid">
                         <div class="field col-12">
                             <span class="p-float-label field">
@@ -128,6 +138,9 @@
                 <p-scrollTop target="parent" styleClass="custom-scrolltop" [threshold]="100"
                     icon="pi pi-arrow-up"></p-scrollTop>
             </p-scrollPanel>
+        </p-tabPanel>
+        <p-tabPanel header="Vendor Image Upload">
+            <vendor-image-upload [vendorInfo]="vendorDetail" [vendorImage]="vendorImageUrl"></vendor-image-upload>
         </p-tabPanel>
         <p-tabPanel header="Add Users">
             <div *ngIf="vendorDetail.id !== undefined && vendorDetail.id != '' ">

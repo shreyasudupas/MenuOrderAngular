@@ -16,6 +16,7 @@ export interface Vendor{
     openTime:string;
     closeTime:string;
     active:boolean;
+    vendorImage:string;
 }
 
 export interface Coordinate{

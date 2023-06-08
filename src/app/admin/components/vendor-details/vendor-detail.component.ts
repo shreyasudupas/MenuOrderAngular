@@ -13,6 +13,7 @@ import { CuisineType } from "../cuisine-type-details/cuisine-type";
 import { Vendor } from "../vendor/vendor";
 import { RegisteredLocationReponse } from "./registerLocation";
 import { NavigationService } from "src/app/common/services/navigation.service";
+import { AuthService } from "src/app/common/services/auth.service";
 
 @Component({
     selector: 'vendor-detail',
@@ -35,12 +36,10 @@ areaDropDownListValues:any[]=[];
 cuisineDropDownList:CuisineType[]=[];
 currentState:State={ id:0,name:'',cities:[] };
 vendorDetail:Vendor = { id:'',vendorName:'',vendorDescription:'',categories:[],cuisineType:[],rating:0,state:'',city:'',area:'',
-coordinates:null,addressLine1:'',addressLine2:'',openTime:'',closeTime:'',active:false };
+coordinates:null,addressLine1:'',addressLine2:'',openTime:'',closeTime:'',active:false,vendorImage:null };
 categoryTab:boolean = true;
 menuDetailTab:boolean = true;
-previousUrl: string='';
-currentUrl: string;
-
+vendorImageUrl:string;
 
     constructor(
         public menuService:MenuService,
@@ -50,7 +49,8 @@ currentUrl: string;
         private router:Router,
         private fb: FormBuilder,
         messageService: MessageService,
-        public navigation:NavigationService){
+        public navigation:NavigationService,
+        public authService:AuthService){
             super(menuService,httpclient,commonBroadcastService,messageService)
     }
 
@@ -201,7 +201,8 @@ currentUrl: string;
                     active: vendorByIdResponse.active,addressLine1: vendorByIdResponse.addressLine1, addressLine2: vendorByIdResponse.addressLine2,area: vendorByIdResponse.area,
                     state: vendorByIdResponse.state, city: vendorByIdResponse.city, closeTime: vendorByIdResponse.closeTime,coordinates: vendorByIdResponse.coordinates,
                     openTime: vendorByIdResponse.openTime, rating: vendorByIdResponse.rating, cuisineType: vendorByIdResponse.cuisineType
-                    , vendorDescription: vendorByIdResponse.vendorDescription }
+                    , vendorDescription: vendorByIdResponse.vendorDescription
+                    ,vendorImage: vendorByIdResponse.vendorImage }
 
                 this.vendorDetailForm.setValue({
                     id: this.vendorDetail.id,
@@ -237,6 +238,21 @@ currentUrl: string;
                 // })
             }else{
                 this.showError('Unable to Get cuisine details right now');
+            }
+
+            if(this.vendorDetail.vendorImage !== ''){
+                let imageUrl = environment.inventory.imageMenu + '/' + this.vendorDetail.vendorImage + '/fileName';
+                this.httpclient.get(imageUrl,{responseType: 'text'}).subscribe({
+                    next: result => {
+                        if(result != null){
+                            console.log("Vendor Image successfully retrived");
+                            this.vendorImageUrl = 'https://localhost:5003/app-images/' + result;
+                        } else{
+                            console.log('Vendor Image Retival Issue');
+                        }
+                    },
+                    error: error => console.log(error)
+                });
             }
         });
     }
