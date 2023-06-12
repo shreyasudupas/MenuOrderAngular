@@ -16,6 +16,9 @@
             <div class="col-12">
                 <img style="height:120px;width:140px" [src]="vendorImage"/>
             </div>    
+            <div class="col-10">
+                <p-button label="Delete" icon="pi pi-minus" styleClass="p-button-danger" badgeClass="p-badge-danger" (click)="deleteVedorImage()"></p-button>
+            </div>
         </div>
         <ng-template #previewImage>
             <div class="col-12">

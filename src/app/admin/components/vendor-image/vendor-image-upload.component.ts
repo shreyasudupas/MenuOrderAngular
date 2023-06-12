@@ -176,6 +176,10 @@ isAdd:boolean;
                 //debugger;
                 if (result !== null) {
                     this.showInfo('Vendor Updated Successfully');
+
+                    setInterval(() => {
+                        window.location.reload();
+                    },1500);
                 } else {
                     this.showError('Error in Updating the Vendor');
                 }
@@ -206,6 +210,34 @@ isAdd:boolean;
             error: err => {
                 console.log(err);
             }
+        });
+    }
+
+    deleteVedorImage(){
+        if(this.vendorInfo !== undefined){
+            let id = this.vendorInfo.vendorImage;
+
+            this.deleteImage(id);
+        }
+    }
+
+    deleteImage(id:string){
+        this.baseUrl = environment.inventory.imageMenu;
+        this.action= id;
+
+        this.DeleteItem(null).subscribe({
+            next: result => {
+                if(result != null){
+                    this.vendorImage = undefined;
+                    this.showInfo('Image successfully deleted');
+
+                    this.vendorInfo = {...this.vendorInfo, vendorImage:''};
+                    this.updateVendor(this.vendorInfo);
+                }else{
+                    this.showError('Error in deleting file');
+                }
+            },
+            error: err => console.log('Error in deleting file')
         });
     }
 }
