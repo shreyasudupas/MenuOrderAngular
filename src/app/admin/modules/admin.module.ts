@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage, provideImgixLoader } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { SharedModule } from 'src/app/common/module/common.module';
@@ -41,8 +41,12 @@ import { InviteUserToVendorComponent } from '../components/invite-users-to-vendo
     AdminRoutingModule,
     SharedModule,
     PrimeNGModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgOptimizedImage
   ],
-  providers: [ AdminAuthGaurd ]
+  providers: [ 
+    AdminAuthGaurd,
+    //provideImgixLoader('https://localhost:5003/app-images/')
+   ]
 })
 export class AdminModule { }

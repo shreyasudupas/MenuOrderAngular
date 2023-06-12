@@ -10,10 +10,17 @@
                     <div class="p-fluid formgrid">
                         <div class="field col-12">
                             <div *ngIf="vendorImageUrl !== undefined">
+                                <!-- <img ngSrc="vendorImageUrl" 
+                                     alt="default Vendor Image"
+                                     width="140px"
+                                     height="120px"
+                                     ngSrcset="200w, 400w"
+                                     priority/> -->
                                 <img [src]="vendorImageUrl" 
                                      alt="default Vendor Image"
                                      width="140px"
-                                     height="120px"/>
+                                     height="120px"
+                                     />
                             </div>
                         </div>
                     </div>
