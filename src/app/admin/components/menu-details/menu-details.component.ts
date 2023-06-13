@@ -10,10 +10,10 @@ import { MenuService } from 'src/app/common/services/menu.service';
 import { environment } from 'src/environments/environment';
 import { Category } from '../categories/category';
 import { FoodType } from '../food-type-details/food-type';
-import { MenuDetails } from './menu-details';
 import { ImageData } from 'src/app/admin/components/menu-image-details/image-response';
 import { NavigationService } from 'src/app/common/services/navigation.service';
 import { AuthService } from 'src/app/common/services/auth.service';
+import { VendorMenuDetails } from './vendor-menu-details';
 
 @Component({
     selector:'menu-details',
@@ -21,7 +21,7 @@ import { AuthService } from 'src/app/common/services/auth.service';
     styleUrls:['./menu-details.component.css']
 })
 
-export class MenuDetailsComponent extends BaseComponent<MenuDetails> implements OnInit{
+export class MenuDetailsComponent extends BaseComponent<VendorMenuDetails> implements OnInit{
 vendorId:string='';
 menuDetailsId:string='';
 menuDetailForm!:FormGroup;
@@ -80,6 +80,7 @@ vendorUrl:string;
             vendorId:[this.vendorId],
             itemName: ['',Validators.required],
             imageId:[''],
+            imageFilename:[''],
             foodType: ['',Validators.required],
             category: ['',Validators.required],
             price: [0,Validators.required],
@@ -149,6 +150,7 @@ vendorUrl:string;
                         vendorId: this.vendorId,
                         itemName: result.itemName,
                         imageId: result.imageData,
+                        imageFilename: result.imageFilename,
                         foodType: result.foodType,
                         category: result.category,
                         price: result.price,
@@ -188,7 +190,21 @@ vendorUrl:string;
         if(forms.valid){
             this.baseUrl = environment.inventory.vendorMenu;
             this.action = null;
-            let body = forms.value;
+            let body = {
+                id: forms.value.id,
+                vendorId: forms.value.vendorId,
+                itemName: forms.value.itemName,
+                image:{
+                    imageId: forms.value.imageId,
+                    imageFileName: forms.value.imageFilename
+                },
+                foodType: forms.value.foodTypes,
+                category: forms.value.category,
+                price: forms.value.price,
+                discount: forms.value.discount,
+                rating: forms.value.rating,
+                active: forms.value.active
+            };
 
             this.Create(body).subscribe({
                 next: result => {
@@ -211,7 +227,21 @@ vendorUrl:string;
             this.baseUrl = environment.inventory.vendorMenu;
             this.action = null;
             let body = {
-                UpdateVendorMenu : forms.value
+                UpdateVendorMenu : {
+                    id: forms.value.id,
+                    vendorId: forms.value.vendorId,
+                    itemName: forms.value.itemName,
+                    image:{
+                        imageId: forms.value.imageId,
+                        imageFileName: forms.value.imageFilename
+                    },
+                    foodType: forms.value.foodTypes,
+                    category: forms.value.category,
+                    price: forms.value.price,
+                    discount: forms.value.discount,
+                    rating: forms.value.rating,
+                    active: forms.value.active
+                }
             };
 
             this.UpdateItem(body).subscribe({
@@ -234,7 +264,8 @@ vendorUrl:string;
         if($event !== null){
 
             this.menuDetailForm.patchValue({
-                imageId: $event.id
+                imageId: $event.id,
+                imageFilename: $event.fileName
             });
 
             //update preview image
@@ -243,7 +274,8 @@ vendorUrl:string;
         }else{
             
             this.menuDetailForm.patchValue({
-                imageId: ''
+                imageId: '',
+                imageFilename: ''
             });
 
             this.showPreviewImage = false;

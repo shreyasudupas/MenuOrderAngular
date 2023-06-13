@@ -72,6 +72,7 @@ export class ImmageSelectionListComponent extends BaseComponent<ImageData> imple
         this.selectedItem = {
             id: $event.data.id,
             itemName: $event.data.itemName,
+            fileName: $event.data.fileName,
             active: $event.data.active,
             data: $event.data.data,
             description: $event.data.description

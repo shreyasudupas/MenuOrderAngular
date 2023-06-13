@@ -1,9 +1,11 @@
-export interface MenuDetails{
+export interface VendorMenuDetails{
     id:string;
     vendorId:string;
     itemName:string;
     imageId:string;
+    imageFilename:string;
     imageData:string;
+    imageName:string;
     foodType:string;
     category:string;
     price:number;

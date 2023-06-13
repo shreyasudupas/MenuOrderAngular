@@ -11,7 +11,7 @@ import { MenuImage } from '../menu-image';
 @Component({
     selector: 'menu-image-dashboard',
     templateUrl: './menu-image-details-dashboard.component.html',
-    providers: [MessageService,ConfirmationService]
+    providers: [ConfirmationService]
 })
 
 export class MenuImageDetailsDashboardComponent extends BaseComponent<any> implements OnInit {

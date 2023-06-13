@@ -6,6 +6,7 @@ export interface ImageResponse{
 export interface ImageData{
     id:string;
     itemName:string;
+    fileName:string;
     data:string;
     active:boolean;
     description:string;

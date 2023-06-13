@@ -11,7 +11,7 @@ import { environment } from "src/environments/environment";
 @Component({
     selector: 'menu-image-upload-detail',
     templateUrl: 'menu-image-upload.component.html',
-    providers: [MessageService,ConfirmationService]
+    providers: [ ConfirmationService ]
 })
 
 export class MenuImageUploadComponent extends BaseComponent<any> implements OnInit{
