@@ -10,8 +10,7 @@ import { FoodType } from '../food-type-details/food-type';
 
 @Component({
     selector:'food-types-list',
-    templateUrl:'./food-type-list.component.html',
-    providers:[MessageService]
+    templateUrl:'./food-type-list.component.html'
 })
 
 export class FoodTypeListComponent extends BaseComponent<FoodType> implements OnInit{

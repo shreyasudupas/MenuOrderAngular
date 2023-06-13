@@ -18,10 +18,7 @@ import { AuthService } from 'src/app/common/services/auth.service';
 @Component({
     selector:'menu-details',
     templateUrl: './menu-details.component.html',
-    styleUrls:['./menu-details.component.css'],
-    providers: [
-        MessageService
-    ]
+    styleUrls:['./menu-details.component.css']
 })
 
 export class MenuDetailsComponent extends BaseComponent<MenuDetails> implements OnInit{

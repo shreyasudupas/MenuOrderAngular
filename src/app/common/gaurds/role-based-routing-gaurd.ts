@@ -6,7 +6,7 @@ import { AuthService } from '../services/auth.service';
     providedIn: 'root'
 })
 
-export class AdminAuthGaurd implements CanActivate{
+export class RoleBasedAuthGaurd implements CanActivate{
 
     constructor(public authService:AuthService,
         private router: Router,){}

@@ -12,18 +12,18 @@ import { MenuImageDetailsDashboardComponent } from '../components/menu-image-det
 import { MenuImageListComponent } from '../components/menu-image-list/menu-image-list.component';
 import { VendorDetailComponent } from '../components/vendor-details/vendor-detail.component';
 import { VendorComponent } from '../components/vendor/vendor.component';
-import { AdminAuthGaurd } from 'src/app/common/gaurds/admin-routing-gaurd';
+import { RoleBasedAuthGaurd } from 'src/app/common/gaurds/role-based-routing-gaurd';
 import { Role } from 'src/app/common/models/role';
 import { ForbiddenComponent } from 'src/app/common/components/forbidden/forbidden.component';
 import { InviteUserToVendorComponent } from '../components/invite-users-to-vendor/invite-user-vendor-component';
 
 const routes: Routes = [
-  { path:'', component: AdminDashboardComponent,canActivate:[AdminAuthGaurd], data: { roles: [Role.Admin] }, children: [
+  { path:'', component: AdminDashboardComponent,canActivate:[RoleBasedAuthGaurd], data: { roles: [Role.Admin] }, children: [
     {
       path: 'home', component: HomeComponent
     },
     {
-      path:'vendor', component: VendorComponent , canActivate:[AdminAuthGaurd]
+      path:'vendor', component: VendorComponent , canActivate:[RoleBasedAuthGaurd]
     },
     {
       path:'vendor-detail/:vendorId', component: VendorDetailComponent
@@ -47,7 +47,7 @@ const routes: Routes = [
       path:'vendor-detail/:vendorId/menu-details/:menuDetailsId', component: MenuDetailsComponent
     },
     {
-      path:'image-menu-list', component: MenuImageListComponent, canActivate: [AdminAuthGaurd]
+      path:'image-menu-list', component: MenuImageListComponent, canActivate: [RoleBasedAuthGaurd]
     },
     {
       path:'image-menu-details/:menuImageId', component: MenuImageDetailsDashboardComponent

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 import { BaseComponent } from 'src/app/common/components/base/base.component';
@@ -13,8 +13,7 @@ import { AuthService } from 'src/app/common/services/auth.service';
 
 @Component({
     selector:'category-detail',
-    templateUrl:'./category-detail.component.html',
-    providers: [ MessageService ]
+    templateUrl:'./category-detail.component.html'
 })
 
 export class CategoryDetailComponent extends BaseComponent<Category> implements OnInit{

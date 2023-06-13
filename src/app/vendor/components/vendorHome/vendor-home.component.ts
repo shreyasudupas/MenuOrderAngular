@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { filter } from 'rxjs';
 import { BaseComponent } from 'src/app/common/components/base/base.component';
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
 import { MenuService } from 'src/app/common/services/menu.service';
@@ -11,8 +10,7 @@ import { UserDataSharingService } from 'src/app/common/services/user-datasharing
 
 @Component({
     selector:'vendor-home',
-    templateUrl:'./vendor-home.component.html',
-    providers:[ MessageService ]
+    templateUrl:'./vendor-home.component.html'
 })
 
 export class VendorHomeComponent extends BaseComponent<any> implements OnInit {

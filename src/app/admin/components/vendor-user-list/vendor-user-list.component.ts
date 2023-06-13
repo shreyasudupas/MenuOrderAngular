@@ -14,8 +14,7 @@ import { EncryptDecryptService } from 'src/app/common/services/encryptDecrypt.se
 
 @Component({
     selector: 'vendor-user-list',
-    templateUrl: './vendor-user-list.component.html',
-    providers: [ MessageService ]
+    templateUrl: './vendor-user-list.component.html'
 })
 
 export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> implements OnInit{

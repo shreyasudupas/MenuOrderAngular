@@ -18,8 +18,7 @@ import { AuthService } from "src/app/common/services/auth.service";
 @Component({
     selector: 'vendor-detail',
     templateUrl: './vendor-detail.component.html',
-    styleUrls:['./vendor-detail.component.scss'],
-    providers: [MessageService]
+    styleUrls:['./vendor-detail.component.scss']
 })
 
 export class VendorDetailComponent extends BaseComponent<Vendor> implements OnInit{

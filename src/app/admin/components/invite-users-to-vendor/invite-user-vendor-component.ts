@@ -12,8 +12,7 @@ import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'invite-user-to-vendor',
-    templateUrl: './invite-user-vendor.component.html',
-    providers: [ MessageService ]
+    templateUrl: './invite-user-vendor.component.html'
 })
 
 export class InviteUserToVendorComponent  extends BaseComponent<any> implements OnInit{

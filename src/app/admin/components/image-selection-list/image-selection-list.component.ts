@@ -8,7 +8,6 @@ import { CommonDataSharingService } from 'src/app/common/services/common-datasha
 import { MenuService } from 'src/app/common/services/menu.service';
 import { environment } from 'src/environments/environment';
 import { ImageData } from 'src/app/admin/components/menu-image-details/image-response';
-import { Notification } from 'src/app/common/components/notification/notification';
 import { AuthService } from 'src/app/common/services/auth.service';
 
 @Component({

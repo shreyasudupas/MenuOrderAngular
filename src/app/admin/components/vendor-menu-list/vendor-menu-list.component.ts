@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/common/services/auth.service';
 @Component({
     selector: 'vendor-menu-list',
     templateUrl:'./vendor-menu-list.component.html',
-    providers: [MessageService,ConfirmationService]
+    providers: [ConfirmationService]
 })
 
 export class VendorMenuList extends BaseComponent<MenuDetails> implements OnInit{

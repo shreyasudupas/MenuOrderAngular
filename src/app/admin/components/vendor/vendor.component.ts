@@ -11,8 +11,7 @@ import { NavigationService } from 'src/app/common/services/navigation.service';
 
 @Component({
     selector:'app-vendor',
-    templateUrl: './vendor.component.html',
-    providers:[MessageService]
+    templateUrl: './vendor.component.html'
 })
 
 export class VendorComponent extends BaseComponent<Vendor[]> implements OnInit{

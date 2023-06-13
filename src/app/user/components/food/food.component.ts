@@ -9,7 +9,7 @@ import { NavigationService } from 'src/app/common/services/navigation.service';
 
 @Component({
     selector:'food-list',
-    templateUrl: './food.component.html'
+    templateUrl: './food.component.html',
 })
 
 export class FoodComponent extends BaseComponent<any> implements OnInit{

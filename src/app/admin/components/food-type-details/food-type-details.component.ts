@@ -11,8 +11,7 @@ import { FoodType } from './food-type';
 
 @Component({
     selector: 'food-type-details',
-    templateUrl: './food-type-details.component.html',
-    providers:[MessageService]
+    templateUrl: './food-type-details.component.html'
 })
 
 export class FoodTypeDetailsComponent extends BaseComponent<FoodType> implements OnInit {

@@ -11,7 +11,7 @@ import { ImageResponse } from '../menu-image-details/image-response';
 @Component({
     selector:'menu-image-list',
     templateUrl: './menu-image-list.component.html',
-    providers: [MessageService,ConfirmationService]
+    providers: [ConfirmationService]
 })
 
 export class MenuImageListComponent extends BaseComponent<ImageResponse> implements OnInit{

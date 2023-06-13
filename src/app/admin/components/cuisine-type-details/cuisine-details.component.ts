@@ -11,8 +11,7 @@ import { CuisineType } from "./cuisine-type";
 
 @Component({
     selector:'cuisine-details',
-    templateUrl:'./cuisine-details.component.html',
-    providers:[MessageService]
+    templateUrl:'./cuisine-details.component.html'
 })
 
 export class CuisineDetailsComponent extends BaseComponent<CuisineType> implements OnInit {

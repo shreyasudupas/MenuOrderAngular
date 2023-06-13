@@ -4,9 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/common/module/common.module';
 import { PrimeNGModule } from 'src/app/common/module/primeng.module';
 import { VendorRoutingModule } from './vendor-routing.module';
-import { VendorAuthGaurd } from 'src/app/common/gaurds/vendor-routing-gaurd';
 import { VendorDashboardComponent } from '../components/vendorDashboard/vendor-dashboard.component';
 import { VendorHomeComponent } from '../components/vendorHome/vendor-home.component';
+import { RoleBasedAuthGaurd } from 'src/app/common/gaurds/role-based-routing-gaurd';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
     declarations:[
@@ -22,7 +23,8 @@ import { VendorHomeComponent } from '../components/vendorHome/vendor-home.compon
         VendorRoutingModule
     ],
     providers:[
-        VendorAuthGaurd
+        RoleBasedAuthGaurd,
+        MessageService
     ]
 })
 

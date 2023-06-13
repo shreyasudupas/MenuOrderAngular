@@ -12,8 +12,7 @@ import { Vendor } from '../vendor/vendor';
 
 @Component({
     selector: 'vendor-image-upload',
-    templateUrl: './vendor-upload.component.html',
-    providers: [MessageService] 
+    templateUrl: './vendor-upload.component.html'
 })
 
 export class VendorImageUploadComponent extends BaseComponent<any> implements OnInit{

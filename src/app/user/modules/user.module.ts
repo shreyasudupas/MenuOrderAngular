@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { RoleBasedAuthGaurd } from 'src/app/common/gaurds/role-based-routing-gaurd';
 import { SharedModule } from 'src/app/common/module/common.module';
 import { PrimeNGModule } from 'src/app/common/module/primeng.module';
 import { FoodComponent } from '../components/food/food.component';
@@ -23,6 +25,8 @@ import { UserRoutingModule } from './user-routing.module';
         UserRoutingModule
     ],
     providers:[
+        RoleBasedAuthGaurd,
+        MessageService
     ]
 })
 
