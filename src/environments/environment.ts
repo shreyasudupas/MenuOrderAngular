@@ -28,6 +28,7 @@ export const environment = {
     imageMenu: "https://localhost:5003/api/menuimage"
   },
   notification: 'https://localhost:5004/api/notification',
+  imagePath:'https://localhost:5003/app-images/',
   EncryptKey:'1203199320052021',
   EncryptIV: '1203199320052021'
 };

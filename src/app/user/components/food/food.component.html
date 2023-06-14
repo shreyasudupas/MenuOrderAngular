@@ -1,1 +1,19 @@
-<h2>This is Food component</h2>
+<div class="card">
+    <p-dataView [value]="vendors">
+        <ng-template pTemplate="header">List of Restaurants</ng-template>
+        <ng-template let-vendor pTemplate="listItem">
+            <div class="col-4 md:col-2 lg:col-1">
+                <img [src]="vendor.vendorImage"
+                        alt = "Vendor image"
+                        height="120px"
+                        width="40px"
+                />
+            </div>
+            <div class="col-8 md:col-4 lg:col-2">
+                {{vendor.vendorName}}
+            </div>
+        </ng-template>
+        
+        <ng-template pTemplate="footer">Choose from the list.</ng-template>
+    </p-dataView>
+</div>
