@@ -35,7 +35,7 @@ areaDropDownListValues:any[]=[];
 cuisineDropDownList:CuisineType[]=[];
 currentState:State={ id:0,name:'',cities:[] };
 vendorDetail:Vendor = { id:'',vendorName:'',vendorDescription:'',categories:[],cuisineType:[],rating:0,state:'',city:'',area:'',
-coordinates:null,addressLine1:'',addressLine2:'',openTime:'',closeTime:'',active:false,vendorImage:null };
+coordinates:null,addressLine1:'',addressLine2:'',openTime:'',closeTime:'',active:false,image:{ imageId:'',imageFileName:'' } };
 categoryTab:boolean = true;
 menuDetailTab:boolean = true;
 vendorImageUrl:string;
@@ -201,7 +201,7 @@ vendorImageUrl:string;
                     state: vendorByIdResponse.state, city: vendorByIdResponse.city, closeTime: vendorByIdResponse.closeTime,coordinates: vendorByIdResponse.coordinates,
                     openTime: vendorByIdResponse.openTime, rating: vendorByIdResponse.rating, cuisineType: vendorByIdResponse.cuisineType
                     , vendorDescription: vendorByIdResponse.vendorDescription
-                    ,vendorImage: vendorByIdResponse.vendorImage }
+                    ,image:  { imageId: vendorByIdResponse.image.imageId , imageFileName: vendorByIdResponse.image.imageFileName  } };
 
                 this.vendorDetailForm.setValue({
                     id: this.vendorDetail.id,
@@ -239,19 +239,20 @@ vendorImageUrl:string;
                 this.showError('Unable to Get cuisine details right now');
             }
 
-            if(this.vendorDetail.vendorImage !== ''){
-                let imageUrl = environment.inventory.imageMenu + '/' + this.vendorDetail.vendorImage + '/fileName';
-                this.httpclient.get(imageUrl,{responseType: 'text'}).subscribe({
-                    next: result => {
-                        if(result != null){
-                            console.log("Vendor Image successfully retrived");
-                            this.vendorImageUrl = 'https://localhost:5003/app-images/' + result;
-                        } else{
-                            console.log('Vendor Image Retival Issue');
-                        }
-                    },
-                    error: error => console.log(error)
-                });
+            if(this.vendorDetail.image.imageFileName !== ''){
+                // let imageUrl = environment.inventory.imageMenu + '/' + this.vendorDetail.vendorImage + '/fileName';
+                // this.httpclient.get(imageUrl,{responseType: 'text'}).subscribe({
+                //     next: result => {
+                //         if(result != null){
+                //             console.log("Vendor Image successfully retrived");
+                //             this.vendorImageUrl = 'https://localhost:5003/app-images/' + result;
+                //         } else{
+                //             console.log('Vendor Image Retival Issue');
+                //         }
+                //     },
+                //     error: error => console.log(error)
+                // });
+                this.vendorImageUrl = environment.imagePath + this.vendorDetail.image.imageFileName;
             }
         });
     }

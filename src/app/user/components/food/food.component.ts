@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 @Component({
     selector:'food-list',
     templateUrl: './food.component.html',
+    styleUrls:[ './food.component.scss' ]
 })
 
 export class FoodComponent extends BaseComponent<any> implements OnInit{
@@ -45,8 +46,10 @@ vendors:Vendor[];
                     this.vendors = result;
 
                     this.vendors.map(vendor=>{
-                        vendor.vendorImage = environment.imagePath + vendor.vendorImage;
+                        vendor.image.imageFileName = environment.imagePath + vendor.image.imageFileName;
                     });
+
+                    console.log(this.vendors)
                 }
             }
         });

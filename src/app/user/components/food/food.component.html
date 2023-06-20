@@ -2,15 +2,31 @@
     <p-dataView [value]="vendors">
         <ng-template pTemplate="header">List of Restaurants</ng-template>
         <ng-template let-vendor pTemplate="listItem">
-            <div class="col-4 md:col-2 lg:col-1">
-                <img [src]="vendor.vendorImage"
-                        alt = "Vendor image"
-                        height="120px"
-                        width="40px"
-                />
-            </div>
-            <div class="col-8 md:col-4 lg:col-2">
-                {{vendor.vendorName}}
+            <div class="col-12">
+                <div class="grid">
+                    <div class="col-4">
+                        <img [src]="vendor.image.imageFileName"
+                            alt = "Vendor image"
+                            height="120px"
+                            width="40%"
+                        />
+                    </div>
+                    <div class="col-8">
+                        <div class="vendor-list-detail">
+                            <div class="vendor-name">{{vendor.vendorName}}</div>
+                            <div class="vendor-description">{{vendor.cuisineType}}</div>
+                            <div class="vendor-description">{{vendor.area}}</div>
+                        </div>
+                        <div class="vendor-list-action">
+                            <p-button icon="pi pi-shopping-cart" label="See Menu"></p-button>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="vendor-list-item">
+                    
+                    
+                </div> -->
+                
             </div>
         </ng-template>
         

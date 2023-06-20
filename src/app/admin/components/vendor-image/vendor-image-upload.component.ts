@@ -136,7 +136,8 @@ isAdd:boolean;
                     // setTimeout(()=>{
                     //     this.router.navigateByUrl('/admin/image-menu-list');
                     // },1500);
-                    this.vendorInfo.vendorImage = result.id;
+                    this.vendorInfo.image.imageId = result.id;
+                    this.vendorInfo.image.imageFileName = result.fileName;
                     this.updateVendor(this.vendorInfo);
 
                 }else{
@@ -199,7 +200,8 @@ isAdd:boolean;
                 if(result != null){
                     this.showInfo('Updated Image Successfully');
 
-                    this.vendorInfo.vendorImage = result.id;
+                    this.vendorInfo.image.imageId = result.id;
+                    this.vendorInfo.image.imageFileName = result.fileName;
                     this.updateVendor(this.vendorInfo);
                 }else{
                     this.showError('Error in updating menu image');
@@ -214,7 +216,7 @@ isAdd:boolean;
 
     deleteVedorImage(){
         if(this.vendorInfo !== undefined){
-            let id = this.vendorInfo.vendorImage;
+            let id = this.vendorInfo.image.imageId;
 
             this.deleteImage(id);
         }
@@ -230,7 +232,7 @@ isAdd:boolean;
                     this.vendorImage = undefined;
                     this.showInfo('Image successfully deleted');
 
-                    this.vendorInfo = {...this.vendorInfo, vendorImage:''};
+                    this.vendorInfo = {...this.vendorInfo, image: { imageId:'',imageFileName:'' }};
                     this.updateVendor(this.vendorInfo);
                 }else{
                     this.showError('Error in deleting file');

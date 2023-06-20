@@ -16,10 +16,15 @@ export interface Vendor{
     openTime:string;
     closeTime:string;
     active:boolean;
-    vendorImage:string;
+    image:ImageModel;
 }
 
 export interface Coordinate{
     latitude:number;
     longitude:number;
+}
+
+export class ImageModel{
+    imageId:string;
+    imageFileName:string;
 }
