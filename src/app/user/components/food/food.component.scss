@@ -32,8 +32,10 @@
             flex-direction: column;
         }
 
-        .p-button {
-            margin-bottom: .5rem;
+        .menu-button {
+            margin: auto;
+            width: 50% !important;
+            padding: 10px;
         }
     }
 }

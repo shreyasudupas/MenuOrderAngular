@@ -31,6 +31,9 @@ export class UserHomeComponent extends BaseComponent<any> implements OnInit{
 
         this.InitilizeMenu();
 
-        this.navigation.startSaveHistory('user/home');
+        if(!this.navigation.history.includes('user/home')){
+            this.navigation.startSaveHistory('user/home');
+        }
+        
     }
 }

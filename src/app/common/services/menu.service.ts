@@ -100,6 +100,14 @@ export class MenuService{
                         componentName:'FoodComponent',
                         visible:true,
                         routeName:'user/food'
+                    },
+                    {
+                        label: 'Menu',
+                        icon: 'pi pi-fw pi-home',
+                        routerLink: [''],
+                        componentName:'MenuComponent',
+                        visible:false,
+                        routeName:'user/food/menu'
                     }
                 ]
             },

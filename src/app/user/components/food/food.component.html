@@ -5,11 +5,20 @@
             <div class="col-12">
                 <div class="grid">
                     <div class="col-4">
-                        <img [src]="vendor.image.imageFileName"
-                            alt = "Vendor image"
-                            height="120px"
-                            width="40%"
-                        />
+                        <div *ngIf="vendor.image.imageFileName !== '';else showPreviewImage">
+                            <img [src]="vendor.image.imageFileName"
+                                alt = "Vendor image"
+                                height="120px"
+                                width="40%"
+                            />
+                        </div>
+                        <ng-template #showPreviewImage>
+                            <img src="assets/MenuIcons/BlankMenu.jpg"
+                                alt = "Vendor image"
+                                height="120px"
+                                width="40%"
+                            />
+                        </ng-template>
                     </div>
                     <div class="col-8">
                         <div class="vendor-list-detail">
@@ -18,15 +27,10 @@
                             <div class="vendor-description">{{vendor.area}}</div>
                         </div>
                         <div class="vendor-list-action">
-                            <p-button icon="pi pi-shopping-cart" label="See Menu"></p-button>
+                            <p-button class="menu-button" icon="pi pi-shopping-cart" label="See Menu" (click) = "callMenuDetails(vendor.id)"></p-button>
                         </div>
                     </div>
                 </div>
-                <!-- <div class="vendor-list-item">
-                    
-                    
-                </div> -->
-                
             </div>
         </ng-template>
         

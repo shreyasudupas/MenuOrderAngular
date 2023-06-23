@@ -34,6 +34,10 @@ vendors:Vendor[];
         this.InitilizeMenu();
 
         this.getVendorList();
+
+        console.log('Food page' + this.navigation.history);
+
+        this.navigation.startSaveHistory('food/menu')
     }
 
     getVendorList(){
@@ -46,12 +50,17 @@ vendors:Vendor[];
                     this.vendors = result;
 
                     this.vendors.map(vendor=>{
-                        vendor.image.imageFileName = environment.imagePath + vendor.image.imageFileName;
+                        if(vendor.image.imageFileName !== '')
+                            vendor.image.imageFileName = environment.imagePath + vendor.image.imageFileName;
                     });
 
-                    console.log(this.vendors)
+                    //console.log(this.vendors)
                 }
             }
         });
+    }
+
+    callMenuDetails(vendorId:string) {
+        this.router.navigateByUrl('/user/menu/' + vendorId);
     }
 }

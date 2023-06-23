@@ -7,7 +7,7 @@ import { Location } from '@angular/common'
 })
 
 export class NavigationService{
-    private history:string[] = [];
+    public history:string[] = [];
 
     constructor(private router:Router,private location:Location) { }
 

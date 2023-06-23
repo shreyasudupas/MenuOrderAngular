@@ -7,6 +7,7 @@ import { SharedModule } from 'src/app/common/module/common.module';
 import { PrimeNGModule } from 'src/app/common/module/primeng.module';
 import { FoodComponent } from '../components/food/food.component';
 import { UserHomeComponent } from '../components/home/user-home.component';
+import { MenuComponent } from '../components/menu/menu.component';
 import { UserDashboardComponent } from '../components/user-dashboard/user-dashboard.component';
 import { UserRoutingModule } from './user-routing.module';
 
@@ -14,7 +15,8 @@ import { UserRoutingModule } from './user-routing.module';
     declarations:[
         UserDashboardComponent,
         UserHomeComponent,
-        FoodComponent
+        FoodComponent,
+        MenuComponent
     ],
     imports:[
         CommonModule,
