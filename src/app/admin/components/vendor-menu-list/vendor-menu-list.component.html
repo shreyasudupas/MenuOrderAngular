@@ -1,6 +1,32 @@
 <p-confirmPopup></p-confirmPopup>
 <div class="p-fluid grid">
     <div class="col-12">
+        <p-toolbar>
+            <div class="p-toolbar-group-left">
+                
+                <p-fileUpload #filejson mode="basic" 
+                              [files] = "uploadedFile"
+                              accept="application/json" 
+                              [maxFileSize]="26214400" 
+                              chooseLabel = "Upload json list"
+                              uploadLabel = "Submit"
+                              cancelLabel = "Cancel"
+                              [showCancelButton] = true
+                              [showUploadButton] = "false" 
+                              [customUpload]="true" 
+                              (uploadHandler)="onBasicUpload($event,filejson)"
+                              (onSelect)="onSelectFile($event.files)">
+                        </p-fileUpload>
+                <div *ngIf="uploadedFile.length > 0">
+                    <p-button class="p-2" label="Cancel" icon="pi pi-times" styleClass="p-button-primary" (click)="cancelFileUpload()"></p-button>
+                </div>
+            </div>
+        </p-toolbar>
+
+        <div class="col-12 p-2">
+            <p-messages></p-messages>
+        </div>
+        
         <p-table [value]="vendorMenuItems" sortField="itemName" sortMode="single" [scrollable]="true"
             scrollHeight="400px" rowGroupMode="subheader" groupRowsBy="category"
             [tableStyle]="{'min-width': '60rem'}">
