@@ -108,6 +108,14 @@ export class MenuService{
                         componentName:'MenuComponent',
                         visible:false,
                         routeName:'user/food/menu'
+                    },
+                    {
+                        label: 'Cart',
+                        icon: 'pi pi-fw pi-shopping-cart',
+                        routerLink: [''],
+                        componentName:'CartComponent',
+                        visible:false,
+                        routeName:'user/cart'
                     }
                 ]
             },

@@ -9,7 +9,7 @@ export const environment = {
     clientId : "menuAngularUI",
     redirectUri: window.location.origin,
     idpAuthority : "https://localhost:5006",
-    scope :"openid profile inventory.write inventory.read notification.read notification.write IdentityServerApi"
+    scope :"openid profile inventory.write inventory.read notification.read notification.write order.read order.write IdentityServerApi"
 
   },
   idsConfig:{
@@ -26,6 +26,9 @@ export const environment = {
     cuisineType:"https://localhost:5003/api/cuisine",
     vendorMenu:"https://localhost:5003/api/vendorMenus",
     imageMenu: "https://localhost:5003/api/menuimage"
+  },
+  orderService: {
+    cartInformation: 'https://localhost:5005/api/cartInformation'
   },
   notification: 'https://localhost:5004/api/notification',
   imagePath:'https://localhost:5003/app-images/',

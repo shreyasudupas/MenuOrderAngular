@@ -4,60 +4,43 @@
     </div>
 </p-toolbar>
 <p-card header="Menu Details">
-    <!-- <p-dataView [value]="menus">
-        <ng-template let-menu pTemplate="listItem">
-            <div class="col-12">
-                <div class="grid">
-                    <div class="col-4">
-                        <div *ngIf="menu.image.imageFileName != '';else showDefaultMenuImage">
-                            <img [src]="menu.image.imageFileName"
-                                alt = "Menu image"
-                                height="120px"
-                                width="40%"
-                            />
-                        </div>
-                        <ng-template #showDefaultMenuImage>
-                            <img src="assets/MenuIcons/BlankMenu.jpg"
-                                alt = "Vendor image"
-                                height="120px"
-                                width="40%"
-                            />
-                        </ng-template>
-                    </div>
-                    <div class="8">
-                        <div class="grid">
-                            <div class="col-6">
-                                <div>{{menu.itemName}}</div>
-                                <div>{{menu.}}</div>
-                            </div>
-                            <div class="col-6">
-
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-    </p-dataView> -->
-
-    
-    <p-table [value]="menus" 
+    <p-table #menuTbl [value]="menus" 
              sortField="category" 
              sortMode="single" 
              dataKey="category" 
              rowGroupMode="subheader" 
              groupRowsBy="category" 
              [tableStyle]="{'min-width': '70rem'}"
-             [expandedRowKeys]="expandedRows">
+             [expandedRowKeys]="expandedRows"
+             [globalFilterFields]="['itemName']"
+             responsiveLayout="stack" 
+             [breakpoint]="'960px'"
+             [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="caption">
+            <div class="flex-container">
+                <div class="flex-container-reset-filter">
+                    <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(menuTbl)"></button>
+                </div>
+                <div class="flex-container-search-box">
+                    <span class="p-input-icon-left ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="menuTbl.filterGlobal($event.target.value, 'contains')" placeholder="Search Food name" />
+                    </span>
+                </div>
+            </div>
+        </ng-template>
+
         <ng-template pTemplate="header">
             <tr>
-                <th style="width:20%"></th>
+                <th style="width: 40%;"></th>
+                <th style="width: 30%;"></th>
+                <th style="width: 20%"></th>
             </tr>
         </ng-template>
+        
         <ng-template pTemplate="groupheader" let-menu let-rowIndex="rowIndex" let-expanded="expanded">
             <tr>
-                <td colspan="1">
+                <td colspan="3">
                     <button type="button" pButton pRipple 
                             [pRowToggler]="menu" 
                             class="p-button-text p-button-rounded p-button-plain mr-2" 
@@ -70,39 +53,42 @@
         <ng-template pTemplate="rowexpansion" let-menu>
             <tr>
                 <td>
+                    <div *ngIf="menu.image.imageFileName != '';else showDefaultMenuImage" style="text-align:center">
+                        <img [src]="menu.image.imageFileName"
+                            alt = "Menu image"
+                            height="120px"
+                            width="40%"
+                        />
+                    </div>
+                    <ng-template #showDefaultMenuImage style="text-align:center">
+                        <img src="assets/MenuIcons/BlankMenu.jpg"
+                            alt = "Vendor image"
+                            height="120px"
+                            width="40%"
+                        />
+                    </ng-template>
+                </td>
+                <td>
                     <div class="grid p-fluid">
-                        <div class="col-4">
-                            <div *ngIf="menu.image.imageFileName != '';else showDefaultMenuImage" style="text-align:center">
-                                <img [src]="menu.image.imageFileName"
-                                    alt = "Menu image"
-                                    height="120px"
-                                    width="40%"
-                                />
-                            </div>
-                            <ng-template #showDefaultMenuImage style="text-align:center">
-                                <img src="assets/MenuIcons/BlankMenu.jpg"
-                                    alt = "Vendor image"
-                                    height="120px"
-                                    width="40%"
-                                />
-                            </ng-template>
+                        <div class="col-12" style="font-size:21px;padding:20px">
+                            <b>{{menu.itemName}}</b>
                         </div>
-                        <div class="col-8">
-                            <div class="grid p-fluid">
-                                <div class="col-6">
-                                    <div class="col-12" style="font-size:21px;padding:20px">
-                                        <b>{{menu.itemName}}</b>
-                                    </div>
-                                    <div class="col-12">{{menu.price}}</div>
-                                    <div class="col-12">
-                                        <p-rating [(ngModel)]="menu.rating" [cancel]="false" [readonly]="true"></p-rating>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    
-                                </div>
-                            </div>
-                            
+                        <div class="col-12"><span>&#8377;</span>{{menu.price}}</div>
+                        <div class="col-12">
+                            <p-rating [(ngModel)]="menu.rating" [cancel]="false" [readonly]="true"></p-rating>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <!--button to add Cart here-->
+                    <div class="grid p-fluid">
+                        <div class="col-12">
+                            <!-- <button pButton pRipple type="button" label="Add" icon="pi pi-cart-plus" class="p-button-info"></button> -->
+                            <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-outlined" (click)="addMenuItem(menu)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-outlined" (click)="removeMenuItem(menu)"></button>
+                        </div>
+                        <div class="col-12">
+                            Quantity: {{menu.quatity}}
                         </div>
                     </div>
                 </td>

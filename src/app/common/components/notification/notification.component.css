@@ -9,3 +9,9 @@
     width: 100%;
     flex-wrap: nowrap;
 }
+
+.center {
+    padding: 25px 50px 25px;
+    text-align: center;
+  }
+  

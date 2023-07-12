@@ -5,6 +5,8 @@ import { MessageService } from 'primeng/api';
 import { RoleBasedAuthGaurd } from 'src/app/common/gaurds/role-based-routing-gaurd';
 import { SharedModule } from 'src/app/common/module/common.module';
 import { PrimeNGModule } from 'src/app/common/module/primeng.module';
+import { CartComponent } from '../components/cart-component/cart.component';
+import { CartIconComponent } from '../components/cart-icon-component/cart-icon.component';
 import { FoodComponent } from '../components/food/food.component';
 import { UserHomeComponent } from '../components/home/user-home.component';
 import { MenuComponent } from '../components/menu/menu.component';
@@ -16,7 +18,9 @@ import { UserRoutingModule } from './user-routing.module';
         UserDashboardComponent,
         UserHomeComponent,
         FoodComponent,
-        MenuComponent
+        MenuComponent,
+        CartComponent,
+        CartIconComponent
     ],
     imports:[
         CommonModule,

@@ -1,0 +1,39 @@
+<p-card header="Cart Details">
+    <p-dataView [value]="cartInformations">
+        <ng-template let-cartItem pTemplate="listItem">
+            <div class="col-12">
+                <div class="container">
+                    <div class="cart-image">
+                        <div *ngIf="cartItem.image.imageFileName != '';else showDefaultMenuImage" style="text-align:center">
+                            <img [src]="cartItem.image.imageFileName"
+                                alt = "Menu image"
+                                height="120px"
+                                width="40%"
+                            />
+                        </div>
+                        <ng-template #showDefaultMenuImage style="text-align:center">
+                            <img src="assets/MenuIcons/BlankMenu.jpg"
+                                alt = "Vendor image"
+                                height="120px"
+                                width="40%"
+                            />
+                        </ng-template>
+                    </div>
+                    <div class="cart-details">
+                        <div>{{cartItem.itemName}}</div>
+                        <div><h5><span>&#8377;</span> {{cartItem.price}}</h5></div>
+                    </div>
+
+                    <div class="cart-quantity">
+                        <div class="cart-button">
+                            <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-outlined"></button>
+                            <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-outlined"></button>
+                        </div>
+                        <div>Quantity: {{cartItem.quatity}}</div>
+                    </div>
+                </div>
+                
+            </div>
+        </ng-template>
+    </p-dataView>
+</p-card>
