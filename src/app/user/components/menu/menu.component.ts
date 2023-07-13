@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { ImageModel } from 'src/app/admin/components/vendor/vendor';
 import { BaseComponent } from 'src/app/common/components/base/base.component';
 import { AuthService } from 'src/app/common/services/auth.service';
 import { CartInformationSerivice } from 'src/app/common/services/cart-information.service';
@@ -11,7 +10,7 @@ import { CommonDataSharingService } from 'src/app/common/services/common-datasha
 import { MenuService } from 'src/app/common/services/menu.service';
 import { NavigationService } from 'src/app/common/services/navigation.service';
 import { environment } from 'src/environments/environment';
-import { CartInformation } from '../cart-component/cart-information';
+import { CartMenuItem } from '../cart-component/cart-information';
 import { Menu } from './menu';
 
 @Component({
@@ -22,7 +21,7 @@ import { Menu } from './menu';
 
 export class MenuComponent extends BaseComponent<Menu> implements OnInit {
 vendorId:string;
-menus:CartInformation[];
+menus:Menu[];
 expandedRows: {} = {};
 
     constructor(
@@ -63,6 +62,8 @@ expandedRows: {} = {};
                     this.menus = [];
                     const thisRef = this;
                     let categories = [];
+                    let cartInformation = this.cartInformationService.getAllCartInfo();
+
                     result.map(menu=>{
                         if(menu.image.imageFileName !== ''){
                             menu.image.imageFileName = environment.imagePath + menu.image.imageFileName;
@@ -74,10 +75,17 @@ expandedRows: {} = {};
                             thisRef.expandedRows[menu.category]=true;
                         }
                         //console.log(categories);
+
+                        let cartInfo = cartInformation.menuItems.find(x=>x.menuId === menu.id);
+                        let quantity = 0;
+                        if(cartInfo !== undefined){
+                            quantity = cartInfo.quantity;
+                        }
+
                         this.menus.push({
                             id: menu.id,itemName: menu.itemName, price: menu.price, active: menu.active, category: menu.category,
-                            discount: menu.discount, foodType: menu.foodType, quatity:0, rating: menu.rating, vendorId: menu.vendorId,
-                            image: menu.image
+                            discount: menu.discount, foodType: menu.foodType, rating: menu.rating, vendorId: menu.vendorId,
+                            image: menu.image,quantity: quantity
                         });
                     });
                 }
@@ -98,40 +106,49 @@ expandedRows: {} = {};
         table.clear();
     }
 
-    addMenuItem(menuItem:CartInformation) {
-        let item: CartInformation = { id: menuItem.id,vendorId: menuItem.vendorId,itemName: menuItem.itemName, image: menuItem.image, foodType: menuItem.foodType,
-        category: menuItem.category, price: menuItem.price, discount: menuItem.discount, rating: menuItem.rating, active: menuItem.active, quatity: menuItem.quatity + 1 };
+    addMenuItem(menuItem:Menu) {
+        let item: CartMenuItem = { menuId: menuItem.id,vendorId: menuItem.vendorId,itemName: menuItem.itemName, image: menuItem.image, foodType: menuItem.foodType,
+        category: menuItem.category, price: menuItem.price, discount: menuItem.discount, quantity: menuItem.quantity + 1 };
 
-        if(item.quatity >= 0){
+        menuItem.quantity = item.quantity;
+
+        if(item.quantity >= 0){
             //update cart service
             this.cartInformationService.modifyMenuCart(item);
 
             //update menu in table
-            this.modifyMenuItems(item);
+            this.modifyMenuItems(menuItem);
 
-            console.log('Menu after add cart items: ',this.menus);
+            //console.log('Menu after add cart items: ',this.menus);
         }
     }
 
-    removeMenuItem(menuItem:CartInformation) {
-        let item: CartInformation = { id: menuItem.id,vendorId: menuItem.vendorId,itemName: menuItem.itemName, image: menuItem.image, foodType: menuItem.foodType,
-        category: menuItem.category, price: menuItem.price, discount: menuItem.discount, rating: menuItem.rating, active: menuItem.active, quatity: menuItem.quatity - 1 };
+    removeMenuItem(menuItem:Menu) {
+        let item: CartMenuItem = { menuId: menuItem.id,vendorId: menuItem.vendorId,itemName: menuItem.itemName, image: menuItem.image, foodType: menuItem.foodType,
+        category: menuItem.category, price: menuItem.price, discount: menuItem.discount, quantity: menuItem.quantity - 1 };
 
-        if(item.quatity >= 0){
-            //update cart service
-            this.cartInformationService.modifyMenuCart(item);
+        menuItem.quantity = item.quantity;
 
-            //update menu in table
-            this.modifyMenuItems(item);
+        if(item.quantity >= 0){
 
-            if(item.quatity == 0){
+            if(item.quantity == 0){
+                
                 this.cartInformationService.removeItemCart(item);
+
+            } else {
+
+                //update cart service
+                this.cartInformationService.modifyMenuCart(item);
+
+                //update menu in table
+                this.modifyMenuItems(menuItem);
             }
+            
             console.log('Menu after remove cart items: ',this.menus);
         }
     }
 
-    modifyMenuItems(menuItem:CartInformation){
-        this.menus = this.menus.map(item=> (item.id === menuItem.id)? {...item,quatity: menuItem.quatity} : {...item});
+    modifyMenuItems(menuItem:Menu){
+        this.menus = this.menus.map(item=> (item.id === menuItem.id)? {...item,quatity: menuItem.quantity} : {...item});
     }
 }

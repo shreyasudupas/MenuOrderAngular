@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartInformationSerivice } from 'src/app/common/services/cart-information.service';
-import { CartInformationAPIModel } from '../cart-component/cart-information';
+import { CartInformation } from '../cart-component/cart-information';
 
 @Component({
     selector: 'cart-icon',
@@ -12,7 +12,7 @@ import { CartInformationAPIModel } from '../cart-component/cart-information';
 export class CartIconComponent implements OnInit{
 noOfItems:string;
 
-    constructor(public cartInfoService:CartInformationSerivice,
+    constructor(public cartInformationService:CartInformationSerivice,
         public router:Router) { 
     }
 
@@ -22,7 +22,7 @@ noOfItems:string;
 
     getNoOfItems() {
 
-        this.cartInfoService.getNumberOfItemsInCart().subscribe({
+        this.cartInformationService.getNumberOfItemsInCart().subscribe({
             next: result => {
                 this.noOfItems = result.toString();
             },
@@ -31,11 +31,11 @@ noOfItems:string;
             }
         });
 
-        this.cartInfoService.getUserCartInformationFromAPI().subscribe({
-            next: (result:CartInformationAPIModel) => {
+        this.cartInformationService.getUserCartInformationFromAPI().subscribe({
+            next: (result:CartInformation) => {
                 let cartInformations = [];
 
-                if(result != null){
+                if(result !== null){
                     result.menuItems.map(cart=>{
                         cartInformations.push({
                             id: cart.menuId,
@@ -52,8 +52,10 @@ noOfItems:string;
                         });
                     });
 
-                    this.cartInfoService.modifyCartItemsInCart(cartInformations);
+                    this.cartInformationService.modifyCartItemsInCart(result);
                     //console.log('Cart Information result: ',this.cartInformations);
+                } else {
+                    this.cartInformationService.initializeUserCartInformation();
                 }
             },
             error: err => {

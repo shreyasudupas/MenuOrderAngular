@@ -23,3 +23,20 @@
 .cart-button{
     margin: 10px;
 }
+
+.cart-price-container{
+    display: flex;
+    flex-wrap: nowrap;
+    font-family: "Lucida Console", "Courier New", monospace;
+    justify-content: flex-end;
+    gap: 10px 20px;
+}
+
+.cart-price {
+    margin: 25px 50px;
+    display: flex;
+}
+
+.cart-payment-button{
+    align-self: center;
+}

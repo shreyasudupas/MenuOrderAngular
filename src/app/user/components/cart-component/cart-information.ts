@@ -1,18 +1,13 @@
 import { ImageModel } from 'src/app/admin/components/vendor/vendor';
-import { Menu as MenuModel } from 'src/app/user/components/menu/menu'
 
-export class CartInformation extends MenuModel {
-    quatity:number;
-}
-
-export class CartInformationAPIModel{
+export class CartInformation {
     id:string;
     userId:string;
     menuItems:CartMenuItem[];
     cartStatus:string;
 }
 
-class CartMenuItem{
+export class CartMenuItem{
     menuId:string;
     vendorId:string;
     itemName:string;

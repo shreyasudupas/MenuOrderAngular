@@ -11,4 +11,5 @@ export class Menu {
     discount:number;
     rating:number;
     active:boolean;
+    quantity:number;
 }

@@ -7,7 +7,7 @@ import { CartInformationSerivice } from 'src/app/common/services/cart-informatio
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
 import { MenuService } from 'src/app/common/services/menu.service';
 import { NavigationService } from 'src/app/common/services/navigation.service';
-import { CartInformation, CartInformationAPIModel } from './cart-information';
+import { CartInformation, CartMenuItem } from './cart-information';
 
 @Component({
     selector: 'cart-component',
@@ -16,7 +16,8 @@ import { CartInformation, CartInformationAPIModel } from './cart-information';
 })
 
 export class CartComponent extends BaseComponent<any> implements OnInit {
-cartInformations:CartInformation[];
+cartInformations:CartMenuItem[];
+totalPrice:number;
 
     constructor(
         public menuService:MenuService,
@@ -39,9 +40,20 @@ cartInformations:CartInformation[];
     }
 
     getCartInformation(){
-        this.cartInformationService.getCartInformation().subscribe({
+        this.cartInformationService.getUserCartInformationFromAPI().subscribe({
             next: result => {
-                this.cartInformations = result;
+
+                if(result === null){
+                    this.cartInformationService.initializeUserCartInformation();
+                } else {
+                    this.cartInformations = result.menuItems;
+
+                    if(this.cartInformations.length > 0){
+                        this.totalPrice = this.cartInformations.reduce(function(prevValue,currentValue){
+                            return prevValue + currentValue.price;
+                        },0);
+                    }
+                }
             }
         });
     }
