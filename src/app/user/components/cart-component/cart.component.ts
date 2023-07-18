@@ -12,7 +12,7 @@ import { CartInformation, CartMenuItem } from './cart-information';
 @Component({
     selector: 'cart-component',
     templateUrl:'./cart.component.html',
-    styleUrls: [ './cart.component.css' ]
+    styleUrls: [ './cart.component.scss' ]
 })
 
 export class CartComponent extends BaseComponent<any> implements OnInit {
@@ -56,5 +56,37 @@ totalPrice:number;
                 }
             }
         });
+    }
+
+    goToMenuPage(){
+        let menu = this.cartInformations.find(x=>x.vendorId); //get first object
+
+        if(menu !== undefined){
+            let url = 'user/menu/' + menu.vendorId;
+            return this.router.navigateByUrl(url);
+        }
+        return null;
+    }
+
+    addMenuItem(menuItem:CartMenuItem) {
+        menuItem.quantity = menuItem.quantity + 1;
+
+        this.cartInformationService.modifyMenuCart(menuItem);
+    }
+
+    removeMenuItem(menuItem:CartMenuItem) {
+        menuItem.quantity = menuItem.quantity - 1;
+
+        if(menuItem.quantity >= 0){
+
+            if(menuItem.quantity == 0){
+                this.cartInformationService.removeItemCart(menuItem);
+
+                this.cartInformations = this.cartInformations.filter(c=>c.menuId !== menuItem.menuId);
+            } else {
+                //update cart service
+                this.cartInformationService.modifyMenuCart(menuItem);
+            }
+        }
     }
 }

@@ -46,7 +46,7 @@ noOfItems:string;
                             category: cart.category,
                             discount: cart.discount,
                             foodType: cart.foodType,
-                            quatity: cart.quantity,
+                            quantity: cart.quantity,
                             rating: 0,
                             vendorId: cart.vendorId
                         });

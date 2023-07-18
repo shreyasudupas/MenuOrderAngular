@@ -149,6 +149,6 @@ expandedRows: {} = {};
     }
 
     modifyMenuItems(menuItem:Menu){
-        this.menus = this.menus.map(item=> (item.id === menuItem.id)? {...item,quatity: menuItem.quantity} : {...item});
+        this.menus = this.menus.map(item=> (item.id === menuItem.id)? {...item,quantity: menuItem.quantity} : {...item});
     }
 }

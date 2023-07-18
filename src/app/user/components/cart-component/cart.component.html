@@ -1,5 +1,10 @@
 <p-card header="Cart Details">
     <p-dataView [value]="cartInformations">
+        <ng-template pTemplate="header">
+            <div class="cart-header-container">
+                <button pButton pRipple type="button" label="Back to Menu" icon="pi pi-arrow-left" class="p-button-raised" (click)="goToMenuPage()"></button>
+            </div>
+        </ng-template>
         <ng-template let-cartItem pTemplate="listItem">
             <div class="col-12">
                 <div class="container">
@@ -7,15 +12,13 @@
                         <div *ngIf="cartItem.image.imageFileName != '';else showDefaultMenuImage" style="text-align:center">
                             <img [src]="cartItem.image.imageFileName"
                                 alt = "Menu image"
-                                height="120px"
-                                width="40%"
+                                width="100%"
                             />
                         </div>
                         <ng-template #showDefaultMenuImage style="text-align:center">
                             <img src="assets/MenuIcons/BlankMenu.jpg"
                                 alt = "Vendor image"
-                                height="120px"
-                                width="40%"
+                                width="100%"
                             />
                         </ng-template>
                     </div>
@@ -26,8 +29,14 @@
 
                     <div class="cart-quantity">
                         <div class="cart-button">
-                            <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-outlined"></button>
-                            <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-outlined"></button>
+                            <button pButton pRipple type="button" 
+                                    icon="pi pi-plus"
+                                    class="p-button-rounded p-button-outlined" 
+                                    (click)="addMenuItem(cartItem)"></button>
+                            <button pButton pRipple type="button" 
+                                    icon="pi pi-times"
+                                    class="p-button-rounded p-button-danger p-button-outlined" 
+                                    (click)="removeMenuItem(cartItem)"></button>
                         </div>
                         <div>Quantity: {{cartItem.quantity}}</div>
                     </div>
@@ -40,7 +49,7 @@
                     You must pay: <h5><span>&#8377;</span></h5> {{totalPrice}}
                 </div>
                 <div class="cart-payment-button">
-                    <p-button icon="pi pi-credit-card" label="Proceed to Payment"></p-button>
+                    <button pButton pRipple type="button" label="Proceed to Payment" icon="pi pi-credit-card" class="p-button-raised"></button>
                 </div>
             </div>
         </ng-template>

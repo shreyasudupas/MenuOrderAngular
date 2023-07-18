@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
 import { CartInformation, CartMenuItem } from 'src/app/user/components/cart-component/cart-information';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
@@ -13,10 +13,14 @@ export class CartInformationSerivice {
     private totalQuantity:number = 0;
     private numberOfCartItems = new BehaviorSubject<number>(0);
     private cartInfo:CartInformation;
+    userId:string;
     //private cartInformation = new BehaviorSubject<CartInformation>(null);
 
     constructor(private http: HttpClient,
-        public authService:AuthService) {}
+        public authService:AuthService) {
+            let user = this.authService.getUserInformation();
+            this.userId = user.profile['userId'];
+        }
 
     public getNumberOfItemsInCart() {
         return this.numberOfCartItems.asObservable();
@@ -33,12 +37,11 @@ export class CartInformationSerivice {
     }
 
     public getUserCartInformationFromAPI(): Observable<CartInformation> {
-        let user = this.authService.getUserInformation();
-        let userId = user.profile['userId'];
+        
         //console.log('UserId is ',userId);
 
         let url = environment.orderService.cartInformation;
-        let httpParam = new HttpParams().set('userId',userId);
+        let httpParam = new HttpParams().set('userId',this.userId);
 
         return this.http.get<CartInformation>(url,{params: httpParam});
     }
@@ -63,25 +66,34 @@ export class CartInformationSerivice {
         console.log('Cart Information: ',this.cartInfo);
     }
 
-    public addMenuCartItems(menuItem: CartMenuItem) {
+    public async addMenuCartItems(menuItem: CartMenuItem) {
         this.cartInfo.menuItems = [...this.cartInfo.menuItems, menuItem];
 
-        this.updateMenuItemsInCart();
-        this.updatedItemNumber();
+        let success = await this.updateMenuItemsInCart(menuItem.vendorId);
+
+        if(success){
+            this.updatedItemNumber();
+        }
     }
 
-    public updateCartMenuItems(menuItem: CartMenuItem){
-        this.cartInfo.menuItems = this.cartInfo.menuItems.map(item=> (item.menuId === menuItem.menuId)? {...item,quatity: menuItem.quantity} : {...item});
+    public async updateCartMenuItems(menuItem: CartMenuItem){
+        this.cartInfo.menuItems = this.cartInfo.menuItems.map(item=> (item.menuId === menuItem.menuId)? {...item,quantity: menuItem.quantity} : {...item});
 
-        this.updateMenuItemsInCart();
-        this.updatedItemNumber();
+        let success = await this.updateMenuItemsInCart(menuItem.vendorId);
+
+        if(success){
+            this.updatedItemNumber();
+        }
     }
 
-    public removeItemCart(menuItem: CartMenuItem){
+    public async removeItemCart(menuItem: CartMenuItem){
         this.cartInfo.menuItems = this.cartInfo.menuItems.filter(item=> item.menuId !== menuItem.menuId);
 
-        this.updateMenuItemsInCart();
-        this.updatedItemNumber();
+        let success = await this.updateMenuItemsInCart(menuItem.vendorId);
+
+        if(success){
+            this.updatedItemNumber();
+        }
     }
 
     public updatedItemNumber(){
@@ -119,21 +131,49 @@ export class CartInformationSerivice {
         });
     }
 
-    public updateMenuItemsInCart(){
+    public async updateMenuItemsInCart(vendorId:string){
+        let success = true;
         let url = environment.orderService.cartInformation;
 
-        this.http.put<CartInformation>(url,this.cartInfo).subscribe({
-            next: result => {
-                 if(result !== null){
-                     this.cartInfo = result;
-                     //this.cartInformation.next(this.cartInfo);
- 
-                     console.log('Cart Items are Updated');
-                 }
-            },
-            error: err => {
-             console.log('Error Occured in Cart Update Operation ',err);
-            }
-         });
+        //check if item belongs same vendor
+        let menuItemBelongsTovendor$ = this.checkIfMenuItemBelongsToSameVendor(vendorId);
+        let menuItemBelongsTovendor = await lastValueFrom(menuItemBelongsTovendor$);
+
+        if(menuItemBelongsTovendor === true)
+        {
+            let cartUpdateResult$ = this.http.put<CartInformation>(url,this.cartInfo);
+            this.cartInfo = await lastValueFrom(cartUpdateResult$).catch(err => {
+                console.log('Error Occured in Cart Update Operation ',err);
+                success = false;
+                return null; //old value back
+            });
+
+            // this.http.put<CartInformation>(url,this.cartInfo).subscribe({
+            //     next: result => {
+            //          if(result !== null){
+            //              this.cartInfo = result;
+            //              //this.cartInformation.next(this.cartInfo);
+     
+            //              console.log('Cart Items are Updated');
+            //          }
+            //     },
+            //     error: err => {
+            //      console.log('Error Occured in Cart Update Operation ',err);
+            //     }
+            //  });
+        }
+        else
+        {
+            success = false;
+            alert("Menu Item doesnt belong to same vendor");
+        }
+        return success;
+    }
+
+    public checkIfMenuItemBelongsToSameVendor(vendorId:string){
+        let url = environment.orderService.cartInformation + '/menuItems/isPresent?';
+        let params = new HttpParams().set('userId',this.userId).set('vendorId',vendorId);
+
+        return this.http.get<boolean>(url,{ params: params });
     }
 }
