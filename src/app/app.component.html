@@ -8,3 +8,8 @@
     <router-outlet></router-outlet>
   </div>
 </div>
+
+<p-dialog [header]="errorTitle" [(visible)]="displayErrorDialog" [style]="{width:'50vw'}" [modal]="true"
+[draggable]="false">
+  <p>{{errorMessage}}</p>
+</p-dialog>

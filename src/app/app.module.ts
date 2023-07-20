@@ -1,4 +1,4 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -13,8 +13,7 @@ import { SignoutRedirectComponent } from './common/components/signOutRedirect/si
 import { GraphQLModule } from './common/module/graphql.module';
 
 import { PrimeNGModule } from './common/module/primeng.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { GlobalErrorHandler } from './common/services/global-error.service';
+import { GlobalErrorHandler } from './common/handlers/global-error.handler';
 import { AuthInterceptor } from './common/interceptor/auth.interceptor';
 import { NotificationService } from './common/services/notification.service';
 import { EncryptDecryptService } from './common/services/encryptDecrypt.service';
@@ -35,7 +34,7 @@ import { EncryptDecryptService } from './common/services/encryptDecrypt.service'
     GraphQLModule,
     //HttpClientModule,
     FormsModule,
-    NgbModule,
+    //NgbModule,
   ],
   providers: [
     { provide: ErrorHandler,useClass:GlobalErrorHandler },
