@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { BaseComponent } from 'src/app/common/components/base/base.component';
 import { CartInformationSerivice } from 'src/app/common/services/cart-information.service';
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
@@ -12,12 +12,14 @@ import { CartInformation, CartMenuItem } from './cart-information';
 @Component({
     selector: 'cart-component',
     templateUrl:'./cart.component.html',
-    styleUrls: [ './cart.component.scss' ]
+    styleUrls: [ './cart.component.scss' ],
+    providers: [ConfirmationService]
 })
 
 export class CartComponent extends BaseComponent<any> implements OnInit {
 cartInformations:CartMenuItem[];
 totalPrice:number;
+hideClearButton:boolean = true;
 
     constructor(
         public menuService:MenuService,
@@ -26,8 +28,9 @@ totalPrice:number;
         private activatedRoute:ActivatedRoute,
         private router:Router,
         messageService: MessageService,
-        public navigation:NavigationService,
-        public cartInformationService:CartInformationSerivice){
+        private navigation:NavigationService,
+        private cartInformationService:CartInformationSerivice,
+        private confirmationService: ConfirmationService){
             super(menuService,httpclient,commonBroadcastService,messageService)
     }
 
@@ -52,7 +55,12 @@ totalPrice:number;
                         this.totalPrice = this.cartInformations.reduce(function(prevValue,currentValue){
                             return prevValue + currentValue.price;
                         },0);
+
+                        this.hideClearButton = false;
+                    }else{
+                        this.hideClearButton = true;
                     }
+
                 }
             }
         });
@@ -88,5 +96,27 @@ totalPrice:number;
                 this.cartInformationService.modifyMenuCart(menuItem);
             }
         }
+    }
+
+    clearMenuItems(){
+        this.confirmationService.confirm({
+            message: 'Are you sure you want to clear all Menu items?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            accept: async () => {
+                var result = await this.cartInformationService.clearMenuItems();
+
+                if(result){
+                    this.showInfo('Items cleared successfully');
+
+                    this.hideClearButton = false;
+                    this.cartInformations = undefined;
+                    this.cartInformationService.modifyItemsInCart(0);
+                }else{
+                    this.showError('Error occured when clearing the Items');
+                }
+            },
+            reject: () => {}
+        });
     }
 }

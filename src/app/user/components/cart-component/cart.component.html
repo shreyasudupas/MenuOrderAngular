@@ -1,8 +1,19 @@
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
 <p-card header="Cart Details">
     <p-dataView [value]="cartInformations">
         <ng-template pTemplate="header">
             <div class="cart-header-container">
-                <button pButton pRipple type="button" label="Back to Menu" icon="pi pi-arrow-left" class="p-button-raised" (click)="goToMenuPage()"></button>
+                <div class="button-back-menu">
+                    <div *ngIf="hideClearButton === false">
+                        <button pButton pRipple type="button" label="Back to Menu" icon="pi pi-arrow-left" class="p-button-raised" (click)="goToMenuPage()"></button>
+                    </div>
+                </div>
+                <div class="button-clear">
+                    <div *ngIf="hideClearButton === false">
+                        <button pButton pRipple type="button" label="Clear Cart" icon="pi pi-filter-slash" class="p-button-raised" (click)="clearMenuItems()"></button>
+                    </div>
+                </div>
             </div>
         </ng-template>
         <ng-template let-cartItem pTemplate="listItem">
@@ -45,11 +56,13 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <div class="cart-price-container">
-                <div class="cart-price">
-                    You must pay: <h5><span>&#8377;</span></h5> {{totalPrice}}
-                </div>
-                <div class="cart-payment-button">
-                    <button pButton pRipple type="button" label="Proceed to Payment" icon="pi pi-credit-card" class="p-button-raised"></button>
+                <div *ngIf="hideClearButton === false">
+                    <div class="cart-price">
+                        You must pay: <h5><span>&#8377;</span></h5> {{totalPrice}}
+                    </div>
+                    <div class="cart-payment-button">
+                        <button pButton pRipple type="button" label="Proceed to Payment" icon="pi pi-credit-card" class="p-button-raised"></button>
+                    </div>
                 </div>
             </div>
         </ng-template>

@@ -1,4 +1,20 @@
 $fontfamilyName: "Lucida Console", "Courier New", monospace;
+
+.cart-header-container{
+    display: flex;
+    flex-wrap: nowrap;
+    row-gap: 10px;
+    
+    .button-back-menu{
+        padding: 10px;
+    }
+    .button-clear{
+        padding: 10px;
+        text-align: right;
+    }
+    //width: 15%;
+}
+
 .container{
     display: flex;
     flex-direction: row;
@@ -46,11 +62,6 @@ $fontfamilyName: "Lucida Console", "Courier New", monospace;
     .cart-payment-button{
         align-self: center;
     }
-}
-
-.cart-header-container{
-    display: flex;
-    width: 15%;
 }
 
  /* Responsive layout - makes a one column layout instead of a two-column layout */
@@ -103,7 +114,16 @@ $fontfamilyName: "Lucida Console", "Courier New", monospace;
     }
 
     .cart-header-container{
-        width: 100%;
-        font-size: small;
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 0px;
+        
+        .button-back-menu{
+            padding: 10px;
+        }
+        .button-clear{
+            padding: 10px;
+            text-align: center;
+        }
     }
  }

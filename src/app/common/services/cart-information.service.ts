@@ -13,7 +13,7 @@ export class CartInformationSerivice {
     private totalQuantity:number = 0;
     private numberOfCartItems = new BehaviorSubject<number>(0);
     private cartInfo:CartInformation;
-    userId:string;
+    private userId:string;
     //private cartInformation = new BehaviorSubject<CartInformation>(null);
 
     constructor(private http: HttpClient,
@@ -147,20 +147,6 @@ export class CartInformationSerivice {
                 success = false;
                 return null; //old value back
             });
-
-            // this.http.put<CartInformation>(url,this.cartInfo).subscribe({
-            //     next: result => {
-            //          if(result !== null){
-            //              this.cartInfo = result;
-            //              //this.cartInformation.next(this.cartInfo);
-     
-            //              console.log('Cart Items are Updated');
-            //          }
-            //     },
-            //     error: err => {
-            //      console.log('Error Occured in Cart Update Operation ',err);
-            //     }
-            //  });
         }
         else
         {
@@ -175,5 +161,17 @@ export class CartInformationSerivice {
         let params = new HttpParams().set('userId',this.userId).set('vendorId',vendorId);
 
         return this.http.get<boolean>(url,{ params: params });
+    }
+
+    public async clearMenuItems() {
+        let url = environment.orderService.cartInformation;
+        let params = new HttpParams().set('userId',this.userId);
+
+        let clearCart$ = this.http.delete<boolean>(url,{params: params});
+        let clearCartResult = await lastValueFrom(clearCart$).catch(err=>{
+            console.log('Error occured in Clearing Cart Menu Items',err);
+            return false;
+        });
+        return clearCartResult;
     }
 }
