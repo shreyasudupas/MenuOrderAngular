@@ -33,6 +33,8 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {VirtualScrollerModule} from 'primeng/virtualscroller';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import { MenuModule } from 'primeng/menu';
+import { SidebarModule } from 'primeng/sidebar';
 
 @NgModule({
     imports:[ButtonModule,
@@ -69,7 +71,9 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
         InputTextareaModule,
         OverlayPanelModule,
         VirtualScrollerModule,
-        ConfirmDialogModule
+        ConfirmDialogModule,
+        MenuModule,
+        SidebarModule 
     ],
     exports:[ButtonModule,
         TabMenuModule,
@@ -105,8 +109,9 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
         InputTextareaModule,
         OverlayPanelModule,
         VirtualScrollerModule,
-        ConfirmDialogModule
-        
+        ConfirmDialogModule,
+        MenuModule,
+        SidebarModule
     ]
 })
 

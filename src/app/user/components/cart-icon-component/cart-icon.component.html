@@ -1,6 +1,17 @@
-<p-button styleClass="px-3" (click)="goToCartPage()">
-    <ng-template pTemplate="content">
-        <p-button label="Cart" icon="pi pi-shopping-cart" [badge]="noOfItems" badgeClass="p-badge-danger"></p-button>
-    </ng-template>
-</p-button>
+<div class="showEntireCartBtn">
+    <p-button styleClass="px-3" (click)="goToCartPage()">
+        <ng-template pTemplate="content">
+            <p-button label="Cart" icon="pi pi-shopping-cart" [badge]="noOfItems" badgeClass="p-badge-danger"></p-button>
+        </ng-template>
+    </p-button>
+</div>
+
+<div class="showSmallCartBtn">
+    <p-button styleClass="px-3 p-button-sm" (click)="goToCartPage()">
+        <ng-template pTemplate="content">
+            <p-button styleClass="p-button-sm" icon="pi pi-shopping-cart" [badge]="noOfItems" badgeClass="p-badge-danger"></p-button>
+        </ng-template>
+    </p-button>
+</div>
+
 

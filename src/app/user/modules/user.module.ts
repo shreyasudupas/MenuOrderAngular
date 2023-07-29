@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { LocationSearchDropdown } from 'src/app/common/components/location-search-dropdown/location-search-dropdown.component';
+import { ClickOutsideDirective } from 'src/app/common/directives/clickOutside.directive';
 import { RoleBasedAuthGaurd } from 'src/app/common/gaurds/role-based-routing-gaurd';
 import { SharedModule } from 'src/app/common/module/common.module';
 import { PrimeNGModule } from 'src/app/common/module/primeng.module';
@@ -20,7 +22,9 @@ import { UserRoutingModule } from './user-routing.module';
         FoodComponent,
         MenuComponent,
         CartComponent,
-        CartIconComponent
+        CartIconComponent,
+        ClickOutsideDirective,
+        LocationSearchDropdown
     ],
     imports:[
         CommonModule,

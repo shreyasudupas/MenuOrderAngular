@@ -1,0 +1,41 @@
+<div class="location-search-container" appclickOutside (clickedOutside)="clickedOutside($event)">
+    <div *ngIf="displayLocationName !== '';else isLocationList" class="col-12">
+
+      <div class="display-locationName-container">
+        <div class="location-icon">
+          <i class="pi pi-map-marker" style="color: rgb(172, 118, 17);"></i>
+        </div>
+        
+        <div class="display-location-item">
+          <p>{{displayLocationName}}</p>
+        </div>
+
+        <div class="location-edit">
+            <p-button icon="pi pi-file-edit" class="edit-button-small" styleClass="p-button-sm p-button-raised p-button-text"
+            (click)="openSearchBox()"></p-button>
+        </div>
+        
+      </div>
+
+    </div>
+
+    <div *ngIf="searchLocation !== ''">
+      <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-danger p-button-text" (click)="cancelSearch()"></p-button>
+    </div>
+
+    <ng-template #isLocationList>
+      <input #searchbar (keyup.enter)="fetchLocation($event)" 
+             type="text" 
+             [(ngModel)]="searchLocation" 
+             pInputText placeholder="Enter location eg: Area, City"/>
+
+      <div *ngIf="isLocationListOpened" class="location-dropdown-menu">
+        <!-- <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i> -->
+        <div *ngFor="let showDropdownItem of searchDropDownList" class="location-menu-item">
+          <div (click)="locationSelection(showDropdownItem)">{{ showDropdownItem }}
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    
+  </div>

@@ -1,8 +1,10 @@
 <div class="grid grid-nogutter">
   <div class="col-12 grid-nogutter">
-    <p-button *ngIf="!isUserAuthenticated" label="Click here to Login" (click)="login()"></p-button>
+    <div class="loginLogoutbtn">
+      <p-button *ngIf="!isUserAuthenticated" label="Click here to Login" (click)="login()"></p-button>
 
-    <p-button *ngIf="isUserAuthenticated" label="Click here to Logout" (click)="logout()"></p-button>
+      <p-button *ngIf="isUserAuthenticated" label="Click here to Logout" (click)="logout()"></p-button>
+    </div>
   </div>
   <div class="col-12 grid-nogutter">
     <router-outlet></router-outlet>

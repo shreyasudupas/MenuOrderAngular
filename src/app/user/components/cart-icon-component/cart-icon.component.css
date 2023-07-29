@@ -1,0 +1,17 @@
+.showEntireCartBtn{
+    display: contents;
+}
+
+.showSmallCartBtn{
+    display: none;
+}
+
+@media(max-width: 800px){
+    .showEntireCartBtn{
+        display: none;
+    }
+    
+    .showSmallCartBtn{
+        display: block;
+    }
+}

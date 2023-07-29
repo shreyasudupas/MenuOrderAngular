@@ -1,3 +1,9 @@
 .custom-header-height{
     height: 30px;
 }
+
+.loginLogoutbtn{
+    display: flex;
+    justify-content: flex-end;
+    gap: 1px;
+}

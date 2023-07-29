@@ -1,28 +1,55 @@
-<div class="p-fluid grid grid-nogutter">
-    <div class="col-2">
-        <img src="assets/Logo/MenuLogo1.png" height="70px" width="150px" alt="MenuLogo" class="Logo" />
-    </div>
-    <div class="col-8">
-        <app-menu-bar></app-menu-bar>
-    </div>
-    <div class="col-2">
-      <div class="grid grid-nogutter">
-        <div class="col-6">
-          <notification></notification>
+<div>
+  <div class="layout-sidebar">
+      <img src="assets/Logo/MenuLogo1.png" height="70px" width="150px" alt="MenuLogo" class="Logo" />
+      <app-menu-bar></app-menu-bar>
+  </div>
+
+  <div class="layout-content">
+      <div class="p-fluid grid grid-nogutter">
+        <!--1st Row-->
+        <div class="col-12">
+          <div class="header-layout">
+
+            <div class="menu-button">
+              <div class="col-2">
+                <p-button icon="pi pi-bars" styleClass="p-button-raised p-button-text" (click)="displaySideMenuBar()"></p-button>
+              </div>
+              
+              <div class="col-10">
+                <div class="location-search-dropdown">
+                  <location-search-dropdown></location-search-dropdown>
+                </div>
+              </div>
+              
+            </div>
+
+            <div class="space-between"></div>
+
+            <div class="location-container">
+              <location-search-dropdown></location-search-dropdown>
+            </div>
+
+            <div class="tools-container">
+              <div class="col-12">
+                <div class="tools-options">
+                  <notification></notification>
+                  <cart-icon></cart-icon>  
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
-        <div class="col-6">
-          <cart-icon></cart-icon>  
+
+        <!--2nd Row-->
+        <div class="col-12 grid-noglutter">
+          <router-outlet></router-outlet>
         </div>
       </div>
-    </div>
-    <div class="col-2">
-      <app-profile></app-profile>
-    </div>
-    <div class="col-9">
-        <div class="grid">
-            <div class="col-12 grid-noglutter p-3">
-              <router-outlet></router-outlet>
-            </div>
-        </div>
-    </div>
+
+      <p-sidebar [(visible)]="sidebarVisible">
+        <h3>Menu User Application</h3>
+        <app-menu-bar></app-menu-bar>
+    </p-sidebar>
+  </div>
 </div>
