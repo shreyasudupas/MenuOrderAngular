@@ -32,6 +32,10 @@ export const environment = {
   },
   notification: 'https://localhost:5004/api/notification',
   imagePath:'https://localhost:5003/app-images/',
+  location:{
+    forwardGeoCoding: 'https://geocode.maps.co/search?q={query}',
+    reverseGeoCoding: 'https://geocode.maps.co/reverse?lat={latitude}&lon={longitude}'
+  },
   EncryptKey:'1203199320052021',
   EncryptIV: '1203199320052021'
 };

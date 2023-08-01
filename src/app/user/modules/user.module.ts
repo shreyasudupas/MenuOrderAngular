@@ -7,6 +7,7 @@ import { ClickOutsideDirective } from 'src/app/common/directives/clickOutside.di
 import { RoleBasedAuthGaurd } from 'src/app/common/gaurds/role-based-routing-gaurd';
 import { SharedModule } from 'src/app/common/module/common.module';
 import { PrimeNGModule } from 'src/app/common/module/primeng.module';
+import { LocationService } from 'src/app/common/services/location.service';
 import { CartComponent } from '../components/cart-component/cart.component';
 import { CartIconComponent } from '../components/cart-icon-component/cart-icon.component';
 import { FoodComponent } from '../components/food/food.component';
@@ -36,7 +37,8 @@ import { UserRoutingModule } from './user-routing.module';
     ],
     providers:[
         RoleBasedAuthGaurd,
-        MessageService
+        MessageService,
+        LocationService
     ]
 })
 

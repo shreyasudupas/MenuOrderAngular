@@ -69,9 +69,9 @@
                 font: small "Comic Sans MS, Comic Sans, cursive";
             }
 
-            .edit-button-small[_ngcontent-bdp-c99] > button{
-                display: inline-block;
-                height: 1px;
+            .edit-button-small{
+                margin: auto;
+                width: 50%;
             }
         }
 

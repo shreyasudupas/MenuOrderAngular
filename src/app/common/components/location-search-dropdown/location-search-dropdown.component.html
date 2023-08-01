@@ -11,7 +11,7 @@
         </div>
 
         <div class="location-edit">
-            <p-button icon="pi pi-file-edit" class="edit-button-small" styleClass="p-button-sm p-button-raised p-button-text"
+            <p-button icon="pi pi-times" class="edit-button-small" styleClass="p-button-rounded p-button-danger p-button-text"
             (click)="openSearchBox()"></p-button>
         </div>
         
@@ -31,8 +31,8 @@
 
       <div *ngIf="isLocationListOpened" class="location-dropdown-menu">
         <!-- <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i> -->
-        <div *ngFor="let showDropdownItem of searchDropDownList" class="location-menu-item">
-          <div (click)="locationSelection(showDropdownItem)">{{ showDropdownItem }}
+        <div *ngFor="let location of searchDropDownList" class="location-menu-item">
+          <div (click)="locationSelection(location)">{{ location.display_name }}
           </div>
         </div>
       </div>

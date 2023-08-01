@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { SearchLocationResponse } from '../../models/nomitmSearchLocationResponse';
+import { UserLocation } from '../../models/userLocationModel';
+import { LocationService } from '../../services/location.service';
 
 @Component({
     selector: 'location-search-dropdown',
@@ -8,14 +11,14 @@ import { Component, OnInit } from '@angular/core';
 
 export class LocationSearchDropdown implements OnInit {
     searchLocation: string = '';
-    searchDropDownList:string[];
+    searchDropDownList:SearchLocationResponse[];
     isLocationListOpened:boolean = false;
     displayLocationName:string = '';
 
-    constructor() {}
+    constructor(private locationService:LocationService) {}
 
     ngOnInit(): void {
-        
+        this.getLocationFromUserBrowser();
     }
 
     getLocationFromUserBrowser() {
@@ -23,27 +26,48 @@ export class LocationSearchDropdown implements OnInit {
             throw new Error('No support for geolocation');
         }
       
-        navigator.geolocation.getCurrentPosition((position) => {
-            const longitude = position.coords.longitude;
-            const latitude = position.coords.latitude;
-            console.log([latitude.toString(), longitude.toString()]);
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const longitude = position.coords.longitude.toString();
+            const latitude = position.coords.latitude.toString();
+            //console.log([latitude.toString(), longitude.toString()]);
+            
+            let userLocationResult = await this.locationService.searchUserLocationByCoordinates(latitude,longitude);
+            if(userLocationResult !== null) {
+                this.displayLocationName = userLocationResult.address.road + ' ,' + userLocationResult.address.suburb;
+
+                let userLocation:UserLocation =  {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    address: userLocationResult.display_name,
+                    city: userLocationResult.address.city,
+                    area: userLocationResult.address.suburb
+                };
+
+                this.locationService.updateUserLocation(userLocation);
+            }
+
         });
     }
 
-    fetchLocation(event: any) {
-        this.searchDropDownList = ["Katreguppe,Bangalore","BSK 3rd Stage, Bangalore","BSK 2nd Stage, Bangalore","Banashankari blah blah bagh 2nd Stage, Bangalore"];
+    async fetchLocation(event: any) {
+        
+        let searchvalue = event.target.value;
         this.isLocationListOpened = true;
+        this.searchDropDownList = [];
 
         if (event.target.value === '') {
-            this.searchDropDownList = [];
             this.isLocationListOpened = !this.isLocationListOpened;
-        }else{
-            this.searchDropDownList = this.searchDropDownList.filter((area) => {
-                return area.toLowerCase().startsWith(event.target.value.toLowerCase());
-            });
+        } else {
 
-            if(this.searchDropDownList.length == 0){
-                this.searchDropDownList = [" No Location Found "]
+            let result = await this.locationService.searchUserLocationByAreaCityName(searchvalue);
+
+            if(result === null){
+                this.searchDropDownList = [];
+            } else {
+                
+                this.searchDropDownList = result;
+
+                //console.log(this.searchDropDownList);
             }
         }
     }
@@ -52,11 +76,23 @@ export class LocationSearchDropdown implements OnInit {
         this.isLocationListOpened = false;
     }
 
-    locationSelection(locationName:string) : void {
-        this.displayLocationName = locationName;
+    locationSelection(location:SearchLocationResponse) : void {
+        let locationSplit = location.display_name.split(',');
+        this.displayLocationName = locationSplit[0] + ' ,' + locationSplit[1] + ' ,' + locationSplit[2];
+
         this.searchLocation = "";
         //console.log(this.locationName);
         this.isLocationListOpened = false;
+
+        let userLocation:UserLocation =  {
+            latitude: location.lat,
+            longitude: location.lon,
+            address: location.display_name,
+            city: '',
+            area: ''
+        };
+
+        this.locationService.updateUserLocation(userLocation);
     }
 
     openSearchBox() {

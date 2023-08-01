@@ -37,3 +37,9 @@
         <ng-template pTemplate="footer">Choose from the list.</ng-template>
     </p-dataView>
 </div>
+
+<p-dialog header="Location Not Set" [(visible)]="showLocationErrorDialog" class="location-not-select-dialog">
+    <p>
+        Please Select your location to search accurate Restaurants.
+    </p>
+</p-dialog>
