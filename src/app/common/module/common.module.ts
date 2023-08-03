@@ -13,6 +13,7 @@ import { CategoryDetailComponent } from 'src/app/admin/components/categories/cat
 import { MenuDetailsComponent } from 'src/app/admin/components/menu-details/menu-details.component';
 import { ImmageSelectionListComponent } from 'src/app/admin/components/image-selection-list/image-selection-list.component';
 import { VendorImageUploadComponent } from 'src/app/admin/components/vendor-image/vendor-image-upload.component';
+import { ScrollBottomToTopComponent } from '../components/scroll-botton-top/scroll-buttom-top.component';
 
 
 
@@ -28,7 +29,8 @@ import { VendorImageUploadComponent } from 'src/app/admin/components/vendor-imag
     MenuDetailsComponent,
     ImmageSelectionListComponent,
     VendorMenuList,
-    VendorImageUploadComponent
+    VendorImageUploadComponent,
+    ScrollBottomToTopComponent
   ],
   imports: [
     CommonModule,
@@ -43,7 +45,8 @@ import { VendorImageUploadComponent } from 'src/app/admin/components/vendor-imag
     VendorDetailComponent,
     VendorUserListComponent,
     CategoryListComponent,
-    VendorMenuList
+    VendorMenuList,
+    ScrollBottomToTopComponent
   ]
 })
 export class SharedModule { }

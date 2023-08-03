@@ -4,11 +4,13 @@ import { UserDataSharingService } from 'src/app/common/services/user-datasharing
 
 @Component({
     selector: 'vendor-dashboard',
-    templateUrl: './vendor-dashboard.component.html'
+    templateUrl: './vendor-dashboard.component.html',
+    styleUrls: [ './vendor-dashboard.component.scss' ]
 })
 
 export class VendorDashboardComponent implements OnInit{
     vendorId:string;
+    sidebarVisible:boolean=false;
     
     constructor(public globlalService:UserDataSharingService,public authService:AuthService) {
     }
@@ -20,4 +22,8 @@ export class VendorDashboardComponent implements OnInit{
             this.globlalService.updateVendorId(this.vendorId);
         }
     }
+
+    displaySideMenuBar(){
+        this.sidebarVisible = true;
+    } 
 }

@@ -1,0 +1,15 @@
+.scroll-top{
+    position: fixed;
+    bottom: 16px;
+    right: 32px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .4s ease-in-out;
+}
+
+.show-scroll{
+    bottom: 32px;
+    pointer-events: auto;
+    opacity: 1;
+    transition: all .4s ease-in-out;
+}
