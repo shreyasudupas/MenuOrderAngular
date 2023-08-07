@@ -8,6 +8,7 @@ import { VendorDashboardComponent } from '../components/vendorDashboard/vendor-d
 import { VendorHomeComponent } from '../components/vendorHome/vendor-home.component';
 import { RoleBasedAuthGaurd } from 'src/app/common/gaurds/role-based-routing-gaurd';
 import { MessageService } from 'primeng/api';
+import { LocationService } from 'src/app/common/services/location.service';
 
 @NgModule({
     declarations:[
@@ -24,7 +25,8 @@ import { MessageService } from 'primeng/api';
     ],
     providers:[
         RoleBasedAuthGaurd,
-        MessageService
+        MessageService,
+        LocationService
     ]
 })
 

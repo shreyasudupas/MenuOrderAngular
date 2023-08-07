@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common'
+import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn:'root'
@@ -9,7 +10,9 @@ import { Location } from '@angular/common'
 export class NavigationService{
     public history:string[] = [];
 
-    constructor(private router:Router,private location:Location) { }
+    constructor(private router:Router,
+        private location:Location,
+        private authService:AuthService) { }
 
     public startSaveHistory(route:string){
         this.history.push(route);
@@ -17,6 +20,8 @@ export class NavigationService{
     }
 
     public goBack() {
+        let user = this.authService.GetUserRole();
+        let defaultRoute = '/' + user;
         this.history.pop();
 
         if(this.history.length > 0) {
@@ -24,7 +29,7 @@ export class NavigationService{
             let url = this.history[this.history.length - 1];
             this.router.navigateByUrl(url);
         }else{
-            this.router.navigateByUrl("/")
+            this.router.navigateByUrl(defaultRoute);
         }
     }
 
