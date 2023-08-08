@@ -62,6 +62,8 @@ vendorImageUrl:string;
 
         this.InitilizeMenu();
 
+        this.navigation.startSaveHistory('vendor/vendor-detail');
+
         this.vendorId = this.activatedRoute.snapshot.params['vendorId'];
 
         if(this.vendorId === '0'){

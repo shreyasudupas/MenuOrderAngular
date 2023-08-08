@@ -237,7 +237,7 @@ export class MenuService{
                         visible: true,
                         componentName:'VendorDetailComponent',
                         routerLink:['./vendor-detail/' + vendorId ],
-                        routeName:'vendor/vendor-detail/' + vendorId
+                        routeName:'vendor/vendor-detail'
                     },
                     {
                         label: 'CategoryDetail',

@@ -15,8 +15,12 @@ export class NavigationService{
         private authService:AuthService) { }
 
     public startSaveHistory(route:string){
-        this.history.push(route);
-        console.log(this.history);
+
+        if(!this.history.includes(route)){
+            this.history.push(route);
+        }
+        
+        //console.log(this.history);
     }
 
     public goBack() {
