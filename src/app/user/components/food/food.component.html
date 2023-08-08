@@ -1,4 +1,12 @@
 <div class="card">
+
+    <div *ngIf="showVendorMap === true">
+        <vendor-map [latitude] = "lat"
+                    [longitude] = "long"
+                    [vendors] = "vendors">
+        </vendor-map>
+    </div>
+
     <p-dataView [value]="vendors">
         <ng-template pTemplate="header">List of Restaurants</ng-template>
         <ng-template let-vendor pTemplate="listItem">

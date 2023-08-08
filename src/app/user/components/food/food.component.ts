@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Vendor } from 'src/app/admin/components/vendor/vendor';
@@ -19,6 +19,9 @@ import { environment } from 'src/environments/environment';
 export class FoodComponent extends BaseComponent<any> implements OnInit{
 vendors:Vendor[];
 showLocationErrorDialog:boolean = false;
+showVendorMap:boolean = false;
+lat:number;
+long:number;
 
     constructor(private menuService:MenuService,
         public override httpclient:HttpClient,
@@ -48,10 +51,14 @@ showLocationErrorDialog:boolean = false;
         this.location.getUserLocationUpdate().subscribe({
             next: result => {
                 //this.getVendorList();
+                this.showVendorMap = false;
+
                 if(result !== undefined){
                     this.showLocationErrorDialog = false;
+                    this.lat = result.latitude;
+                    this.long = result.longitude;
 
-                    this.getNearestVendorList(result.latitude,result.longitude);
+                    this.getNearestVendorList(this.lat,this.long);
                 }else {
                     this.showLocationErrorDialog = true;
                 }
@@ -59,30 +66,31 @@ showLocationErrorDialog:boolean = false;
             },
             error: err => {
                 console.log('Error occured in subscribing the user location ',err);
+                this.showVendorMap = false;
             }
         });
 
     }
 
-    getVendorList(){
-        this.baseUrl = environment.inventory.vendors;
-        this.action = null;
+    // getVendorList(){
+    //     this.baseUrl = environment.inventory.vendors;
+    //     this.action = null;
 
-        this.ListItems(null).subscribe({
-            next: result => {
-                if(result != null){
-                    this.vendors = result;
+    //     this.ListItems(null).subscribe({
+    //         next: result => {
+    //             if(result != null){
+    //                 this.vendors = result;
 
-                    this.vendors.map(vendor=>{
-                        if(vendor.image.imageFileName !== '')
-                            vendor.image.imageFileName = environment.imagePath + vendor.image.imageFileName;
-                    });
+    //                 this.vendors.map(vendor=>{
+    //                     if(vendor.image.imageFileName !== '')
+    //                         vendor.image.imageFileName = environment.imagePath + vendor.image.imageFileName;
+    //                 });
 
-                    //console.log(this.vendors)
-                }
-            }
-        });
-    }
+    //                 //console.log(this.vendors)
+    //             }
+    //         }
+    //     });
+    // }
 
     getNearestVendorList(latitude:number,longitude:number){
         this.baseUrl = environment.inventory.vendors;
@@ -100,6 +108,8 @@ showLocationErrorDialog:boolean = false;
                         if(vendor.image.imageFileName !== '')
                             vendor.image.imageFileName = environment.imagePath + vendor.image.imageFileName;
                     });
+
+                    this.showVendorMap = true;
             },
             error: err => {
                 console.log('Error occured in Nearest Vendor API ',err);
