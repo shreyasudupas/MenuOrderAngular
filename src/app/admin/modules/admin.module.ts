@@ -19,6 +19,7 @@ import { MenuImageUploadComponent } from '../components/menu-image-details/image
 import { RoleBasedAuthGaurd } from 'src/app/common/gaurds/role-based-routing-gaurd';
 import { InviteUserToVendorComponent } from '../components/invite-users-to-vendor/invite-user-vendor-component';
 import { MessageService } from 'primeng/api';
+import { LocationService } from 'src/app/common/services/location.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { MessageService } from 'primeng/api';
   ],
   providers: [ 
     RoleBasedAuthGaurd,
-    MessageService
+    MessageService,
+    LocationService
     //provideImgixLoader('https://localhost:5003/app-images/')
    ]
 })
