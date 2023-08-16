@@ -1,5 +1,7 @@
 <div style="height: 450px;"
         leaflet 
         [leafletOptions]="mapOptions"
-        (leafletMapReady)="onMapReady($event)">
+        (leafletMapReady)="onMapReady($event)"
+        (leafletClick)="onMapClick($event)"
+        (leafletClick)="onMouseClick($event)">
 </div>

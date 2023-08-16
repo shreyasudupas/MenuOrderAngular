@@ -1,0 +1,7 @@
+{
+    "jsonip.com/*": {
+        "target": "https://jsonip.com",
+        "secure": false,
+        "logLevel": "debug"
+    }
+}

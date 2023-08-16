@@ -4,4 +4,5 @@ export class UserLocation{
     address:string;
     latitude:number;
     longitude:number;
+    displayName:string;
 }

@@ -52,6 +52,40 @@
                                 <label for="state">Select a Cuisine Type</label>
                             </span>
                         </div>
+
+                        <div class="field col-6">
+                            <label for="openTimings">Open Timings</label>
+                            <p-calendar formControlName="openTime" [timeOnly]="true" [hourFormat]="'12'"
+                                inputId="openTimings"></p-calendar>
+                        </div>
+
+                        <div class="field col-6">
+                            <label for="closeTimings">Close Timings</label>
+                            <p-calendar formControlName="closeTime" [timeOnly]="true" [hourFormat]="'12'"
+                                inputId="closeTimings"></p-calendar>
+                        </div>
+
+                        <div class="field-radiobutton col-6 p-2">
+                            <p-radioButton name="active" [value]="true" formControlName="active"
+                                inputId="active"></p-radioButton>
+                            <label for="active">Active</label>
+                        </div>
+
+                        <div class="field-radiobutton col-6">
+                            <p-radioButton name="active" [value]="false" formControlName="active"
+                                inputId="inActive"></p-radioButton>
+                            <label for="inActive">InActive</label>
+                        </div>
+
+                        <div class="field col-12">
+                            <div *ngIf="latitude !== undefined && longitude !== undefined">
+                                <vendor-map [latitude] = "latitude"
+                                            [longitude] = "longitude"
+                                            [userMarkerRequired]="false"
+                                            [draggableMarker]="true"></vendor-map>
+                            </div>
+                        </div>
+
                         <div class="field col-12 p-2">
                             <span class="p-float-label field">
                                 <input id="latitude" type="text" formControlName="latitude" pInputText>
@@ -131,26 +165,7 @@
                                 <label for="addressLine2">AddressLine 2</label>
                             </span>
                         </div>
-                        <div class="field col-6">
-                            <label for="openTimings">Open Timings</label>
-                            <p-calendar formControlName="openTime" [timeOnly]="true" [hourFormat]="'12'"
-                                inputId="openTimings"></p-calendar>
-                        </div>
-                        <div class="field col-6">
-                            <label for="closeTimings">Close Timings</label>
-                            <p-calendar formControlName="closeTime" [timeOnly]="true" [hourFormat]="'12'"
-                                inputId="closeTimings"></p-calendar>
-                        </div>
-                        <div class="field-radiobutton col-6">
-                            <p-radioButton name="active" [value]="true" formControlName="active"
-                                inputId="active"></p-radioButton>
-                            <label for="active">Active</label>
-                        </div>
-                        <div class="field-radiobutton col-6">
-                            <p-radioButton name="active" [value]="false" formControlName="active"
-                                inputId="inActive"></p-radioButton>
-                            <label for="inActive">InActive</label>
-                        </div>
+                        
                         <div class="field col-12">
                             <!-- <p-gmap [options]="options" [style]="{'width':'100%','height':'320px'}" ></p-gmap> -->
                         </div>

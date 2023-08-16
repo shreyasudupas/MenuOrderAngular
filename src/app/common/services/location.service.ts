@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core'
-import { BehaviorSubject, lastValueFrom ,Observable } from 'rxjs'
+import { BehaviorSubject, lastValueFrom ,Observable, switchMap } from 'rxjs'
 import { environment } from 'src/environments/environment';
 import { SearchLocationResponse } from '../models/nomitmSearchLocationResponse';
 import { UserLocation } from '../models/userLocationModel'
@@ -19,7 +19,7 @@ constructor(private httpClient:HttpClient) {}
 
     public updateUserLocation(updatedUserLocation:UserLocation ) {
         this.userLocation = {...this.userLocation, latitude: updatedUserLocation.latitude, area: updatedUserLocation.area,
-        city: updatedUserLocation.city, longitude: updatedUserLocation.longitude };
+        city: updatedUserLocation.city, longitude: updatedUserLocation.longitude, displayName: updatedUserLocation.displayName };
 
         this.userLocationSubcription.next(this.userLocation);
     }
@@ -55,5 +55,66 @@ constructor(private httpClient:HttpClient) {}
         });
 
         return locationResult;
+    }
+
+    getLocationFromUserBrowser() {
+        if (!navigator.geolocation) {
+            throw new Error('No support for geolocation');
+        }
+      
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const longitude = position.coords.longitude.toString();
+            const latitude = position.coords.latitude.toString();
+            //console.log([latitude.toString(), longitude.toString()]);
+            
+            let userLocationResult = await this.searchUserLocationByCoordinates(latitude,longitude);
+            if(userLocationResult !== null) {
+
+                let userLocation:UserLocation =  {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    address: userLocationResult.display_name,
+                    city: userLocationResult.address.city,
+                    area: userLocationResult.address.suburb,
+                    displayName: userLocationResult.address.road + ' ,' + userLocationResult.address.suburb
+                };
+
+                this.updateUserLocation(userLocation);
+            }
+
+        },(error) => {
+            //console.log(error);
+            if(error.PERMISSION_DENIED !== undefined){
+                
+                this.httpClient.get(environment.location.clientsIpAddress).pipe(
+                    switchMap((value:any) =>{
+                        let ipAddress = value.ip;
+                        let url = environment.location.geolocationByIpAddress;
+                        url = url.replace('{ipAddress}',ipAddress);
+                        return this.httpClient.get(url);
+                    })
+                )
+                .subscribe({
+                    next: (result:any) => {
+                        if(result !== null){
+
+                            let userLocation:UserLocation =  {
+                                latitude: result.lat,
+                                longitude: result.lon,
+                                address: null,
+                                city: result.city,
+                                area: null,
+                                displayName: result.city
+                            };
+            
+                            this.updateUserLocation(userLocation);
+                        }
+                    },
+                    error: err => console.log('Error occured in Ip address API ', err)
+                })
+            } else {
+                console.log('Error occured in Navigator ',error);
+            }
+        });
     }
 }

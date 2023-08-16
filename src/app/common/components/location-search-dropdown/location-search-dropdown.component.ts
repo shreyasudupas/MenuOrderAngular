@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { SearchLocationResponse } from '../../models/nomitmSearchLocationResponse';
 import { UserLocation } from '../../models/userLocationModel';
@@ -15,39 +16,22 @@ export class LocationSearchDropdown implements OnInit {
     isLocationListOpened:boolean = false;
     displayLocationName:string = '';
 
-    constructor(private locationService:LocationService) {}
+    constructor(private locationService:LocationService,
+        private httpClient:HttpClient) {}
 
     ngOnInit(): void {
-        this.getLocationFromUserBrowser();
-    }
+        this.locationService.getLocationFromUserBrowser();
 
-    getLocationFromUserBrowser() {
-        if (!navigator.geolocation) {
-            throw new Error('No support for geolocation');
-        }
-      
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            const longitude = position.coords.longitude.toString();
-            const latitude = position.coords.latitude.toString();
-            //console.log([latitude.toString(), longitude.toString()]);
-            
-            let userLocationResult = await this.locationService.searchUserLocationByCoordinates(latitude,longitude);
-            if(userLocationResult !== null) {
-                this.displayLocationName = userLocationResult.address.road + ' ,' + userLocationResult.address.suburb;
-
-                let userLocation:UserLocation =  {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                    address: userLocationResult.display_name,
-                    city: userLocationResult.address.city,
-                    area: userLocationResult.address.suburb
-                };
-
-                this.locationService.updateUserLocation(userLocation);
+        //get location update
+        this.locationService.getUserLocationUpdate().subscribe({
+            next: result => {
+                if(result !== undefined){
+                    this.displayLocationName = result.displayName;
+                }
             }
-
-        });
+        })
     }
+
 
     async fetchLocation(event: any) {
         
@@ -88,8 +72,9 @@ export class LocationSearchDropdown implements OnInit {
             latitude: location.lat,
             longitude: location.lon,
             address: location.display_name,
-            city: '',
-            area: ''
+            city: location.address.city,
+            area: location.address.suburb,
+            displayName: location.address.road + ' ,' + location.address.suburb
         };
 
         this.locationService.updateUserLocation(userLocation);

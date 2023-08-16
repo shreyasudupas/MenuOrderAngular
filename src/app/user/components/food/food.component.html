@@ -3,7 +3,8 @@
     <div *ngIf="showVendorMap === true">
         <vendor-map [latitude] = "lat"
                     [longitude] = "long"
-                    [vendors] = "vendors">
+                    [vendors] = "vendors"
+                    [userMarkerRequired]="true">
         </vendor-map>
     </div>
 

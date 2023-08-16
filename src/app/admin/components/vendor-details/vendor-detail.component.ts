@@ -41,6 +41,8 @@ coordinates:null,addressLine1:'',addressLine2:'',openTime:'',closeTime:'',active
 categoryTab:boolean = true;
 menuDetailTab:boolean = true;
 vendorImageUrl:string;
+latitude:number;
+longitude:number;
 
     constructor(
         public menuService:MenuService,
@@ -102,7 +104,8 @@ vendorImageUrl:string;
             this.callForkItemWhenVendorIsPresent();
         }
 
-        console.log(this.navigation.history);
+        //console.log(this.navigation.history);
+        this.updateVendorCoordinates();
     }
 
     callFormkItemWhenNewPage = () => {
@@ -446,5 +449,28 @@ vendorImageUrl:string;
                 console.log('Address Association encountered error ',err);
             }
         });
+    }
+
+    updateVendorCoordinates() {
+        this.locationService.getLocationFromUserBrowser();
+
+        //then subscribe to the event once user location is updated
+        this.locationService.getUserLocationUpdate().subscribe({
+            next: result => {
+
+                if(result !== undefined){
+                    this.latitude = result.latitude;
+                    this.longitude = result.longitude;
+                }
+
+                // this.vendorDetailForm.patchValue({
+                //     latitude: this.latitude,
+                //     longitude: this.longitude
+                // });
+            },
+            error: err => {
+                console.log('Update Vendor Coorindates has encountred an error ',err);
+            }
+        })
     }
 }

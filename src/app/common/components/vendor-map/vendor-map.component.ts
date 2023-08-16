@@ -3,15 +3,26 @@ import * as Leaflet from 'leaflet';
 import { Vendor } from 'src/app/admin/components/vendor/vendor';
 
 @Component({
-    selector: 'vendor-map',
+    selector: 'vendor-map[latitude][longitude]',
     templateUrl: './vendor-map.component.html',
     styleUrls: [ './vendor-map.component.scss' ]
 })
 
 export class VendorMapComponent implements OnInit,OnDestroy {
-    @Input() latitude:number;
-    @Input() longitude:number;
-    @Input() vendors:Vendor[];
+    @Input() 
+    latitude!:number;
+
+    @Input() 
+    longitude!:number;
+
+    @Input() 
+    vendors?:Vendor[];
+
+    @Input()
+    userMarkerRequired?:boolean;
+
+    @Input()
+    draggableMarker?:boolean;
 
     
     map!: Leaflet.Map;
@@ -26,16 +37,28 @@ export class VendorMapComponent implements OnInit,OnDestroy {
         this.map = map;
 
         if(this.vendors !== undefined){
-            this.initMarkers();
+            this.initVendorMarkers();
         }
 
-        this.userMarker(this.latitude,this.longitude);
+        if(this.userMarkerRequired !== undefined){
+            if(this.userMarkerRequired === true){
+                this.userMarker(this.latitude,this.longitude);
+            }
+        }
+
+        if(this.draggableMarker !== undefined){
+            if(this.draggableMarker == true){
+                this.customMarker(this.latitude,this.longitude);
+            }
+        }
     }
 
     initMapOptions(lat:number,longitude:number) {
         this.mapOptions = {
             center: Leaflet.latLng(lat,longitude),
-            zoom: 14,
+            zoom: 15,
+            minZoom:14,
+            maxZoom:18,
             layers: [
                 Leaflet.tileLayer(
                     'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -48,7 +71,7 @@ export class VendorMapComponent implements OnInit,OnDestroy {
         };    
     }
 
-    initMarkers() {
+    initVendorMarkers() {
         this.vendors.forEach((vendor ,index)=> {
             const data = {
                 position: { lat: vendor.coordinates.latitude, lng: vendor.coordinates.longitude },
@@ -56,8 +79,17 @@ export class VendorMapComponent implements OnInit,OnDestroy {
             }
             const marker = Leaflet.marker(data.position,{ draggable: data.draggable });
 
-            marker.addTo(this.map).bindPopup(vendor.vendorName)
-                                  .openPopup();
+            marker.addTo(this.map)
+                                .bindPopup(vendor.vendorName);
+
+            //tool tip creation
+
+            const tooltip = Leaflet.tooltip({
+                permanent: true,
+                content: '<b>' +  vendor.vendorName + '</b>'
+            });
+
+            marker.bindTooltip(tooltip);
 
             this.markers.push(marker);
         });
@@ -74,8 +106,8 @@ export class VendorMapComponent implements OnInit,OnDestroy {
             icon: Leaflet.icon({ 
                 iconUrl:'assets/icons/myLocation.png',
                 iconSize: [40,40]
-                }) 
-            });
+            }) 
+        });
 
         userMarker.addTo(this.map).bindPopup('Your location');
 
@@ -90,6 +122,31 @@ export class VendorMapComponent implements OnInit,OnDestroy {
         });
 
         circle.addTo(this.map);
+    }
+
+    onMapClick(event:any): void {
+        console.log(event);
+    }
+
+    customMarker(latitude:number,longitude:number) {
+        const data = {
+            postion: { lat: latitude , lng: longitude },
+            draggable: true
+        };
+
+        const customMarker = Leaflet.marker(data.postion,{ 
+            draggable: data.draggable,
+            icon: Leaflet.icon({ 
+                iconUrl:'assets/icons/myLocation.png',
+                iconSize: [40,40]
+            }) 
+        });
+
+        customMarker.addTo(this.map);
+    }
+
+    onMouseClick(event:any) {
+        console.log('Map Moved Out ',event);
     }
 
     ngOnDestroy(): void {

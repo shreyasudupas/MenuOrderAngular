@@ -12,6 +12,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
+    if(request.url.includes(environment.location.clientsIpAddress)){
+      return next .handle(request);
+    }
+    
     var token = this.auth.getToken();
     
     if(token){

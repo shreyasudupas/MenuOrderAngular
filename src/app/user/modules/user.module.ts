@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MessageService } from 'primeng/api';
 import { LocationSearchDropdown } from 'src/app/common/components/location-search-dropdown/location-search-dropdown.component';
-import { VendorMapComponent } from 'src/app/common/components/vendor-map/vendor-map.component';
 import { ClickOutsideDirective } from 'src/app/common/directives/clickOutside.directive';
 import { RoleBasedAuthGaurd } from 'src/app/common/gaurds/role-based-routing-gaurd';
 import { SharedModule } from 'src/app/common/module/common.module';
@@ -26,7 +24,6 @@ import { UserRoutingModule } from './user-routing.module';
         MenuComponent,
         CartComponent,
         CartIconComponent,
-        VendorMapComponent,
         ClickOutsideDirective,
         LocationSearchDropdown
     ],
@@ -36,8 +33,7 @@ import { UserRoutingModule } from './user-routing.module';
         ReactiveFormsModule,
         SharedModule,
         PrimeNGModule,
-        UserRoutingModule,
-        LeafletModule
+        UserRoutingModule
     ],
     providers:[
         RoleBasedAuthGaurd,

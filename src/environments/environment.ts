@@ -34,7 +34,9 @@ export const environment = {
   imagePath:'https://localhost:5003/app-images/',
   location:{
     forwardGeoCoding: 'https://geocode.maps.co/search?q={query}',
-    reverseGeoCoding: 'https://geocode.maps.co/reverse?lat={latitude}&lon={longitude}'
+    reverseGeoCoding: 'https://geocode.maps.co/reverse?lat={latitude}&lon={longitude}',
+    clientsIpAddress:'https://jsonip.com',
+    geolocationByIpAddress: 'http://ip-api.com/json/{ipAddress}'
   },
   EncryptKey:'1203199320052021',
   EncryptIV: '1203199320052021'
