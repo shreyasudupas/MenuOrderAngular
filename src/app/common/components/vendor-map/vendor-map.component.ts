@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import * as Leaflet from 'leaflet'; 
 import { Vendor } from 'src/app/admin/components/vendor/vendor';
 
@@ -22,12 +22,16 @@ export class VendorMapComponent implements OnInit,OnDestroy {
     userMarkerRequired?:boolean;
 
     @Input()
-    draggableMarker?:boolean;
+    customAddressMarkerRequired?:boolean;
+
+    @Output()
+    customAddressLatLongValues? = new EventEmitter<any>();
 
     
     map!: Leaflet.Map;
     mapOptions: Leaflet.MapOptions;
     markers: Leaflet.Marker[] = [];
+    customMarker: Leaflet.Marker;
 
     ngOnInit(): void {
         this.initMapOptions(this.latitude,this.longitude);
@@ -46,10 +50,23 @@ export class VendorMapComponent implements OnInit,OnDestroy {
             }
         }
 
-        if(this.draggableMarker !== undefined){
-            if(this.draggableMarker == true){
-                this.customMarker(this.latitude,this.longitude);
+        if(this.customAddressMarkerRequired !== undefined){
+            if(this.customAddressMarkerRequired == true){
+                this.initCustomAddressMarker(this.latitude,this.longitude);
             }
+        }
+
+        if(this.customMarker !== undefined) {
+            this.customMarker.on('dragend',(event:any)=> {
+                var position = this.customMarker.getLatLng();
+                
+                //console.log('Dragged Position ',position);
+                this.customAddressLatLongValues.emit({
+                    latitude: position.lat,
+                    longitude: position.lng
+                });
+
+            });
         }
     }
 
@@ -124,17 +141,13 @@ export class VendorMapComponent implements OnInit,OnDestroy {
         circle.addTo(this.map);
     }
 
-    onMapClick(event:any): void {
-        console.log(event);
-    }
-
-    customMarker(latitude:number,longitude:number) {
+    initCustomAddressMarker(latitude:number,longitude:number) {
         const data = {
             postion: { lat: latitude , lng: longitude },
             draggable: true
         };
 
-        const customMarker = Leaflet.marker(data.postion,{ 
+        this.customMarker = Leaflet.marker(data.postion,{ 
             draggable: data.draggable,
             icon: Leaflet.icon({ 
                 iconUrl:'assets/icons/myLocation.png',
@@ -142,11 +155,7 @@ export class VendorMapComponent implements OnInit,OnDestroy {
             }) 
         });
 
-        customMarker.addTo(this.map);
-    }
-
-    onMouseClick(event:any) {
-        console.log('Map Moved Out ',event);
+        this.customMarker.addTo(this.map);
     }
 
     ngOnDestroy(): void {

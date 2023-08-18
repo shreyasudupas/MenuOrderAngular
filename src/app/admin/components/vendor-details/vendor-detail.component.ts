@@ -100,12 +100,14 @@ longitude:number;
 
         if(this.vendorId === "0"){
             this.callFormkItemWhenNewPage();
+
+            this.updateVendorCoordinates();
         }else{
             this.callForkItemWhenVendorIsPresent();
         }
 
         //console.log(this.navigation.history);
-        this.updateVendorCoordinates();
+        
     }
 
     callFormkItemWhenNewPage = () => {
@@ -231,6 +233,9 @@ longitude:number;
                     latitude: this.vendorDetail.coordinates.latitude,
                     longitude: this.vendorDetail.coordinates.longitude
                 });
+
+                this.latitude = this.vendorDetail.coordinates.latitude;
+                this.longitude = this.vendorDetail.coordinates.longitude;
 
                 //get cities and states dropdown update
                 let state = this.stateDropDownValues.find(s=>s.label == this.vendorDetail.state);
@@ -463,14 +468,19 @@ longitude:number;
                     this.longitude = result.longitude;
                 }
 
-                // this.vendorDetailForm.patchValue({
-                //     latitude: this.latitude,
-                //     longitude: this.longitude
-                // });
             },
             error: err => {
                 console.log('Update Vendor Coorindates has encountred an error ',err);
             }
         })
+    }
+
+    getLatLongFromUserSelection(latLong:any) {
+        //console.log('User has dragged the marker to this lat:' + latLong.latitude + ' long:' + latLong.longitude);
+
+        this.vendorDetailForm.patchValue({
+            latitude: latLong.latitude,
+            longitude: latLong.longitude
+        });
     }
 }
