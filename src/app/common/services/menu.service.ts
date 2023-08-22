@@ -60,6 +60,15 @@ export class MenuService{
                         visible:false,
                         routeName:'user/cart',
                         routerLinkActiveOptions: { exact:true }
+                    },
+                    {
+                        label: 'Profile',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink:['./profile'],
+                        componentName:'UserProfileComponent',
+                        visible:true,
+                        routeName:'user/profile',
+                        routerLinkActiveOptions: { exact:true }
                     }
                 ]
             },
@@ -173,6 +182,15 @@ export class MenuService{
                         visible:true,
                         routeName:'admin/invite-user-to-vendor',
                         routerLinkActiveOptions: { exact:true }
+                    },
+                    {
+                        label: 'Profile',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink:['./profile'],
+                        componentName:'UserProfileComponent',
+                        visible:true,
+                        routeName:'admin/profile',
+                        routerLinkActiveOptions: { exact:true }
                     }
                 ]
             },
@@ -206,6 +224,15 @@ export class MenuService{
                         routeName:'/category-details',
                         routerLinkActiveOptions: { exact:true }
                     },
+                    {
+                        label: 'Profile',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink:['./profile'],
+                        componentName:'UserProfileComponent',
+                        visible:true,
+                        routeName:'vendor/profile',
+                        routerLinkActiveOptions: { exact:true }
+                    }
                 ]
             }
         ]; 

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
 import { Notification } from 'src/app/common/components/notification/notification';
@@ -6,19 +6,25 @@ import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
 import { SignalrService } from '../../services/signalr.service';
 
+
+
 @Component({
     selector: 'notification',
     templateUrl:'./notification.component.html',
-    styleUrls:['./notification.component.css'],
+    styleUrls:['./notification.component.scss'],
     providers: [MessageService]
 })
 
-export class NotificationComponent implements OnInit{
+export class NotificationComponent implements OnInit {
     notificationsList:Notification[] = [];
     selectedNotification:Notification[]=[];
     loading:boolean=false;
     userId:string='';
+    skip:number = 0;
+    totalRecordsToDisplay:number = 5;
+
     @ViewChild('op') overlayId;
+    
 
     constructor(private notificationService:NotificationService,
         private authService:AuthService
@@ -36,22 +42,25 @@ export class NotificationComponent implements OnInit{
         if(user !== null){
             this.userId = user.profile['userId'];
 
-            this.notificationsList = Array.from({length:1000});
+            //this.notificationsList = Array.from({length:1000});
 
-            this.notificationService.getNotificationCount(this.userId).subscribe({
-                next: result => {
-                    //this.newNotificationCount = result.toString();
-                    this.signalRService.data = result;
-                    //console.log(result);
-                },
-                error: err => {
-                    console.log('error in fetching notification count');
-                }
-            });
-        }
+            this.signalRNotifications(); 
+            
+            this.getNotifications(this.skip,this.totalRecordsToDisplay);
+        }    
+    }
 
-        
-        
+    signalRNotifications() {
+        this.notificationService.getNotificationCount(this.userId).subscribe({
+            next: result => {
+                //this.newNotificationCount = result.toString();
+                this.signalRService.data = result;
+                //console.log(result);
+            },
+            error: err => {
+                console.log('error in fetching notification count');
+            }
+        });
     }
 
     loadNotifcationLazy = ( event: LazyLoadEvent ) => {
@@ -120,6 +129,21 @@ export class NotificationComponent implements OnInit{
                 console.log(error);
             }
         })
+    }
+
+    getNotifications = (skip:number,take:number) => {
+        this.notificationService.getAllNotifications(this.userId,skip,take).then(result => {
+            this.loading = false;
+            this.notificationsList = [...this.notificationsList, ...result];
+        }).catch(err => console.log('Error Occured in recieving the Notification list ',err));
+    }
+
+    onScroll = () => {
+        this.loading = true;
+        this.skip = this.skip + this.totalRecordsToDisplay;
+
+        this.getNotifications(this.skip,this.totalRecordsToDisplay);
+
     }
 
     ngOnDestroy(){

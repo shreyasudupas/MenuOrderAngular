@@ -6,9 +6,14 @@
 
 <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '720px'}">
     <ng-template pTemplate>
-        <h4>Notifications</h4>
+        <div class="col-12">
+            <div *ngIf="userId !== undefined">
+                <notification-profile [userId]="userId"></notification-profile>
+            </div>
+        </div>
+
         <!--VirtualScrollItem is a Height of a row to use in calculations of virtual scrolling. -->
-        <p-table [value]="notificationsList" selectionMode="multiple" [loading]="loading"
+        <!-- <p-table [value]="notificationsList" selectionMode="multiple" [loading]="loading"
             [(selection)]="selectedNotification" dataKey="id" [tableStyle]="{'min-width': '10rem'}" [scrollable]="true"
             scrollHeight="250px" [rows]="5" [lazy]="true" [virtualScroll]="true" [virtualScrollItemSize]="50"
             (onLazyLoad)="loadNotifcationLazy($event)" (onRowUnselect)="onNotificationUnselect($event)">
@@ -35,6 +40,25 @@
                     </td>
                 </tr>
             </ng-template>
-        </p-table>
+        </p-table> -->
+
+        <div
+            class="notification-container"
+            infinite-scroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollThrottle]="500"
+            [scrollWindow]="false"
+            (scrolled)="onScroll()">
+
+            <div class="col-12">
+                <div class="notification-card-space" *ngFor="let notification of notificationsList">
+                    <div class="notification-card">
+                        <h5> {{notification.description}} </h5>
+                    </div>
+                </div>        
+            </div>
+
+            <div *ngIf="loading">Loading...</div>
+        </div>
     </ng-template>
 </p-overlayPanel>

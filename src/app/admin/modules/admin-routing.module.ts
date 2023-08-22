@@ -16,6 +16,7 @@ import { RoleBasedAuthGaurd } from 'src/app/common/gaurds/role-based-routing-gau
 import { Role } from 'src/app/common/models/role';
 import { ForbiddenComponent } from 'src/app/common/components/forbidden/forbidden.component';
 import { InviteUserToVendorComponent } from '../components/invite-users-to-vendor/invite-user-vendor-component';
+import { UserProfileComponent } from 'src/app/common/components/user-profile/user-profile.component';
 
 const routes: Routes = [
   { path:'', component: AdminDashboardComponent,canActivate:[RoleBasedAuthGaurd], data: { roles: [Role.Admin] }, children: [
@@ -54,6 +55,9 @@ const routes: Routes = [
     },
     {
       path: 'invite-user-to-vendor' , component: InviteUserToVendorComponent
+    },
+    {
+        path: 'profile', component: UserProfileComponent
     },
     { 
       path:'',

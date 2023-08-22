@@ -35,6 +35,7 @@ import {VirtualScrollerModule} from 'primeng/virtualscroller';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import { MenuModule } from 'primeng/menu';
 import { SidebarModule } from 'primeng/sidebar';
+import { AvatarModule } from 'primeng/avatar';
 
 @NgModule({
     imports:[ButtonModule,
@@ -73,7 +74,8 @@ import { SidebarModule } from 'primeng/sidebar';
         VirtualScrollerModule,
         ConfirmDialogModule,
         MenuModule,
-        SidebarModule 
+        SidebarModule,
+        AvatarModule 
     ],
     exports:[ButtonModule,
         TabMenuModule,
@@ -111,7 +113,8 @@ import { SidebarModule } from 'primeng/sidebar';
         VirtualScrollerModule,
         ConfirmDialogModule,
         MenuModule,
-        SidebarModule
+        SidebarModule,
+        AvatarModule
     ]
 })
 

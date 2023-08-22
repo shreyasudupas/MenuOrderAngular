@@ -1,0 +1,36 @@
+<div class="notification-container-header">
+    <div class="notification-container-item">
+        <div class="notification-profile-pic">
+            <div *ngIf="loading === true;else showProfilePic">
+                <p-skeleton shape="circle" size="4rem" styleClass="mr-2"></p-skeleton>
+            </div>
+
+            <ng-template #showProfilePic>
+                <p-avatar [image]="userProfileImageLocation" styleClass="mr-2" size="xlarge" shape="circle"></p-avatar>
+            </ng-template>
+
+            <div class="notification-profile-container">
+                <div class="notification-profile-item">
+                    <a [href]="userProfileLink">Edit Profile</a>
+                </div>
+                <div class="notification-profile-item">
+                    <div *ngIf="loading === true;else showWalletInfo">
+                        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                    </div>
+                    <ng-template #showWalletInfo>
+                        <img class="notification-wallet-icon" src="assets/UserInfoImage/rupee.png" alt="wallet" />
+                        {{points}}
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="notification-container-item">
+        <div *ngIf="loading === true;else showWelcomeUser">
+            <p-skeleton width="10rem" height="4rem" borderRadius="16px"></p-skeleton>
+        </div>
+        <ng-template #showWelcomeUser>
+            <h4>Hi, {{username}}</h4>
+        </ng-template>
+    </div>
+</div>

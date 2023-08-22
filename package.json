@@ -27,6 +27,7 @@
     "crypto-js": "^4.1.1",
     "graphql": "^16.7.1",
     "leaflet": "^1.9.4",
+    "ngx-infinite-scroll": "^15.0.0",
     "oidc-client": "^1.11.5",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",

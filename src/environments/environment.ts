@@ -13,7 +13,7 @@ export const environment = {
 
   },
   idsConfig:{
-    imageServerPath:'https://localhost:5005/images/',
+    imageServerPath:'https://localhost:5006/images/',
     vendormail:"https://localhost:5006/api/mail/",
     vendorUserMapping:'https://localhost:5006/api/vendor-user-mapping'
   },

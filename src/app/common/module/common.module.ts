@@ -16,6 +16,9 @@ import { VendorImageUploadComponent } from 'src/app/admin/components/vendor-imag
 import { ScrollBottomToTopComponent } from '../components/scroll-botton-top/scroll-buttom-top.component';
 import { VendorMapComponent } from '../components/vendor-map/vendor-map.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { NotificationProfileComponent } from '../components/notification-profile/notification-profile.component';
+import { UserProfileComponent } from '../components/user-profile/user-profile.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 
@@ -33,14 +36,17 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     VendorMenuList,
     VendorImageUploadComponent,
     ScrollBottomToTopComponent,
-    VendorMapComponent
+    VendorMapComponent,
+    NotificationProfileComponent,
+    UserProfileComponent
   ],
   imports: [
     CommonModule,
     PrimeNGModule,
     ReactiveFormsModule,
     FormsModule,
-    LeafletModule
+    LeafletModule,
+    InfiniteScrollModule 
   ],
   exports:[
     MenuBarComponent,
@@ -51,7 +57,9 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     CategoryListComponent,
     VendorMenuList,
     ScrollBottomToTopComponent,
-    VendorMapComponent
+    VendorMapComponent,
+    NotificationProfileComponent,
+    UserProfileComponent
   ]
 })
 export class SharedModule { }

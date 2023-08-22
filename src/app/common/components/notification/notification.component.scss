@@ -1,0 +1,48 @@
+// :host ::ng-deep .p-tabview-panels{
+//     padding: 0px !important; 
+// }
+
+.product-item{
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+// .center {
+//     padding: 25px 50px 25px;
+//     text-align: center;
+// }
+
+.notification-container {
+    height: 12rem;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .notification-card-space {
+        padding: 5px 0 0 5px;
+    }
+
+    .notification-card {
+        box-shadow: 0 4px 8px 0 rgb(161, 161, 161);
+        transition: 0.3s;
+        padding: 10px;
+    }
+
+    .notification-card:hover {
+        box-shadow: 0 8px 16px 0 rgb(61, 61, 61);
+    }
+    
+}
+
+
+
+@media (max-width: 800px) {
+    .center {
+        padding: 20px 10px 14px;
+    }
+}
+  

@@ -1,0 +1,31 @@
+.notification-container-header{
+    display: flex;
+    flex-direction: row;
+}
+
+.notification-container-item {
+    flex-grow: 1;
+
+    .notification-profile-pic {
+        float: left;
+        padding: 2px;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .notification-profile-container {
+        display: flex;
+        flex-direction: column;
+
+        .notification-profile-item {
+            flex-grow: 1;
+            font-size: small;
+            font: 1em "Fira Sans", sans-serif;
+
+            .notification-wallet-icon {
+                height: 26px;
+                width: 35%;
+            }
+        }
+    }
+}
