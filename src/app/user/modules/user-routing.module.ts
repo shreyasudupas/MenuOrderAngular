@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { UserProfileComponent } from "src/app/common/components/user-profile/user-profile.component";
 import { RoleBasedAuthGaurd } from "src/app/common/gaurds/role-based-routing-gaurd";
 import { Role } from "src/app/common/models/role";
 import { CartComponent } from "../components/cart-component/cart.component";
@@ -14,6 +15,9 @@ const routes:Routes = [
             { path:'food', component: FoodComponent },
             { path: 'cart', component: CartComponent },
             { path: 'menu/:vendorId' , component: MenuComponent },
+            {
+                path: 'profile', component: UserProfileComponent
+            },
             { 
                 path:'',
                 redirectTo:'home',

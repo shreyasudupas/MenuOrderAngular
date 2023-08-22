@@ -1,0 +1,22 @@
+.profile-container {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+
+    .profile-piture-container {
+        flex-grow: 0.5;
+
+        .picture-location {
+            margin: auto;
+            width: 50%;
+        }
+    }
+
+    .profile-info-container {
+        flex-grow: 1;
+
+        .profile-content {
+            padding: 10px;
+        }
+    }
+}

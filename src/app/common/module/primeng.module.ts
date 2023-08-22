@@ -36,6 +36,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import { MenuModule } from 'primeng/menu';
 import { SidebarModule } from 'primeng/sidebar';
 import { AvatarModule } from 'primeng/avatar';
+import { ImageModule } from 'primeng/image';
 
 @NgModule({
     imports:[ButtonModule,
@@ -75,7 +76,8 @@ import { AvatarModule } from 'primeng/avatar';
         ConfirmDialogModule,
         MenuModule,
         SidebarModule,
-        AvatarModule 
+        AvatarModule,
+        ImageModule
     ],
     exports:[ButtonModule,
         TabMenuModule,
@@ -114,7 +116,8 @@ import { AvatarModule } from 'primeng/avatar';
         ConfirmDialogModule,
         MenuModule,
         SidebarModule,
-        AvatarModule
+        AvatarModule,
+        ImageModule
     ]
 })
 

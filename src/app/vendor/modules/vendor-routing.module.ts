@@ -7,6 +7,7 @@ import { VendorDetailComponent } from "src/app/admin/components/vendor-details/v
 import { CategoryDetailComponent } from "src/app/admin/components/categories/category-detail.component";
 import { MenuDetailsComponent } from "src/app/admin/components/menu-details/menu-details.component";
 import { RoleBasedAuthGaurd } from "src/app/common/gaurds/role-based-routing-gaurd";
+import { UserProfileComponent } from "src/app/common/components/user-profile/user-profile.component";
 
 const routes:Routes = [
     { 
@@ -20,6 +21,9 @@ const routes:Routes = [
             },
             {
                 path:'vendor-detail/:vendorId/menu-details/:menuDetailsId', component: MenuDetailsComponent
+            },
+            {
+                path: 'profile', component: UserProfileComponent
             },
             { 
                 path:'',
