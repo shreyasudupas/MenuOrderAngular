@@ -10,7 +10,7 @@
         </div>
 
         <div class="profile-info-container">
-            <form [formGroup]="profileForm">
+            <form [formGroup]="profileForm" (ngSubmit)="submitUserInfo()">
 
                 <div class="col-12">
                     <div class="profile-content">
@@ -55,12 +55,22 @@
                             <label htmlFor="email">Email</label>
                         </span>
                     </div>
+                    <div *ngIf="profileForm.get('email')?.invalid" class="error">
+                        <div *ngIf="profileForm.get('email')?.errors?.['required']">
+                            Email is required.
+                          </div>
+                    </div>
                 </div>
 
                 <div class="col-12">
                     <div class="profile-content">
                         <p-checkbox formControlName="emailConfirmed" value="true" inputId="emailConfirmed"></p-checkbox>
                         <label for="emailConfirmed">Email Confirmed</label>
+                    </div>
+                    <div *ngIf="profileForm.get('emailConfirmed')?.invalid" class="error">
+                        <div *ngIf="profileForm.get('emailConfirmed')?.errors?.['required']">
+                            Please check EmailConfirmed.
+                          </div>
                     </div>
                 </div>
 
@@ -70,6 +80,11 @@
                             <input id="phoneNumber" pInputText formControlName="phoneNumber"/>
                             <label htmlFor="phoneNumber">Phone Number</label>
                         </span>
+                        <div *ngIf="profileForm.get('phoneNumber')?.invalid" class="error">
+                            <div *ngIf="profileForm.get('phoneNumber')?.errors?.['required']">
+                                Please enter Phone Number.
+                              </div>
+                        </div>
                     </div>
                 </div>
 
@@ -89,7 +104,7 @@
 
                 <div class="col-12">
                     <div class="profile-content">
-                        <p-button label="Save" styleClass="p-button-rounded"></p-button>
+                        <p-button type="submit" label="Save" styleClass="p-button-rounded"></p-button>
                     </div>
                 </div>
 

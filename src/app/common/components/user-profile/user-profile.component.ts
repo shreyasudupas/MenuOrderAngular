@@ -97,7 +97,32 @@ mutationGraphQLSub:Subscription;
             phoneNumber: this.userInfo.phoneNumber,
             phoneNumberConfirmed: this.userInfo.phoneNumberConfirmed,
             enabled: this.userInfo.enabled
-        })
+        });
+
+    }
+
+    submitUserInfo() {
+        if(this.profileForm.valid) {
+
+            let user = {
+                id: this.profileForm.controls['id'].value,
+                userName: this.profileForm.controls['userName'].value,
+                userType: this.profileForm.controls['userType'].value,
+                cartAmount: this.profileForm.controls['cartAmount'].value,
+                points: this.profileForm.controls['points'].value,
+                email: this.profileForm.controls['email'].value,
+                emailConfirmed: this.profileForm.controls['emailConfirmed'].value,
+                phoneNumber: this.profileForm.controls['phoneNumber'].value,
+                phoneNumberConfirmed: this.profileForm.controls['phoneNumberConfirmed'].value,
+                enabled: this.profileForm.controls['enabled'].value
+            };
+
+        console.log(this.profileForm.value)
+
+
+        } else {
+            alert('Add Necessary Fields and then click on ')
+        }
     }
 
     saveUserInformation(userProfile:UserProfileInfo) {
