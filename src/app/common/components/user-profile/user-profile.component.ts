@@ -12,33 +12,8 @@ import { MenuService } from '../../services/menu.service';
 import { NavigationService } from '../../services/navigation.service';
 import { BaseComponent } from '../base/base.component';
 import { UserProfileInfo } from './userProfile';
-
-const GET_USER_INFO = gql`
-query GetUserInformation($userId:String!){
-  userInformation (userId:$userId){
-    id
-    userName
-    imagePath
-    imagePath
-    userType
-    cartAmount
-    points
-    email
-    emailConfirmed
-    phoneNumber
-    phoneNumberConfirmed
-    enabled
-  }
-}
-`
-
-interface UserInfoResponse{
-  userInformation:UserProfileInfo;
-}
-
-interface UserInfoVariable{
-  userId: string;
-}
+import { GET_USER_INFO, UserInfoResponse, UserInfoVariable } from '../../graphQl/querries/getUserInformationsQuery';
+import { SAVE_USERINFO, SaveUserInfoVariables, SaveUserInformationData } from '../../graphQl/mutations/saveUserInformationMutation';
 
 @Component({
     selector: 'user-profile',
@@ -50,6 +25,7 @@ export class UserProfileComponent extends BaseComponent<any> implements OnInit ,
 graphQlQuerySub: Subscription;
 userInfo:UserProfileInfo;
 profileForm: FormGroup;
+mutationGraphQLSub:Subscription;
 
     constructor(
         private menuService:MenuService,
@@ -124,7 +100,34 @@ profileForm: FormGroup;
         })
     }
 
+    saveUserInformation(userProfile:UserProfileInfo) {
+        this.mutationGraphQLSub = this.apollo.mutate<SaveUserInformationData,SaveUserInfoVariables>({
+            mutation: SAVE_USERINFO,
+            variables: {
+                saveUser: {
+                    id: userProfile.id,
+                    userName: userProfile.userName,
+                    email: userProfile.email,
+                    cartAmount: userProfile.cartAmount,
+                    points: userProfile.points,
+                    emailConfirmed: userProfile.emailConfirmed,
+                    phoneNumber: userProfile.phoneNumber,
+                    phoneNumberConfirmed: userProfile.phoneNumberConfirmed,
+                    enabled: userProfile.enabled
+                }
+            }
+        }).subscribe({
+            next: result => {
+
+            },
+            error: err => {
+
+            }
+        });
+    }
+
     ngOnDestroy(): void {
         this.graphQlQuerySub.unsubscribe();
+        this.mutationGraphQLSub.unsubscribe();
     }
 }
