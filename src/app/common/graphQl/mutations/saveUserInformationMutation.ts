@@ -9,9 +9,11 @@ export interface SaveUserInfoVariables{
         id:string;
         userName:string;
         email:string;
+        emailConfirmed:boolean;
         cartAmount:number;
         points:number;
-        isAdmin:boolean;
+        phoneNumber:string;
+        phoneNumberConfirmed:boolean;
         enabled:boolean;
     }
 }
