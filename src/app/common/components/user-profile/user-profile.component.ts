@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,7 +13,8 @@ import { NavigationService } from '../../services/navigation.service';
 import { BaseComponent } from '../base/base.component';
 import { UserProfileInfo } from './userProfile';
 import { GET_USER_INFO, UserInfoResponse, UserInfoVariable } from '../../graphQl/querries/getUserInformationsQuery';
-import { SAVE_USERINFO, SaveUserInfoVariables, SaveUserInformationData } from '../../graphQl/mutations/saveUserInformationMutation';
+import { SAVE_USERINFO, SaveUserInfoVariables, SaveUserInformationResponse } from '../../graphQl/mutations/saveUserInformationMutation';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'user-profile',
@@ -47,21 +48,22 @@ mutationGraphQLSub:Subscription;
 
         this.InitilizeMenu();
 
-        this.profileForm = this.fb.group({
-            id: [''],
-            userName: [''],
-            userType: [''],
-            cartAmount: [0],
-            points: [0],
-            email: ['',Validators.required],
-            emailConfirmed: [false,Validators.required],
-            phoneNumber: ['',Validators.required],
-            phoneNumberConfirmed: [false],
-            enabled: [false]
-        });
-
         let user = this.authService.getUserInformation();
         if(user !== null){
+
+            this.profileForm = this.fb.group({
+                id: [''],
+                userName: [{value:'',disabled:true}],
+                userType: [{value:'',disabled:true}],
+                cartAmount: [{ value:0,disabled: (user.profile['role'] === 'user')? false:true }],
+                points: [{ value:0,disabled: (user.profile['role'] === 'user')? false:true }],
+                email: ['',Validators.required],
+                emailConfirmed: [false,Validators.required],
+                phoneNumber: ['',Validators.required],
+                phoneNumberConfirmed: [false],
+                enabled: [{value:false,disabled:true}]
+            });
+
             this.getUserInfoByQraphQL(user);
         }
     }
@@ -117,16 +119,16 @@ mutationGraphQLSub:Subscription;
                 enabled: this.profileForm.controls['enabled'].value
             };
 
-        console.log(this.profileForm.value)
-
+        //console.log(this.profileForm.value)
+        this.saveUserInformation(user);
 
         } else {
             alert('Add Necessary Fields and then click on ')
         }
     }
 
-    saveUserInformation(userProfile:UserProfileInfo) {
-        this.mutationGraphQLSub = this.apollo.mutate<SaveUserInformationData,SaveUserInfoVariables>({
+    saveUserInformation(userProfile:any) {
+        this.mutationGraphQLSub = this.apollo.mutate<SaveUserInformationResponse,SaveUserInfoVariables>({
             mutation: SAVE_USERINFO,
             variables: {
                 saveUser: {
@@ -138,17 +140,58 @@ mutationGraphQLSub:Subscription;
                     emailConfirmed: userProfile.emailConfirmed,
                     phoneNumber: userProfile.phoneNumber,
                     phoneNumberConfirmed: userProfile.phoneNumberConfirmed,
-                    enabled: userProfile.enabled
+                    enabled: userProfile.enabled,
+                    userType: userProfile.userType
                 }
             }
         }).subscribe({
             next: result => {
-
+                if(result.data.modifyUserInformation.result === true) {
+                    this.showInfo('Saved Successfully');
+                } else {
+                    this.showError('Error has occured in saving the information');
+                }
             },
             error: err => {
-
+                console.log('Error occured in modifyUserInformation GraphQl mutation ',err);
             }
         });
+    }
+
+    uploadImage(event:any) {
+        //console.log(event);
+        
+        if(this.userInfo.id !== undefined) {
+            let url = environment.idsConfig.utility + '/v2/UploadPhoto'
+            
+            let body = {
+                userId: this.userInfo.id,
+                imageUrl: event.imageData,
+                type: event.imageType
+            };
+
+            this.addImage(url,body);
+        }
+    }
+
+    addImage(url:string,body:any) {
+        
+        this.httpclient.post(url,body).subscribe({
+            next: result => {
+                if(result !== null) {
+                    this.showInfo('Image added successfully');
+                } else {
+                    this.showError('Something went wrong');
+                }
+            },
+            error: err => {
+                console.log('Error adding the image in IDS Server ',err);
+            }
+        })
+    }
+
+    deleteProfileImage(event:true) {
+        console.log(event);
     }
 
     ngOnDestroy(): void {

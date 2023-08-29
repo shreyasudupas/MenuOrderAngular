@@ -22,7 +22,9 @@ export class AuthInterceptor implements HttpInterceptor {
       request = request.clone({ setHeaders:{Authorization:'Bearer '+ token }});
     }
 
-    if(!request.url.includes(environment.inventory.vendorMenu + '/list')){
+    let urlList = [];
+    urlList.push(request.url);
+    if(!this.excludeUrlList(urlList)){
       if (!request.headers.has('Content-Type')) {
           request = request.clone({ headers: request.headers.append('Content-Type', 'application/json') });
       }
@@ -30,5 +32,15 @@ export class AuthInterceptor implements HttpInterceptor {
     
    
     return next.handle(request);
+  }
+
+  excludeUrlList(request:string[]) {
+    let exludeList = [];
+    exludeList.push(environment.inventory.vendorMenu + '/list');
+    exludeList.push(environment.idsConfig.imageServerPath);
+
+    var result = request.some(i=> exludeList.includes(i));
+
+    return result;
   }
 }

@@ -19,6 +19,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { NotificationProfileComponent } from '../components/notification-profile/notification-profile.component';
 import { UserProfileComponent } from '../components/user-profile/user-profile.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ImageUploadComponent } from '../components/image-upload/image-upload.component';
 
 
 
@@ -38,7 +39,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     ScrollBottomToTopComponent,
     VendorMapComponent,
     NotificationProfileComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    ImageUploadComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +61,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     ScrollBottomToTopComponent,
     VendorMapComponent,
     NotificationProfileComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    ImageUploadComponent
   ]
 })
 export class SharedModule { }

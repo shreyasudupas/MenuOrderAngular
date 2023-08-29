@@ -1,11 +1,12 @@
+<p-toast></p-toast>
 <p-card header="Profile">
     <div class="profile-container">
         <div class="profile-piture-container">
             <div class="picture-location">
-                <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria1.jpg" 
-                alt="Image" 
-                width="250" 
-                [preview]="true"></p-image>
+                <image-upload [imagePath]="userInfo.imagePath"
+                              (uploadImageData) = "uploadImage($event)"
+                              (deleteImageData) = "deleteProfileImage($event)"
+                ></image-upload>
             </div>
         </div>
 
@@ -15,7 +16,7 @@
                 <div class="col-12">
                     <div class="profile-content">
                         <span class="p-float-label">
-                            <input id="username" pInputText [disabled]="true"  formControlName="userName"/>
+                            <input id="username" pInputText formControlName="userName"/>
                             <label htmlFor="username">Username</label>
                         </span>
                     </div>
@@ -24,7 +25,7 @@
                 <div class="col-12">
                     <div class="profile-content">
                         <span class="p-float-label">
-                            <input id="userType" pInputText [disabled]="true"  formControlName="userType"/>
+                            <input id="userType" pInputText formControlName="userType"/>
                             <label htmlFor="userType">User Type</label>
                         </span>
                     </div>
@@ -33,7 +34,7 @@
                 <div class="col-12">
                     <div class="profile-content">
                         <span class="p-float-label">
-                            <p-inputNumber id="points" [disabled]="true"  formControlName="points"></p-inputNumber>
+                            <p-inputNumber id="points" formControlName="points"></p-inputNumber>
                             <label htmlFor="points">Points</label>
                         </span>
                     </div>
@@ -42,7 +43,7 @@
                 <div class="col-12">
                     <div class="profile-content">
                         <span class="p-float-label">
-                            <p-inputNumber id="cartAmount" [disabled]="true" formControlName="cartAmount"></p-inputNumber>
+                            <p-inputNumber id="cartAmount" formControlName="cartAmount"></p-inputNumber>
                             <label htmlFor="cartAmount">Cart Amount</label>
                         </span>
                     </div>
@@ -64,7 +65,7 @@
 
                 <div class="col-12">
                     <div class="profile-content">
-                        <p-checkbox formControlName="emailConfirmed" value="true" inputId="emailConfirmed"></p-checkbox>
+                        <p-checkbox formControlName="emailConfirmed" value="true" inputId="emailConfirmed" [binary]="true"></p-checkbox>
                         <label for="emailConfirmed">Email Confirmed</label>
                     </div>
                     <div *ngIf="profileForm.get('emailConfirmed')?.invalid" class="error">
@@ -90,14 +91,14 @@
 
                 <div class="col-12">
                     <div class="profile-content">
-                        <p-checkbox formControlName="phoneNumberConfirmed" value="true" inputId="phoneNumberConfirmed"></p-checkbox>
+                        <p-checkbox formControlName="phoneNumberConfirmed" value="true" inputId="phoneNumberConfirmed" [binary]="true"></p-checkbox>
                         <label for="phoneNumberConfirmed">Phone Confirmed</label>
                     </div>
                 </div>
 
                 <div class="col-12">
                     <div class="profile-content">
-                        <p-checkbox formControlName="enabled" value="true" inputId="enabled"></p-checkbox>
+                        <p-checkbox formControlName="enabled" value="true" inputId="enabled" [binary]="true" ></p-checkbox>
                         <label for="enabled">Enabled</label>
                     </div>
                 </div>

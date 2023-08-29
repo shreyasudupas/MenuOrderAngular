@@ -1,6 +1,10 @@
 import { gql } from "apollo-angular";
 
-export interface SaveUserInformationData{
+export interface SaveUserInformationResponse{
+    modifyUserInformation:modifyUserInformation;
+}
+
+interface modifyUserInformation {
     result:boolean;
 }
 
@@ -15,6 +19,7 @@ export interface SaveUserInfoVariables{
         phoneNumber:string;
         phoneNumberConfirmed:boolean;
         enabled:boolean;
+        userType:string;
     }
 }
 

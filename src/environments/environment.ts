@@ -15,7 +15,8 @@ export const environment = {
   idsConfig:{
     imageServerPath:'https://localhost:5006/images/',
     vendormail:"https://localhost:5006/api/mail/",
-    vendorUserMapping:'https://localhost:5006/api/vendor-user-mapping'
+    vendorUserMapping:'https://localhost:5006/api/vendor-user-mapping',
+    utility:'https://localhost:5006/api/utility'
   },
   inventory:{
     baseUrl:"https://localhost:5003/api/",
