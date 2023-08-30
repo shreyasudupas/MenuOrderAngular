@@ -27,6 +27,7 @@ graphQlQuerySub: Subscription;
 userInfo:UserProfileInfo;
 profileForm: FormGroup;
 mutationGraphQLSub:Subscription;
+imageUrl:string;
 
     constructor(
         private menuService:MenuService,
@@ -78,6 +79,8 @@ mutationGraphQLSub:Subscription;
             next: result => {
                 if(result.data !== null) {
                     this.userInfo = {...this.userInfo,...result.data.userInformation};
+
+                    this.imageUrl = environment.idsConfig.imageUrl + this.userInfo.imagePath;
 
                     //console.log(this.userInfo);
                     this.updateForm()

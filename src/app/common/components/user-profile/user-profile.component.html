@@ -3,7 +3,7 @@
     <div class="profile-container">
         <div class="profile-piture-container">
             <div class="picture-location">
-                <image-upload [imagePath]="userInfo.imagePath"
+                <image-upload [imagePath]="imageUrl"
                               (uploadImageData) = "uploadImage($event)"
                               (deleteImageData) = "deleteProfileImage($event)"
                 ></image-upload>
