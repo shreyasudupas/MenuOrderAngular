@@ -1,34 +1,38 @@
 <div class="p-fluid grid">
     <div class="col-12">
-        <p-fileUpload #fileUpload mode="basic" name="file" 
-            accept="image/*" 
-            label="Upload"
-            chooseLabel="Upload" 
-            class="mr-2 inline-block"
-            [customUpload]="true" 
-            (uploadHandler)="myUploader($event,fileUpload)">
-        </p-fileUpload>
-    </div>
-    <div *ngIf="imagePath !== undefined;else previewImage">
-        <div class="col-12">
-            <img style="height:120px;width:140px" [src]="imagePath"/>
-        </div>    
-        <div class="col-10">
-            <p-button label="Delete" icon="pi pi-minus" styleClass="p-button-danger" badgeClass="p-badge-danger" (click)="deleteImage()"></p-button>
+        <div *ngIf="imagePath !== undefined;else previewImage">
+            <div class="col-12">
+                <img style="height:120px;width:140px" [src]="imagePath"/>
+            </div>    
         </div>
-    </div>
-    <ng-template #previewImage>
-        <div class="col-12">
-            <div *ngIf="url !== undefined" class="col-6">
-                <img style="height:120px;width:140px" [src]="url"/>
+        <ng-template #previewImage>
+            <div class="col-12">
+                <div *ngIf="url !== undefined" class="col-6">
+                    <img style="height:120px;width:140px" [src]="url"/>
+                </div>
+
             </div>
-            <div *ngIf="uploadBufferFile !== undefined" class="col-6">
-                <p-button label="Delete" icon="pi pi-minus" styleClass="p-button-danger" badgeClass="p-badge-danger" (click)="deleteImage()"></p-button>
+        </ng-template>
+
+        <div class="grid">
+            <div class="col-4">
+                <p-fileUpload #fileUpload mode="basic" name="file" 
+                    accept="image/*" 
+                    label="Upload"
+                    chooseLabel="Upload" 
+                    class="mr-2 inline-block"
+                    [customUpload]="true" 
+                    (uploadHandler)="myUploader($event,fileUpload)">
+                </p-fileUpload>
+            </div>
+            
+            <div class="col-4" *ngIf="imagePath !== undefined">
+                <p-button label="Delete" icon="pi pi-delete-left" styleClass="p-button-danger" badgeClass="p-badge-danger" (click)="deleteImage()"></p-button>
+            </div>
+
+            <div class="col-4" *ngIf="uploadFile !== undefined">
+                <p-button label="Submit" (click) = "submitImage()"></p-button>
             </div>
         </div>
-    </ng-template>
-    
-    <div class="col-12" *ngIf="uploadFile !== undefined">
-        <p-button label="Submit" (click) = "submitImage()"></p-button>
     </div>
 </div>
