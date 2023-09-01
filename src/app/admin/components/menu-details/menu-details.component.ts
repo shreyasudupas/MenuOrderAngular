@@ -60,6 +60,7 @@ vendorUrl:string;
         this.menuDetailsId = this.activatedRoute.snapshot.params['menuDetailsId'];
 
         this.navigation.startSaveHistory('/menu-details');
+        //console.log(this.navigation.history);
 
         this.role = this.authService.GetUserRole();
         this.vendorUrl = "/" + this.role + '/vendor-detail/';
@@ -100,10 +101,7 @@ vendorUrl:string;
     }
     
     goBack = () => {
-        if(this.vendorId !== '0' || this.vendorId !== undefined)
-            this.navigation.goBack();
-        else    
-            console.log('No Vendor Present in Menu Details in page');
+        this.navigation.goBack();
     }
 
     callMultipleApis = () => {

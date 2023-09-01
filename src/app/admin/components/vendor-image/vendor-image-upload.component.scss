@@ -1,0 +1,11 @@
+.image-upload-container {
+    display: block;
+    width: 50%;
+}
+
+@media (max-width: 800px) {
+    .image-upload-container {
+        display: block;
+        width: 100%;
+    }   
+}

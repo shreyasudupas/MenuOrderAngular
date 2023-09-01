@@ -3,6 +3,40 @@
     width: 50%;
 }
 
-.upload-pic {
+.upload-pic-component {
     float: right;
+}
+
+.button-operation-upload {
+    display: flex;
+    flex-direction: row;
+
+    .button-operation-item {
+        flex-grow: 1;
+    }
+
+    .deleteButton {
+        width: 50%;
+    }
+}
+
+@media (max-width: 800px) {
+    .upload-pic-component {
+        float: none;
+        width: 100%;
+    }
+
+    .button-operation-upload {
+        display: flex;
+        flex-direction: column;
+        column-gap: 2px;
+    
+        .button-operation-item {
+            flex-grow: 1;
+        }
+
+        .deleteButton {
+            width: 100%;
+        }
+    }
 }

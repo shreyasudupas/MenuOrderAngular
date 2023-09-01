@@ -12,18 +12,14 @@ import { Vendor } from '../vendor/vendor';
 
 @Component({
     selector: 'vendor-image-upload',
-    templateUrl: './vendor-upload.component.html'
+    templateUrl: './vendor-image-upload.component.html',
+    styleUrls: [ './vendor-image-upload.component.scss' ]
 })
 
 export class VendorImageUploadComponent extends BaseComponent<any> implements OnInit{
 @Input() vendorInfo:Vendor;
 @Input() vendorImage:string;
 @Output() sendVendorImageFileToVendorDetail = new EventEmitter();
-uploadFile:any;
-url:any;
-fileType:any;
-imageData:string='';
-imageType:string='';
 isAdd:boolean;
 
     constructor(
@@ -45,49 +41,11 @@ isAdd:boolean;
         }
     }
 
-    myUploader = (event:any,form:any) => {
-        //console.log(event);
-        this.vendorImage = undefined; //to reverese already set image
-        this.uploadFile = event.files;
-        this.fileType = this.uploadFile[0].type;
-        const allowed_types = ['image/png', 'image/jpeg'];
-
-        if(!allowed_types.includes(this.fileType)){
-            this.showError('Image must be of type jpg| png')
-        }
-
-        if(this.uploadFile[0].size >= 100000){
-            this.showError('Image Should be less than 1MB')
-            this.uploadFile = undefined;
-        }else{
-
-            const reader = new FileReader();
-        
-            reader.readAsDataURL(this.uploadFile[0]); 
-            reader.onload = (_event) => { 
-                this.url = reader.result; 
-                
-            }
-        }
-
-        form.clear();
-    }
-
-    updateImageModel = (imageUrl:string,fileType:any) => {
-        if(fileType.split('/')[1] === "jpeg"){
-            this.imageType = "jpg";
-        }else{
-            this.imageType ="png";
-        }
-
-        let urlSplit = 'data:' + fileType + ';base64,';
-        this.imageData = imageUrl.split(urlSplit)[1]
-    }
-
-    submitVendorImage() {
-        if(this.uploadFile !== undefined && (this.vendorInfo != null && this.vendorInfo !== undefined)){
+    submitVendorImage(event:any) {
+        if(event.uploadFile !== undefined && (this.vendorInfo != null && this.vendorInfo !== undefined)){
             //console.log('File Uploaded');
-            this.updateImageModel(this.url,this.fileType);
+            let imageUrlData = event.imageData;
+            let imageType = event.imageType;
 
             if(this.isAdd === true){
                 var body = {
@@ -96,8 +54,8 @@ isAdd:boolean;
                     description: 'vendor image for vendor id: ' + this.vendorInfo.id + 'with Vendor name: ' + this.vendorInfo.vendorName,
                     active: true,
                     image: {
-                        data: this.imageData,
-                        type:this.imageType
+                        data: imageUrlData,
+                        type: imageType
                     }
                 };
     
@@ -110,8 +68,8 @@ isAdd:boolean;
                     description: 'vendor image for vendor id: ' + this.vendorInfo.id + 'with Vendor name: ' + this.vendorInfo.vendorName,
                     active: true,
                     image: {
-                        data: this.imageData,
-                        type:this.imageType
+                        data: imageUrlData,
+                        type: imageType
                     }
                 };
 
@@ -214,11 +172,14 @@ isAdd:boolean;
         });
     }
 
-    deleteVedorImage(){
-        if(this.vendorInfo !== undefined){
-            let id = this.vendorInfo.image.imageId;
+    deleteVedorImage(result:any){
 
-            this.deleteImage(id);
+        if(result === true) {
+            if(this.vendorInfo !== undefined){
+                let id = this.vendorInfo.image.imageId;
+    
+                this.deleteImage(id);
+            }
         }
     }
 

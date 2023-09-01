@@ -74,7 +74,7 @@ export class NotificationProfileComponent implements OnInit,OnDestroy {
 
               this.username = data.userInformation.userName;
               this.points = data.userInformation.points;
-              this.userProfileImageLocation = environment.idsConfig.imageServerPath +  data.userInformation.imagePath;
+              this.userProfileImageLocation = environment.idsConfig.imageUrl +  data.userInformation.imagePath;
 
               let role = this.authService.GetUserRole();
               this.userProfileLink = role + '/profile';

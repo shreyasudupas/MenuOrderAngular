@@ -1,0 +1,10 @@
+<p-toast></p-toast>
+<p-card header="Upload the Vendor Image">
+    <div class="image-upload-container">
+        <image-upload [imagePath]="vendorImage"
+                      (uploadImageData) = "submitVendorImage($event)"
+                      (deleteImageData) = "deleteVedorImage($event)"
+        ></image-upload>
+    </div>
+    
+</p-card>

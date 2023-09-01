@@ -16,7 +16,7 @@
             </ng-template>
         </div>
 
-        <div class="grid">
+        <!-- <div class="grid">
             <div class="col-6">
                 <div class="upload-pic">
                     <p-fileUpload #fileUpload mode="basic" name="file" 
@@ -39,6 +39,34 @@
 
             <div class="col-6" *ngIf="uploadFile !== undefined">
                 <p-button label="Submit" (click) = "submitImage()"></p-button>
+            </div>
+        </div> -->
+
+        <div class="button-operation-upload">
+            <div class="button-operation-item">
+                <div class="upload-pic-component">
+                    <p-fileUpload #fileUpload mode="basic" name="file" 
+                        styleClass=""
+                        accept="image/*" 
+                        label="Upload"
+                        chooseLabel="Upload" 
+                        class="mr-2 inline-block"
+                        [customUpload]="true" 
+                        (uploadHandler)="myUploader($event,fileUpload)">
+                    </p-fileUpload>
+                </div>
+            </div>
+
+            <div class="button-operation-item">
+                <div class="deleteButton" *ngIf="imagePath !== undefined || uploadBufferFile !== undefined">
+                    <p-button label="Delete" icon="pi pi-trash" styleClass="p-button-raised p-button-danger" (click)="deleteImage()"></p-button>
+                </div>
+            </div>
+
+            <div class="button-operation-item">
+                <div *ngIf="uploadFile !== undefined">
+                    <p-button label="Submit" (click) = "submitImage()"></p-button>
+                </div>
             </div>
         </div>
     </div>
