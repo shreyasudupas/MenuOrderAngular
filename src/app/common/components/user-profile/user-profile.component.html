@@ -2,12 +2,10 @@
 <p-card header="Profile">
     <div class="profile-container">
         <div class="profile-piture-container">
-            <div class="picture-location">
-                <image-upload [imagePath]="imageUrl"
+            <image-upload [imagePath]="imageUrl"
                               (uploadImageData) = "uploadImage($event)"
                               (deleteImageData) = "deleteProfileImage($event)"
-                ></image-upload>
-            </div>
+            ></image-upload>
         </div>
 
         <div class="profile-info-container">
@@ -105,7 +103,7 @@
 
                 <div class="col-12">
                     <div class="profile-content">
-                        <p-button type="submit" label="Save" styleClass="p-button-rounded"></p-button>
+                        <p-button type="submit" label="Save" class="full" styleClass="p-button-rounded"></p-button>
                     </div>
                 </div>
 

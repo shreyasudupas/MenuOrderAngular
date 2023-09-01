@@ -198,7 +198,10 @@ imageUrl:string;
     }
 
     ngOnDestroy(): void {
-        this.graphQlQuerySub.unsubscribe();
-        this.mutationGraphQLSub.unsubscribe();
+        if(this.graphQlQuerySub !== undefined)
+            this.graphQlQuerySub.unsubscribe();
+        
+        if(this.mutationGraphQLSub !== undefined)
+            this.mutationGraphQLSub.unsubscribe();
     }
 }

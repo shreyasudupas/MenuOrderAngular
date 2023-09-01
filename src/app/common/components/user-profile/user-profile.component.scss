@@ -6,10 +6,10 @@
     .profile-piture-container {
         flex-grow: 0.5;
 
-        .picture-location {
-            margin: auto;
-            width: 50%;
-        }
+        // .picture-location {
+        //     margin: auto;
+        //     width: 50%;
+        // }
     }
 
     .profile-info-container {
@@ -17,6 +17,11 @@
 
         .profile-content {
             padding: 10px;
+
+            .full {
+                display: block;
+                width: 100%;
+             }
         }
 
         .error {
