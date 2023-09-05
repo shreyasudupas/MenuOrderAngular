@@ -1,0 +1,37 @@
+<p-card header="Notification Dashboard">
+    <p-table [value]="notifications">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <p-button label="New" icon="pi pi-plus" class="mr-2" (click)="goToDetailPage(0)"></p-button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>UserId</th>
+                <th>Role</th>
+                <th>Timestamp</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-notification>
+            <tr>
+                <td>{{ notification.title }}</td>
+                <td>{{ notification.description }}</td>
+                <td>{{ notification.userId }}</td>
+                <td>{{ notification.role }}</td>
+                <td>{{ notification.recordedTimeStamp | date:'short' }}</td>
+                <td>
+                    <p-button icon="pi pi-file-edit" (click)="editPage(notification.id)"></p-button>
+                </td>
+                <td>
+                    <p-button icon="pi pi-trash" styleClass="p-button-danger"></p-button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <scroll-to-top></scroll-to-top>
+</p-card>

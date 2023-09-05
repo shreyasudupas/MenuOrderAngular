@@ -1,0 +1,85 @@
+<p-toast></p-toast>
+<p-card header="Notification Detail">
+    <form [formGroup]="notificationForm" (ngSubmit)="submit()">
+        <div class="col-12">
+            <div class="notification-content">
+                <span class="p-float-label">
+                    <input id="title" pInputText formControlName="title"/>
+                    <label htmlFor="title">Title</label>
+                </span>
+                <div *ngIf="notificationForm.get('title')?.invalid" class="error">
+                    <div *ngIf="notificationForm.get('title')?.errors?.['required']">
+                        Title is required
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="notification-content">
+                <span class="p-float-label">
+                    <input id="description" pInputText formControlName="description"/>
+                    <label htmlFor="description">Description</label>
+                </span>
+                <div *ngIf="notificationForm.get('description')?.invalid" class="error">
+                    <div *ngIf="notificationForm.get('description')?.errors?.['required']">
+                        escription is required
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="notification-content">
+                <span class="p-float-label">
+                    <p-dropdown id="userId" formControlName="userId" 
+                                            [options]="userListDropDown" 
+                                            optionLabel="label"
+                                            optionValue="value"
+                                            [group]="true">
+                        <ng-template let-group pTemplate="group">
+                            <span>{{ group.label }}</span>
+                        </ng-template>
+                    </p-dropdown>
+                    <label htmlFor="userId">Select User</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="notification-content">
+                <span class="p-float-label">
+                    <input id="recordedTimeStamp" pInputText formControlName="recordedTimeStamp"/>
+                    <label htmlFor="recordedTimeStamp">Notification TimeStamp</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="notification-content">
+                <p-checkbox formControlName="sendAll" value="true" inputId="sendAll" [binary]="true"></p-checkbox>
+                <label for="sendAll">Send Notification to All</label>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="notification-content">
+                <p-checkbox formControlName="read" value="true" inputId="read" [binary]="true"></p-checkbox>
+                <label for="read">Read</label>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="notification-content">
+                <p-button type="submit" label="Save" class="full-button" styleClass="p-button-rounded"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="notification-content">
+                <p-button label="Back" styleClass="p-button-rounded p-button-secondary" (click)="goBack()"></p-button>
+            </div>
+        </div>
+
+    </form>
+</p-card>

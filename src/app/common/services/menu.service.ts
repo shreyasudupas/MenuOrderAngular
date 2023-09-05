@@ -191,6 +191,24 @@ export class MenuService{
                         visible:true,
                         routeName:'admin/profile',
                         routerLinkActiveOptions: { exact:true }
+                    },
+                    {
+                        label: 'Notifications',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink:['./notification-dashboard'],
+                        componentName:'NotificationDashboardComponent',
+                        visible:true,
+                        routeName:'admin/notification-dashboard',
+                        routerLinkActiveOptions: { exact:true }
+                    },
+                    {
+                        label: 'Notification Detail',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink:['./notification-detail'],
+                        componentName:'NotificationDetailComponent',
+                        visible:false,
+                        routeName:'admin/notification-details',
+                        routerLinkActiveOptions: { exact:true }
                     }
                 ]
             },

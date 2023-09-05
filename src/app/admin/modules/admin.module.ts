@@ -20,6 +20,8 @@ import { RoleBasedAuthGaurd } from 'src/app/common/gaurds/role-based-routing-gau
 import { InviteUserToVendorComponent } from '../components/invite-users-to-vendor/invite-user-vendor-component';
 import { MessageService } from 'primeng/api';
 import { LocationService } from 'src/app/common/services/location.service';
+import { NotificationDashboardComponent } from '../components/notification-dashboard/notification-dashboard.component';
+import { NotificationDetailComponent } from '../components/notification-detail/notification-detail.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { LocationService } from 'src/app/common/services/location.service';
     MenuImageDetailsDashboardComponent,
     MenuImageDetailsComponent,
     MenuImageUploadComponent,
-    InviteUserToVendorComponent
+    InviteUserToVendorComponent,
+    NotificationDashboardComponent,
+    NotificationDetailComponent
     
   ],
   imports: [

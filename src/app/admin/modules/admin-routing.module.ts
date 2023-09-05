@@ -17,6 +17,8 @@ import { Role } from 'src/app/common/models/role';
 import { ForbiddenComponent } from 'src/app/common/components/forbidden/forbidden.component';
 import { InviteUserToVendorComponent } from '../components/invite-users-to-vendor/invite-user-vendor-component';
 import { UserProfileComponent } from 'src/app/common/components/user-profile/user-profile.component';
+import { NotificationDashboardComponent } from '../components/notification-dashboard/notification-dashboard.component';
+import { NotificationDetailComponent } from '../components/notification-detail/notification-detail.component';
 
 const routes: Routes = [
   { path:'', component: AdminDashboardComponent,canActivate:[RoleBasedAuthGaurd], data: { roles: [Role.Admin] }, children: [
@@ -58,6 +60,12 @@ const routes: Routes = [
     },
     {
         path: 'profile', component: UserProfileComponent
+    },
+    {
+      path: 'notification-dashboard', component: NotificationDashboardComponent
+    },
+    {
+      path: 'notification-detail/:id',component: NotificationDetailComponent
     },
     { 
       path:'',
