@@ -72,9 +72,9 @@ export class LocationSearchDropdown implements OnInit {
             latitude: location.lat,
             longitude: location.lon,
             address: location.display_name,
-            city: location.address.city,
-            area: location.address.suburb,
-            displayName: location.address.road + ' ,' + location.address.suburb
+            city: (location.address === undefined)?'':location.address.city,
+            area: (location.address === undefined)?'':location.address.suburb,
+            displayName: (location.address === undefined)?this.displayLocationName:location.address.road + ' ,' + location.address.suburb
         };
 
         this.locationService.updateUserLocation(userLocation);
