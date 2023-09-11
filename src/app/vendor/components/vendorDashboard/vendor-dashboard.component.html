@@ -1,6 +1,6 @@
 <!-- <h2>Welocome to the Vendor Page: {{vendorId}}</h2> -->
 <div>
-  <div class="layout-sidebar">
+  <div *ngIf="enabled" class="layout-sidebar">
       <img src="assets/Logo/MenuLogo1.png" height="70px" width="150px" alt="MenuLogo" class="Logo" />
       <app-menu-bar></app-menu-bar>
   </div>

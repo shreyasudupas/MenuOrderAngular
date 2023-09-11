@@ -17,6 +17,8 @@ export interface Vendor{
     closeTime:string;
     active:boolean;
     image:ImageModel;
+    vendorType:string;
+    registrationProcess:string;
 }
 
 export interface Coordinate{
@@ -27,4 +29,10 @@ export interface Coordinate{
 export class ImageModel{
     imageId:string;
     imageFileName:string;
+}
+
+export enum RegistrationProgress {
+    InProgress,
+    PartiallyCompleted,
+    Completed
 }

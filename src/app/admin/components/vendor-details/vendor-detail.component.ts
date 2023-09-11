@@ -10,7 +10,7 @@ import { CommonDataSharingService } from "src/app/common/services/common-datasha
 import { MenuService } from "src/app/common/services/menu.service";
 import { environment } from "src/environments/environment";
 import { CuisineType } from "../cuisine-type-details/cuisine-type";
-import { Vendor } from "../vendor/vendor";
+import { RegistrationProgress, Vendor } from "../vendor/vendor";
 import { RegisteredLocationReponse } from "./registerLocation";
 import { NavigationService } from "src/app/common/services/navigation.service";
 import { AuthService } from "src/app/common/services/auth.service";
@@ -37,7 +37,8 @@ areaDropDownListValues:any[]=[];
 cuisineDropDownList:CuisineType[]=[];
 currentState:State={ id:0,name:'',cities:[] };
 vendorDetail:Vendor = { id:'',vendorName:'',vendorDescription:'',categories:[],cuisineType:[],rating:0,state:'',city:'',area:'',
-coordinates:null,addressLine1:'',addressLine2:'',openTime:'',closeTime:'',active:false,image:{ imageId:'',imageFileName:'' } };
+coordinates:null,addressLine1:'',addressLine2:'',openTime:'',closeTime:'',active:false,image:{ imageId:'',imageFileName:'' }
+,registrationProcess: RegistrationProgress.InProgress.toString(),vendorType:'' };
 categoryTab:boolean = true;
 menuDetailTab:boolean = true;
 vendorImageUrl:string;
@@ -308,7 +309,7 @@ longitude:number;
                                 state: result.state, city: result.city, closeTime: result.closeTime,
                                  coordinates: { latitude: result.coordinates.latitude, longitude: result.coordinates.longitude },
                                 openTime: result.openTime, rating: result.rating, cuisineType: result.cuisineType
-                                , vendorDescription: result.vendorDescription
+                                , vendorDescription: result.vendorDescription,registrationProcess: RegistrationProgress.InProgress.toString()
                             };
 
                             this.vendorId = this.vendorDetail.id;

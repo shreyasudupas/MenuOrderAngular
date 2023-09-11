@@ -8,6 +8,7 @@ import { CategoryDetailComponent } from "src/app/admin/components/categories/cat
 import { MenuDetailsComponent } from "src/app/admin/components/menu-details/menu-details.component";
 import { RoleBasedAuthGaurd } from "src/app/common/gaurds/role-based-routing-gaurd";
 import { UserProfileComponent } from "src/app/common/components/user-profile/user-profile.component";
+import { VendorPreRegistrationComponent } from "../components/vendor-pre-registration/vendor-pre-registration.component";
 
 const routes:Routes = [
     { 
@@ -24,6 +25,9 @@ const routes:Routes = [
             },
             {
                 path: 'profile', component: UserProfileComponent
+            },
+            {
+                path: 'vendor-pre-registration/:vendorId',component: VendorPreRegistrationComponent
             },
             { 
                 path:'',
