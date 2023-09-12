@@ -2,8 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Apollo } from 'apollo-angular';
 import { RegistrationProgress, Vendor } from 'src/app/admin/components/vendor/vendor';
 import { validateCoordinates } from 'src/app/common/customFromValidators/validateCoorodinates';
+import { AddUserClaimVariables, AddUserClaimResponse, UserClaimModel, ADD_USERCLAIM } from 'src/app/common/graphQl/mutations/addUserClaimMutation';
+import { AuthService } from 'src/app/common/services/auth.service';
 import { LocationService } from 'src/app/common/services/location.service';
 import { VendorService } from 'src/app/common/services/vendor.service';
 import { environment } from 'src/environments/environment';
@@ -26,7 +29,9 @@ export class VendorPreRegistrationComponent implements OnInit {
         private fb:FormBuilder,
         private locationService:LocationService,
         private activatedRoute:ActivatedRoute,
-        private vendorService:VendorService) {}
+        private vendorService:VendorService,
+        private apollo:Apollo,
+        private authService:AuthService) {}
 
     ngOnInit(): void {
 
@@ -55,6 +60,8 @@ export class VendorPreRegistrationComponent implements OnInit {
 
         if(this.vendorId === '0') {
             this.updateVendorCoordinates();
+        } else {
+            this.getVendorDetailsById(this.vendorId);
         }
     }
 
@@ -135,6 +142,10 @@ export class VendorPreRegistrationComponent implements OnInit {
                 alert('Enter Address fields');
                 return;
             } else {
+                this.vendorPreRegistrationForm.controls['state'].enable();
+                this.vendorPreRegistrationForm.controls['city'].enable();
+                this.vendorPreRegistrationForm.controls['area'].enable();
+                
                 var formValue = this.vendorPreRegistrationForm.value;
 
                 var vendor:Vendor = {
@@ -164,7 +175,7 @@ export class VendorPreRegistrationComponent implements OnInit {
                     registrationProcess: RegistrationProgress.InProgress.toString()
                 };
 
-                this.addVendorDetail(vendor);
+                //this.addVendorDetail(vendor);
             }
 
         } else {
@@ -183,6 +194,15 @@ export class VendorPreRegistrationComponent implements OnInit {
                     this.vendorPreRegistrationForm.patchValue({
                         id: result.id
                     });
+
+                    let user = this.authService.getUserInformation();
+
+                    let clainBody:UserClaimModel = {
+                        claimType: 'vendorId',
+                        claimValue: result.id,
+                        userId: user.profile['userId']
+                    };
+                    this.addVendorIdToClaim(clainBody);
                 }
             },
             error: error => console.log('Error occured in Adding the Vendor',error)
@@ -197,6 +217,56 @@ export class VendorPreRegistrationComponent implements OnInit {
                 }
             },
             error: error => console.log('Error occured in Edit Vendor',error)
+        });
+    }
+
+    addVendorIdToClaim(userClaim:UserClaimModel) {
+        this.apollo.mutate<AddUserClaimResponse,AddUserClaimVariables>({
+            mutation: ADD_USERCLAIM,
+            variables: {
+                userClaim: {
+                    userId: userClaim.userId,
+                    claimType: userClaim.claimType,
+                    claimValue: userClaim.claimValue
+                }
+            }
+        }).subscribe({
+            next: result => {
+                if(result != null) {
+                    console.log('VendorId added in claim')
+                } else {
+                    console.log('Error occured in adding claim please check the API');
+                }
+            },
+            error: err => console.log('Error occured in Adding Vendor Claim ',err)
+        });
+    }
+
+    getVendorDetailsById(vendorId:string) {
+        this.vendorService.getVendorById(vendorId).subscribe({
+            next: result => {
+                if(result !== null) {
+                    this.vendorPreRegistrationForm.controls['state'].enable();
+                    this.vendorPreRegistrationForm.controls['city'].enable();
+                    this.vendorPreRegistrationForm.controls['area'].enable();
+
+                    this.vendorPreRegistrationForm.patchValue({
+                        id: result.id,
+                        vendorName: result.vendorName,
+                        vendorDescription: result.vendorDescription,
+                        vendorType: result.vendorType,
+                        latitude:result.coordinates.latitude,
+                        longitude:result.coordinates.longitude,
+                        addressLine1:result.addressLine1,
+                        state:result.state,
+                        city: result.city,
+                        area: result.area,
+                        openTime: new Date(result.openTime),
+                        closeTime: new Date(result.closeTime)
+                    })
+                }
+            },
+            error: err  => console.log('Get VendorDetails By Id',err)
         });
     }
 }

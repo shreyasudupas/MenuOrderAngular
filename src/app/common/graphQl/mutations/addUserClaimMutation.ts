@@ -10,7 +10,7 @@ export interface AddUserClaimResponse {
     addUserClaim:UserClaimModel;
 }
 
-export interface AddUserClaimInput {
+export interface AddUserClaimVariables {
     userClaim : {
         userId:string;
         claimType:string;

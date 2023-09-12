@@ -1,10 +1,5 @@
 import { gql } from "apollo-angular";
-
-export interface UserClaimModel {
-userId:string;
-claimType:string;
-claimValue:string;
-}
+import { UserClaimModel } from "./addUserClaimMutation";
 
 export interface ModifyUserClaimResponse {
     addUserClaim:UserClaimModel;

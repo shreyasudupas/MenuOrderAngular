@@ -1,12 +1,12 @@
 <p-card header="Pre Registration Form">
-    <div *ngIf="vendorId !== '0'">
+    <!-- <div *ngIf="vendorId !== '0'">
         <p>
             Vendor is still under verification from the admin. Please wait untill the Vendor verify. Once the verficationis done a mail will be sent to your registered mailid
             . A login link will be sent in you mail.
         </p>
-    </div>
+    </div> -->
 
-    <div *ngIf="vendorId === '0'">
+    <div>
         <form [formGroup]="vendorPreRegistrationForm" (ngSubmit)="saveSubmit()">
 
             <div class="col-12">
