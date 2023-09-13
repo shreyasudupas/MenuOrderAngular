@@ -38,7 +38,7 @@ cuisineDropDownList:CuisineType[]=[];
 currentState:State={ id:0,name:'',cities:[] };
 vendorDetail:Vendor = { id:'',vendorName:'',vendorDescription:'',categories:[],cuisineType:[],rating:0,state:'',city:'',area:'',
 coordinates:null,addressLine1:'',addressLine2:'',openTime:'',closeTime:'',active:false,image:{ imageId:'',imageFileName:'' }
-,registrationProcess: RegistrationProgress.InProgress.toString(),vendorType:'' };
+,registrationProcess: RegistrationProgress[RegistrationProgress.Filled],vendorType:'' };
 categoryTab:boolean = true;
 menuDetailTab:boolean = true;
 vendorImageUrl:string;

@@ -32,6 +32,7 @@ export class ImageModel{
 }
 
 export enum RegistrationProgress {
+    Filled,
     InProgress,
     PartiallyCompleted,
     Completed

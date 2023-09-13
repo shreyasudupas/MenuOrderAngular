@@ -22,6 +22,7 @@ export class VendorPreRegistrationComponent implements OnInit {
     vendorTypeOptions:any[];
     latitude:number;
     longitude:number;
+    vendorProgress:string;
     
     vendorPreRegistrationForm:FormGroup;
 
@@ -137,9 +138,16 @@ export class VendorPreRegistrationComponent implements OnInit {
 
     saveSubmit() {
         if(this.vendorPreRegistrationForm.valid) {
-            if(this.vendorPreRegistrationForm.controls['state'].value === '' || this.vendorPreRegistrationForm.controls['city'].value === ''
-            || this.vendorPreRegistrationForm.controls['area'].value === '') {
+            if(this.vendorPreRegistrationForm.controls['state'].value === '' 
+            || this.vendorPreRegistrationForm.controls['state'].value === undefined 
+            || this.vendorPreRegistrationForm.controls['city'].value === ''
+            || this.vendorPreRegistrationForm.controls['city'].value === undefined
+            || this.vendorPreRegistrationForm.controls['area'].value === ''
+            || this.vendorPreRegistrationForm.controls['area'].value === undefined) {
                 alert('Enter Address fields');
+                this.vendorPreRegistrationForm.controls['state'].enable();
+                this.vendorPreRegistrationForm.controls['city'].enable();
+                this.vendorPreRegistrationForm.controls['area'].enable();
                 return;
             } else {
                 this.vendorPreRegistrationForm.controls['state'].enable();
@@ -172,10 +180,14 @@ export class VendorPreRegistrationComponent implements OnInit {
                         imageId:''
                     },
                     rating:0,
-                    registrationProcess: RegistrationProgress.InProgress.toString()
+                    registrationProcess: RegistrationProgress[RegistrationProgress.Filled]
                 };
 
-                //this.addVendorDetail(vendor);
+                this.vendorPreRegistrationForm.controls['state'].disable();
+                this.vendorPreRegistrationForm.controls['city'].disable();
+                this.vendorPreRegistrationForm.controls['area'].disable();
+
+                this.addVendorDetail(vendor);
             }
 
         } else {
@@ -194,6 +206,8 @@ export class VendorPreRegistrationComponent implements OnInit {
                     this.vendorPreRegistrationForm.patchValue({
                         id: result.id
                     });
+
+                    this.vendorId = result.id;
 
                     let user = this.authService.getUserInformation();
 
@@ -263,10 +277,35 @@ export class VendorPreRegistrationComponent implements OnInit {
                         area: result.area,
                         openTime: new Date(result.openTime),
                         closeTime: new Date(result.closeTime)
-                    })
+                    });
+
+                    this.latitude = result.coordinates.latitude;
+                    this.longitude = result.coordinates.longitude;
+
+                    this.vendorProgress = result.registrationProcess;
                 }
             },
             error: err  => console.log('Get VendorDetails By Id',err)
         });
+    }
+
+    update() {
+        if(this.vendorPreRegistrationForm.valid) {
+
+        } else {
+            alert('Enter Required fields');
+        }
+    }
+
+    getVendorStatus(status) {
+        if(status === RegistrationProgress[RegistrationProgress.Filled]){
+            return 'info'
+        } else if(status === RegistrationProgress[RegistrationProgress.InProgress]) {
+            return 'warning'
+        } else if(status === RegistrationProgress[RegistrationProgress.PartiallyCompleted]) {
+            return 'danger'
+        } else {
+            return 'success'
+        }
     }
 }
