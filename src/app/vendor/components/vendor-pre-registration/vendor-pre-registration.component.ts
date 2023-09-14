@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Apollo } from 'apollo-angular';
+import { MessageService } from 'primeng/api';
 import { RegistrationProgress, Vendor } from 'src/app/admin/components/vendor/vendor';
 import { validateCoordinates } from 'src/app/common/customFromValidators/validateCoorodinates';
 import { AddUserClaimVariables, AddUserClaimResponse, UserClaimModel, ADD_USERCLAIM } from 'src/app/common/graphQl/mutations/addUserClaimMutation';
@@ -14,7 +15,8 @@ import { environment } from 'src/environments/environment';
 @Component({
     selector: 'vendor-pre-registration',
     templateUrl: './vendor-pre-registration.component.html',
-    styleUrls: ['./vendor-pre-registration.component.scss']
+    styleUrls: ['./vendor-pre-registration.component.scss'],
+    providers: [ MessageService ]
 })
 
 export class VendorPreRegistrationComponent implements OnInit {
@@ -32,7 +34,8 @@ export class VendorPreRegistrationComponent implements OnInit {
         private activatedRoute:ActivatedRoute,
         private vendorService:VendorService,
         private apollo:Apollo,
-        private authService:AuthService) {}
+        private authService:AuthService,
+        private messageService: MessageService) {}
 
     ngOnInit(): void {
 
@@ -199,7 +202,8 @@ export class VendorPreRegistrationComponent implements OnInit {
         this.vendorService.addVendor(vendor).subscribe({
             next: result => {
                 if(result === null) {
-                    alert('Unable to save the vendor data');
+                    //alert('Unable to save the vendor data');
+                    this.showErrorStatus('Add','Unable to save the vendor data');
                 } else {
                     window.history.replaceState({}, '', `vendor/vendor-pre-registration/${result.id}`);
 
@@ -219,7 +223,10 @@ export class VendorPreRegistrationComponent implements OnInit {
                     this.addVendorIdToClaim(clainBody);
                 }
             },
-            error: error => console.log('Error occured in Adding the Vendor',error)
+            error: error => {
+                console.log('Error occured in Adding the Vendor',error)
+                this.showErrorStatus('Add','Add Vendor encountered problem in server');
+            }
         });
     }
 
@@ -260,6 +267,10 @@ export class VendorPreRegistrationComponent implements OnInit {
         this.vendorService.getVendorById(vendorId).subscribe({
             next: result => {
                 if(result !== null) {
+
+                    if(result.registrationProcess === RegistrationProgress[RegistrationProgress.Completed]) {
+
+                    }
                     this.vendorPreRegistrationForm.controls['state'].enable();
                     this.vendorPreRegistrationForm.controls['city'].enable();
                     this.vendorPreRegistrationForm.controls['area'].enable();
@@ -279,6 +290,10 @@ export class VendorPreRegistrationComponent implements OnInit {
                         closeTime: new Date(result.closeTime)
                     });
 
+                    this.vendorPreRegistrationForm.controls['state'].disable();
+                    this.vendorPreRegistrationForm.controls['city'].disable();
+                    this.vendorPreRegistrationForm.controls['area'].disable();
+
                     this.latitude = result.coordinates.latitude;
                     this.longitude = result.coordinates.longitude;
 
@@ -291,9 +306,61 @@ export class VendorPreRegistrationComponent implements OnInit {
 
     update() {
         if(this.vendorPreRegistrationForm.valid) {
+            this.vendorPreRegistrationForm.controls['state'].enable();
+            this.vendorPreRegistrationForm.controls['city'].enable();
+            this.vendorPreRegistrationForm.controls['area'].enable();
+
+            var formValue = this.vendorPreRegistrationForm.value;
+
+            var vendor:Vendor = {
+                    id:formValue.id,
+                    vendorName: formValue.vendorName,
+                    vendorDescription: formValue.vendorDescription,
+                    vendorType: formValue.vendorType,
+                    state: formValue.state,
+                    city: formValue.city,
+                    area: formValue.area,
+                    addressLine1: formValue.addressLine1,
+                    addressLine2: '',
+                    openTime: formValue.openTime.toTimeString().split(' ')[0],
+                    closeTime: formValue.closeTime.toTimeString().split(' ')[0],
+                    active: false,
+                    categories:[],
+                    coordinates: {
+                        latitude: formValue.latitude,
+                        longitude: formValue.longitude,
+                    },
+                    cuisineType:[],
+                    image: {
+                        imageFileName:'',
+                        imageId:''
+                    },
+                    rating:0,
+                    registrationProcess: formValue.registrationProcess
+            };
+
+            this.vendorService.editVendor(vendor).subscribe({
+                next: result => {
+                    if(result !== null) {
+                        this.showSuccessStatus('Edit','Vendor Edited Successfully');
+                    } else {
+                        this.showErrorStatus('Edit','Vendor Edit Unsuccess');
+                    }
+                },
+                error: err => {
+                    console.log('Error occured in Edit Vendor Service ',err)
+
+                    this.showErrorStatus('Edit','Error occured in server');
+                }
+            });
+
+            this.vendorPreRegistrationForm.controls['state'].disable();
+            this.vendorPreRegistrationForm.controls['city'].disable();
+            this.vendorPreRegistrationForm.controls['area'].disable();
 
         } else {
-            alert('Enter Required fields');
+            //alert('Enter Required fields');
+            this.showErrorStatus('Edit','Enter Required fields');
         }
     }
 
@@ -308,4 +375,13 @@ export class VendorPreRegistrationComponent implements OnInit {
             return 'success'
         }
     }
+
+    showSuccessStatus(title:string,message:string) {
+        this.messageService.add({ severity: 'info' , summary:title,detail:message});
+    }
+
+    showErrorStatus(title:string,message:string) {
+        this.messageService.add({ severity: 'error' , summary:title,detail:message});
+    }
+    
 }

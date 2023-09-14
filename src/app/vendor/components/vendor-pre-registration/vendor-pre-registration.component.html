@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <p-card header="Pre Registration Form">
     <div *ngIf="vendorProgress === 'InProgress'">
         <p>
@@ -7,7 +8,7 @@
     </div>
 
     <div>
-        <form [formGroup]="vendorPreRegistrationForm" (ngSubmit)="saveSubmit()">
+        <form [formGroup]="vendorPreRegistrationForm">
 
             <div class="col-12">
                 <b>Status: </b><p-badge [value]="vendorProgress" [ngClass]="getVendorStatus(vendorProgress)"></p-badge>
@@ -144,7 +145,7 @@
 
             <div *ngIf="vendorId === '0'" class="col-12">
                 <div class="vendor-content">
-                    <button pButton pRipple type="submit" label="Save" class="p-button-rounded p-button-primary"></button>
+                    <button pButton pRipple label="Save" class="p-button-rounded p-button-primary" (click)="saveSubmit()"></button>
                 </div>
             </div>
 
