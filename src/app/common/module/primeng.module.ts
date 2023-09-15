@@ -37,6 +37,7 @@ import { MenuModule } from 'primeng/menu';
 import { SidebarModule } from 'primeng/sidebar';
 import { AvatarModule } from 'primeng/avatar';
 import { ImageModule } from 'primeng/image';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 @NgModule({
     imports:[ButtonModule,
@@ -77,7 +78,8 @@ import { ImageModule } from 'primeng/image';
         MenuModule,
         SidebarModule,
         AvatarModule,
-        ImageModule
+        ImageModule,
+        ToggleButtonModule
     ],
     exports:[ButtonModule,
         TabMenuModule,
@@ -117,7 +119,8 @@ import { ImageModule } from 'primeng/image';
         MenuModule,
         SidebarModule,
         AvatarModule,
-        ImageModule
+        ImageModule,
+        ToggleButtonModule
     ]
 })
 

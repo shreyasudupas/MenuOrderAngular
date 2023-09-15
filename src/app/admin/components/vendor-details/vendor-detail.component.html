@@ -53,6 +53,24 @@
                             </span>
                         </div>
 
+                        <div class="field col-12">
+                            <span class="p-float-label">
+                                <p-dropdown id="vendorType" 
+                                            placeholder="Select Vendor Type"
+                                            formControlName="vendorType" 
+                                            [options]="vendorTypeOptions" 
+                                            optionLabel="label"
+                                            optionValue="value"></p-dropdown>
+                                <label htmlFor="vendorType">Enter Vendor Type</label>
+                            </span>
+        
+                            <div *ngIf="vendorDetailForm.get('vendorType')?.invalid" class="error">
+                                <div *ngIf="vendorDetailForm.get('vendorType')?.errors?.['required']">
+                                    Vendor Type is required.
+                                  </div>
+                            </div>
+                        </div>
+
                         <div class="field col-6">
                             <label for="openTimings">Open Timings</label>
                             <p-calendar formControlName="openTime" [timeOnly]="true" [hourFormat]="'12'"
@@ -193,6 +211,12 @@
         </p-tabPanel>
         <p-tabPanel header="Vendor Image Upload">
             <vendor-image-upload [vendorInfo]="vendorDetail" [vendorImage]="vendorImageUrl"></vendor-image-upload>
+        </p-tabPanel>
+        <p-tabPanel header="Vendor Verification">
+            <vendor-verification [vendorStatus]="vendorDetail.registrationProcess"
+                                 [vendorId]="vendorDetail.id"
+                                 [enable]="userEnable"
+            ></vendor-verification>
         </p-tabPanel>
         <p-tabPanel header="Add Users">
             <div *ngIf="vendorDetail.id !== undefined && vendorDetail.id != '' ">

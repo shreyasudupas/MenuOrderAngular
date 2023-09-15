@@ -31,7 +31,7 @@ export class ImageModel{
     imageFileName:string;
 }
 
-export enum RegistrationProgress {
+export enum RegistrationProgressEnum {
     Filled,
     InProgress,
     PartiallyCompleted,

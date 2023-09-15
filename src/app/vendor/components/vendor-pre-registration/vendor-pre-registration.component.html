@@ -1,17 +1,17 @@
 <p-toast></p-toast>
 <p-card header="Pre Registration Form">
-    <div *ngIf="vendorProgress === 'InProgress'">
+    <div *ngIf="vendorProgress === 'InProgress'|| vendorProgress=='Completed';else showRegistrationPage">
         <p>
             Vendor is still under verification from the admin. Please wait untill the Vendor verify. Once the verficationis done a mail will be sent to your registered mailid
             . A login link will be sent in you mail.
         </p>
     </div>
 
-    <div>
+    <ng-template #showRegistrationPage>
         <form [formGroup]="vendorPreRegistrationForm">
 
             <div class="col-12">
-                <b>Status: </b><p-badge [value]="vendorProgress" [ngClass]="getVendorStatus(vendorProgress)"></p-badge>
+                <b>Status: </b><p-badge [value]="vendorProgress" [severity]="getVendorStatus(vendorProgress)"></p-badge>
             </div>
 
             <div class="col-12">
@@ -156,5 +156,5 @@
             </div>
 
         </form>
-    </div>
+    </ng-template>
 </p-card>

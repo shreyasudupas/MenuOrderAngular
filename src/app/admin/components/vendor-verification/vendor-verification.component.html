@@ -1,0 +1,36 @@
+<p-card>
+    <div class="col-6">
+        <div *ngIf="vendorStatus !== undefined">
+            <div *ngIf="vendorStatus === 'Filled'">
+                <label><b>Vendor Form Status:</b></label>
+                <p-button label="Filled -> InProgress" styleClass="p-button-raised" (click)="updateStatus('InProgress')"></p-button>
+            </div>
+
+            <div *ngIf="vendorStatus === 'InProgress'">
+                <div class="button-container">
+                    <label><b>Vendor Form Status:</b></label>
+                    <div class="button-item">
+                        <p-button label="Partially Completed" styleClass="p-button-raised p-button-warning" 
+                        (click)="updateStatus('PartiallyCompleted')"></p-button>
+                    </div>
+
+                    <div class="button-item">
+                        <p-button label="Complete" styleClass="p-button-raised p-button-success"
+                        (click)="updateStatus('Completed')"></p-button>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="vendorStatus === 'PartiallyCompleted'">
+                <label><b>Vendor Form Status:</b></label>
+                <p-button label="Partially Completed -> Complete" styleClass="p-button-raised p-button-success"
+                (click)="updateStatus('Completed')"></p-button>
+            </div>
+
+            <div *ngIf="vendorStatus === 'Completed'">
+                <label><b>Vendor Status:</b></label>
+                <p-toggleButton [(ngModel)]="enable" onLabel="Enable" offLabel="Disable" (onChange)="updateEnableUser($event)"></p-toggleButton>
+            </div>
+        </div>
+    </div>
+</p-card>

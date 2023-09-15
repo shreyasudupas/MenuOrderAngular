@@ -20,6 +20,7 @@ import { NotificationProfileComponent } from '../components/notification-profile
 import { UserProfileComponent } from '../components/user-profile/user-profile.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ImageUploadComponent } from '../components/image-upload/image-upload.component';
+import { VendorVerificationComponent } from 'src/app/admin/components/vendor-verification/vendor-verification.component';
 
 
 
@@ -40,7 +41,8 @@ import { ImageUploadComponent } from '../components/image-upload/image-upload.co
     VendorMapComponent,
     NotificationProfileComponent,
     UserProfileComponent,
-    ImageUploadComponent
+    ImageUploadComponent,
+    VendorVerificationComponent
   ],
   imports: [
     CommonModule,
@@ -62,7 +64,8 @@ import { ImageUploadComponent } from '../components/image-upload/image-upload.co
     VendorMapComponent,
     NotificationProfileComponent,
     UserProfileComponent,
-    ImageUploadComponent
+    ImageUploadComponent,
+    VendorVerificationComponent
   ]
 })
 export class SharedModule { }

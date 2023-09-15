@@ -47,7 +47,7 @@ export class VendorDashboardComponent implements OnInit{
 
     async isVendorEnabled() {
         let user = this.authService.getUserInformation();
-        let url = environment.idsConfig.vendorIds + 'enable/' + user.profile['userId'];
+        let url = environment.idsConfig.vendor + 'enable/' + user.profile['userId'];
 
         let vendorEnabled$ = this.http.get<boolean>(url);
         let vendorEnabled = await lastValueFrom(vendorEnabled$).catch( err => {

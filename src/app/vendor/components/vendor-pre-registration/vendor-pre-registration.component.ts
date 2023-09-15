@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 import { MessageService } from 'primeng/api';
-import { RegistrationProgress, Vendor } from 'src/app/admin/components/vendor/vendor';
+import { RegistrationProgressEnum, Vendor } from 'src/app/admin/components/vendor/vendor';
 import { validateCoordinates } from 'src/app/common/customFromValidators/validateCoorodinates';
 import { AddUserClaimVariables, AddUserClaimResponse, UserClaimModel, ADD_USERCLAIM } from 'src/app/common/graphQl/mutations/addUserClaimMutation';
 import { AuthService } from 'src/app/common/services/auth.service';
@@ -183,7 +183,7 @@ export class VendorPreRegistrationComponent implements OnInit {
                         imageId:''
                     },
                     rating:0,
-                    registrationProcess: RegistrationProgress[RegistrationProgress.Filled]
+                    registrationProcess: RegistrationProgressEnum[RegistrationProgressEnum.Filled]
                 };
 
                 this.vendorPreRegistrationForm.controls['state'].disable();
@@ -268,7 +268,7 @@ export class VendorPreRegistrationComponent implements OnInit {
             next: result => {
                 if(result !== null) {
 
-                    if(result.registrationProcess === RegistrationProgress[RegistrationProgress.Completed]) {
+                    if(result.registrationProcess === RegistrationProgressEnum[RegistrationProgressEnum.Completed]) {
 
                     }
                     this.vendorPreRegistrationForm.controls['state'].enable();
@@ -365,11 +365,11 @@ export class VendorPreRegistrationComponent implements OnInit {
     }
 
     getVendorStatus(status) {
-        if(status === RegistrationProgress[RegistrationProgress.Filled]){
+        if(status === RegistrationProgressEnum[RegistrationProgressEnum.Filled]){
             return 'info'
-        } else if(status === RegistrationProgress[RegistrationProgress.InProgress]) {
+        } else if(status === RegistrationProgressEnum[RegistrationProgressEnum.InProgress]) {
             return 'warning'
-        } else if(status === RegistrationProgress[RegistrationProgress.PartiallyCompleted]) {
+        } else if(status === RegistrationProgressEnum[RegistrationProgressEnum.PartiallyCompleted]) {
             return 'danger'
         } else {
             return 'success'

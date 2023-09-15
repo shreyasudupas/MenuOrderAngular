@@ -18,7 +18,7 @@ export const environment = {
     vendorUserMapping:'https://localhost:5006/api/vendor-user-mapping',
     utility:'https://localhost:5006/api/utility',
     imageUrl:'https://localhost:5006/ids-images/',
-    vendorIds:'https://localhost:5006/api/'
+    vendor:'https://localhost:5006/api/vendor/'
   },
   inventory:{
     baseUrl:"https://localhost:5003/api/",

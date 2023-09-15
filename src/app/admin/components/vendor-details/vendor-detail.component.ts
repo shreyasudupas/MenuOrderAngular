@@ -10,7 +10,7 @@ import { CommonDataSharingService } from "src/app/common/services/common-datasha
 import { MenuService } from "src/app/common/services/menu.service";
 import { environment } from "src/environments/environment";
 import { CuisineType } from "../cuisine-type-details/cuisine-type";
-import { RegistrationProgress, Vendor } from "../vendor/vendor";
+import { RegistrationProgressEnum, Vendor } from "../vendor/vendor";
 import { RegisteredLocationReponse } from "./registerLocation";
 import { NavigationService } from "src/app/common/services/navigation.service";
 import { AuthService } from "src/app/common/services/auth.service";
@@ -38,12 +38,14 @@ cuisineDropDownList:CuisineType[]=[];
 currentState:State={ id:0,name:'',cities:[] };
 vendorDetail:Vendor = { id:'',vendorName:'',vendorDescription:'',categories:[],cuisineType:[],rating:0,state:'',city:'',area:'',
 coordinates:null,addressLine1:'',addressLine2:'',openTime:'',closeTime:'',active:false,image:{ imageId:'',imageFileName:'' }
-,registrationProcess: RegistrationProgress[RegistrationProgress.Filled],vendorType:'' };
+,registrationProcess: RegistrationProgressEnum[RegistrationProgressEnum.Filled],vendorType:'' };
 categoryTab:boolean = true;
 menuDetailTab:boolean = true;
 vendorImageUrl:string;
 latitude:number;
 longitude:number;
+vendorTypeOptions:any[];
+userEnable:boolean;
 
     constructor(
         public menuService:MenuService,
@@ -91,13 +93,15 @@ longitude:number;
             closeTime: [new Date()],
             active: [false],
             latitude: ['0',[Validators.required,validateCoordinates()]],
-            longitude: ['0',[Validators.required,validateCoordinates()]]
+            longitude: ['0',[Validators.required,validateCoordinates()]],
+            vendorType: ['',Validators.required]
         });
 
-        // this.options = {
-        //     center: {lat: 36.890257, lng: 30.707417},
-        //     zoom: 12
-        // };
+        this.vendorTypeOptions = [
+            { label:'Online' , value: 'Online' },
+            { label:'Offline' , value: 'Offline' },
+            { label:'Online & Offline' , value: 'Online & Offline' }
+        ];
 
         if(this.vendorId === "0"){
             this.callFormkItemWhenNewPage();
@@ -215,6 +219,7 @@ longitude:number;
                     active: vendorByIdResponse.active,addressLine1: vendorByIdResponse.addressLine1, addressLine2: vendorByIdResponse.addressLine2,area: vendorByIdResponse.area,
                     state: vendorByIdResponse.state, city: vendorByIdResponse.city, closeTime: vendorByIdResponse.closeTime,coordinates: vendorByIdResponse.coordinates,
                     openTime: vendorByIdResponse.openTime, rating: vendorByIdResponse.rating, cuisineType: vendorByIdResponse.cuisineType
+                    , registrationProcess: vendorByIdResponse.registrationProcess, vendorType: vendorByIdResponse.vendorType
                     , vendorDescription: vendorByIdResponse.vendorDescription
                     ,image:  { imageId: vendorByIdResponse.image.imageId , imageFileName: vendorByIdResponse.image.imageFileName  } };
 
@@ -232,7 +237,8 @@ longitude:number;
                     closeTime: new Date(this.vendorDetail.closeTime),
                     active: this.vendorDetail.active,
                     latitude: this.vendorDetail.coordinates.latitude,
-                    longitude: this.vendorDetail.coordinates.longitude
+                    longitude: this.vendorDetail.coordinates.longitude,
+                    vendorType: this.vendorDetail.vendorType
                 });
 
                 this.latitude = this.vendorDetail.coordinates.latitude;
@@ -260,18 +266,7 @@ longitude:number;
             }
 
             if(this.vendorDetail.image.imageFileName !== ''){
-                // let imageUrl = environment.inventory.imageMenu + '/' + this.vendorDetail.vendorImage + '/fileName';
-                // this.httpclient.get(imageUrl,{responseType: 'text'}).subscribe({
-                //     next: result => {
-                //         if(result != null){
-                //             console.log("Vendor Image successfully retrived");
-                //             this.vendorImageUrl = 'https://localhost:5003/app-images/' + result;
-                //         } else{
-                //             console.log('Vendor Image Retival Issue');
-                //         }
-                //     },
-                //     error: error => console.log(error)
-                // });
+                
                 this.vendorImageUrl = environment.imagePath + this.vendorDetail.image.imageFileName;
             }
         });
@@ -309,7 +304,7 @@ longitude:number;
                                 state: result.state, city: result.city, closeTime: result.closeTime,
                                  coordinates: { latitude: result.coordinates.latitude, longitude: result.coordinates.longitude },
                                 openTime: result.openTime, rating: result.rating, cuisineType: result.cuisineType
-                                , vendorDescription: result.vendorDescription,registrationProcess: RegistrationProgress.InProgress.toString()
+                                , vendorDescription: result.vendorDescription,registrationProcess: RegistrationProgressEnum[RegistrationProgressEnum.InProgress]
                             };
 
                             this.vendorId = this.vendorDetail.id;
@@ -482,6 +477,18 @@ longitude:number;
         this.vendorDetailForm.patchValue({
             latitude: latLong.latitude,
             longitude: latLong.longitude
+        });
+    }
+
+    getEnable() {
+        let user = this.authService.getUserInformation();
+        let url = environment.idsConfig.vendor + 'enable/' + user.profile['userId'];
+
+        this.httpclient.get<boolean>(url).subscribe({
+            next: result => {
+                this.userEnable = result
+            },
+            error: err => console.log('Error Occured in User Enable API ',err) 
         });
     }
 }
