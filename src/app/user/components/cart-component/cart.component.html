@@ -61,7 +61,10 @@
                         You must pay: <h5><span>&#8377;</span></h5> {{totalPrice}}
                     </div>
                     <div class="cart-payment-button">
-                        <button pButton pRipple type="button" label="Proceed to Payment" icon="pi pi-credit-card" class="p-button-raised"></button>
+                        <button pButton pRipple type="button" label="Proceed to Payment" 
+                                                              icon="pi pi-credit-card" 
+                                                              class="p-button-raised"
+                                                              (click)="goToPaymentPage()"></button>
                     </div>
                 </div>
             </div>

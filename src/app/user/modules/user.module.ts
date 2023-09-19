@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { LocationSearchDropdown } from 'src/app/common/components/location-search-dropdown/location-search-dropdown.component';
 import { ClickOutsideDirective } from 'src/app/common/directives/clickOutside.directive';
 import { RoleBasedAuthGaurd } from 'src/app/common/gaurds/role-based-routing-gaurd';
@@ -13,6 +13,7 @@ import { CartIconComponent } from '../components/cart-icon-component/cart-icon.c
 import { FoodComponent } from '../components/food/food.component';
 import { UserHomeComponent } from '../components/home/user-home.component';
 import { MenuComponent } from '../components/menu/menu.component';
+import { PaymentDashboardComponent } from '../components/payment/payment.component';
 import { UserDashboardComponent } from '../components/user-dashboard/user-dashboard.component';
 import { UserRoutingModule } from './user-routing.module';
 
@@ -25,7 +26,8 @@ import { UserRoutingModule } from './user-routing.module';
         CartComponent,
         CartIconComponent,
         ClickOutsideDirective,
-        LocationSearchDropdown
+        LocationSearchDropdown,
+        PaymentDashboardComponent
     ],
     imports:[
         CommonModule,
@@ -38,7 +40,8 @@ import { UserRoutingModule } from './user-routing.module';
     providers:[
         RoleBasedAuthGaurd,
         MessageService,
-        LocationService
+        LocationService,
+        ConfirmationService
     ]
 })
 

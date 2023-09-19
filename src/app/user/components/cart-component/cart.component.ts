@@ -119,4 +119,8 @@ hideClearButton:boolean = true;
             reject: () => {}
         });
     }
+
+    goToPaymentPage() {
+        this.router.navigateByUrl('/user/payment');
+    }
 }

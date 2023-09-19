@@ -1,0 +1,144 @@
+<p-toast></p-toast>
+<p-card header="Payment" subheader="Complete your Payment by entering your payment details"> 
+    <form [formGroup]="paymentForm">
+        <div class="payment-info-container">
+            <div class="payment-method-container">
+                <div class="payment-container">
+                    <div class="payment-item-container">
+                        <p-card header="Payment method">
+                            <div *ngIf="paymentForm.get('selectedPayment')?.invalid" class="error">
+                                <div *ngIf="paymentForm.get('selectedPayment')?.errors?.['required']">
+                                    *Select the Payment method.
+                                  </div>
+                            </div>
+                            <div *ngIf="paymentForm.get('selectedPayment')?.errors?.invalid" class="error">
+                                {{paymentForm.controls['selectedPayment'].errors.message}}
+                            </div>
+                            <div class="payment-method-container">
+                                <div *ngFor="let paymentoption of paymentOptions" class="payment-image-container">
+                                    <p-radioButton [inputId]="paymentoption.alt" 
+                                                   [value]="paymentoption.value" 
+                                                   formControlName="selectedPayment"
+                                                   ></p-radioButton>
+                                    <img [src]="paymentoption.imgSrc" [alt]="paymentoption.alt" class="payment-image"/>
+                                </div>
+                            </div>
+    
+                            <div *ngIf="selectedPayment === 'Reward'">
+                                <div style="padding: 10px;">
+                                    <p>
+                                        <label><b>Your Reward:</b></label> {{rewardPoints}} points
+                                    </p>
+                                </div>
+                            </div>
+                        </p-card>
+                    </div>
+            
+                    <div class="payment-item-container">
+                        <p-card header="Method of Receipt">
+                            <div *ngIf="paymentForm.get('methodOfDelivery')?.invalid" class="error">
+                                <div *ngIf="paymentForm.get('methodOfDelivery')?.errors?.['required']">
+                                    *Select the Payment method.
+                                  </div>
+                            </div>
+                            <p-accordion [activeIndex]="0">
+                                <p-accordionTab>
+                                    <ng-template pTemplate="header">
+                                        <div class="flex align-items-center">
+                                            <i class="pi pi-car mr-2"></i>
+                                            <span class="vertical-align-middle">Mode of Delivery</span>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="content">
+                                        <div class="delivery-mode-container">
+                                            <div *ngFor="let delivery of deliveryModes">
+                                                <div class="delivery-item">
+                                                    <p-radioButton [inputId]="delivery.key"
+                                                                   [value] = "delivery.value"
+                                                                   formControlName="methodOfDelivery"
+                                                    ></p-radioButton>
+                                                    <label style="margin-top: 30px; padding-left: 4px;">{{delivery.key}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </p-accordionTab>
+                                <p-accordionTab>
+                                    <ng-template pTemplate="header">
+                                        <div class="flex align-items-center">
+                                            <i class="pi pi-box mr-2"></i>
+                                            <span class="vertical-align-middle">Address</span>
+                                        </div>
+                                    </ng-template>
+
+                                    <ng-template pTemplate="content">
+                                        <div class="col-12">
+                                            <div class="address-content">
+                                                <span class="p-float-label">
+                                                    <input id="city" type="text" pInputText formControlName="city"/>
+                                                    <label htmlFor="city">City</label>
+                                                </span>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-12">
+                                            <div class="address-content">
+                                                <span class="p-float-label">
+                                                    <input id="area" type="text" pInputText formControlName="area"/>
+                                                    <label htmlFor="area">Area</label>
+                                                </span>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-12">
+                                            <div class="address-content">
+                                                <span class="p-float-label">
+                                                    <input id="address" type="text" pInputText formControlName="fulladdress"/>
+                                                    <label htmlFor="address">Full Address</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    
+                                </p-accordionTab>
+                            </p-accordion>
+                        </p-card>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="payment-cart-summary-container">
+                <p-card>
+                    <div class="grid">
+                        <div class="col-6 text-center">
+                            <label><h2>Total Amount to Pay</h2></label>
+                        </div>
+                        <div class="col-6 text-center">
+                            <label><h2><span>&#8377;</span>{{totalPriceToPay}}</h2></label>
+                        </div>
+                        <div class="col-12">
+                            <p-divider></p-divider>
+                        </div>
+                        <div class="col-12">
+                            <div class="grid">
+                                <div class="col-6 text-center"><h4>Total Amount:</h4></div>
+                                <div class="col-6 text-center"><span>&#8377;</span>{{totalPrice}}</div>
+    
+                                <div class="col-6 text-center"><h4>Discount:</h4></div>
+                                <div class="col-6 text-center">-<span>&#8377;</span>{{discount}}</div>
+        
+                                <div class="col-6 text-center"><h4>Delivery Charges:</h4></div>
+                                <div class="col-6 text-center">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+        
+                    <div class="col-12">
+                        <p-button label="Pay" (click)="paymentSubmision()"></p-button>
+                    </div>
+                </p-card>
+            </div>
+        </div> 
+    </form>  
+</p-card>

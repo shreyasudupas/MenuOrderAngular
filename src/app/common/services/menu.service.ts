@@ -69,6 +69,15 @@ export class MenuService{
                         visible:true,
                         routeName:'user/profile',
                         routerLinkActiveOptions: { exact:true }
+                    },
+                    {
+                        label: 'Payment',
+                        icon: 'pi pi-fw pi-credit-card',
+                        routerLink:['./payment'],
+                        componentName:'PaymentDashboardComponent',
+                        visible:true,
+                        routeName:'user/payment',
+                        routerLinkActiveOptions: { exact:true }
                     }
                 ]
             },

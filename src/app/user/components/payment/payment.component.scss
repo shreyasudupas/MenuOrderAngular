@@ -1,0 +1,83 @@
+
+.payment-info-container {
+    display: flex;
+    flex-direction: row;
+
+    .payment-method-container {
+        flex-grow:1;
+        width: 60%;
+
+        .payment-container {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        
+            .payment-item-container {
+                flex-grow: 1;
+                padding: 10px;
+
+                .payment-method-container {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 10px;
+
+                    .payment-image-container {
+                        display: flex;
+                        flex-direction: row;
+                        gap: 4px;
+
+                        .payment-image {
+                            height: 90px;
+                            width: 150px;
+                            border-radius: 25px;
+                            padding: 10px;
+                            border: 2px solid #180d83;
+                            cursor: pointer;
+                        }
+    
+                        .payment-image:hover {
+                            box-shadow: 0 8px 16px 0 rgb(61, 61, 61);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .payment-cart-summary-container {
+        flex-grow: 1;
+        width: 40%;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .address-content {
+        padding: 10px;
+    }
+
+    .delivery-mode-container {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+
+        .delivery-item {
+            border-radius: 25px;
+            height: 90px;
+            width: 150px;
+            border: 2px solid #180d83;
+            text-align: center;
+        }
+
+        .delivery-item:hover {
+            box-shadow: 0 8px 16px 0 rgb(61, 61, 61);
+        }
+    }
+
+    .error {
+        font-size: small;
+        color: red;
+    }
+}
+
