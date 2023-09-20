@@ -135,7 +135,7 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
                         if(discountPercentage > 0) {
                             //discounted amount
                             this.discount = (this.totalPrice * discountPercentage)/100;
-                            this.totalPriceToPay = this.totalPrice * ( 1 + discountPercentage/100 );
+                            this.totalPriceToPay = this.totalPrice * ( 1 - discountPercentage/100 );
                         } else {
                             this.totalPriceToPay = this.totalPrice;
                         }
@@ -179,6 +179,13 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
             if(this.paymentForm.controls['selectedPayment'].value !== 'Reward') {
                 this.paymentForm.controls['selectedPayment'].setErrors({invalid: true,message:'*Please select Rewards since its only active'});
             } else {
+
+                //check if reward is within the price
+                if(this.paymentForm.controls['totalPrice'].value >= this.rewardPoints) {
+                    this.showError('Not Enough Reward points to buy the items');
+                    return;
+                }
+
                 let body = {
                     userAddress: {
                         fulladdress: this.paymentForm.controls['fulladdress'].value,
