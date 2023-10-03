@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
@@ -13,6 +13,9 @@ import { LocationService } from 'src/app/common/services/location.service';
 import { MenuService } from 'src/app/common/services/menu.service';
 import { NavigationService } from 'src/app/common/services/navigation.service';
 import { CartInformation } from '../cart-component/cart-information';
+import { OrderStatusEnum, PaymentModel } from './payment';
+import { environment } from 'src/environments/environment';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
     selector: 'payment-dashboard',
@@ -40,6 +43,7 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
         { key:'Online', value: 'Online' },
         { key:'Collect Yourself', value: 'Offline' }
     ];
+    @ViewChild('backGround') backgroundSemiTransparent:ElementRef;
 
     constructor(
         public menuService:MenuService,
@@ -54,7 +58,9 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
         private apollo:Apollo,
         private authService:AuthService,
         private locationService:LocationService,
-        private fb:FormBuilder){
+        private fb:FormBuilder,
+        private cartInfoService:CartInformationSerivice,
+        private renderer: Renderer2){
             super(menuService,httpclient,commonBroadcastService,messageService)
     }
 
@@ -186,31 +192,99 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
                     return;
                 }
 
-                let body = {
-                    userAddress: {
-                        fulladdress: this.paymentForm.controls['fulladdress'].value,
-                        city: this.paymentForm.controls['city'].value,
-                        area: this.paymentForm.controls['area'].value,
+                let body : PaymentModel= {
+                    userDetails: {
+                        userId: this.cartInformation.userId,
+                        fullAddress: this.paymentForm.controls['fulladdress'].value,
                         latitude: this.paymentForm.controls['latitude'].value,
                         longitude: this.paymentForm.controls['longitude'].value,
                     },
-                    cartInfo: {
-                        menuItems: this.cartInformation.menuItems,
-                        cartId: this.cartInformation.id
-                    },
-                    paymentInfo: {
-                        totalPrice: this.paymentForm.controls['totalPrice'].value,
+                    cartId: this.cartInformation.id,
+                    menuItems: this.cartInformation.menuItems,
+                    payementDetails: {
+                        price: this.paymentForm.controls['totalPrice'].value,
                         selectedPayment: this.paymentForm.controls['selectedPayment'].value,
                         methodOfDelivery: this.paymentForm.controls['methodOfDelivery'].value,
-                        reward: this.rewardPoints
+                        paymentSuccess: true
                     },
-                    userId: this.cartInformation.userId
+                    orderStatus: OrderStatusEnum[OrderStatusEnum.AcceptedByVendor],
+                    orderPlaced: new Date().toLocaleString('en-US',{ hour12:false }),
+                    id:''
+                    
                 };
 
-                console.log(body);
+                //console.log(body);
+                this.paymentProcess(body);
             }
         } else {
             console.log(this.paymentForm.errors);
         }
+    }
+
+    async paymentProcess(paymentBody:PaymentModel) {
+        
+        this.backgroundSemiTransparent.nativeElement.setAttribute('background-semi-transparent','');
+
+        let payemntSuccess = await this.processPoints(paymentBody.payementDetails.price,paymentBody.userDetails.userId);
+
+        if(payemntSuccess) {
+            this.addPayment(paymentBody);
+        } else {
+            this.showErrorPayment('Payment failed');
+        }
+    }
+
+     addPayment(paymentBody:PaymentModel) {
+        let url = environment.orderService.order;
+        let body = {
+            orderInfo: paymentBody
+        };
+        this.httpclient.post<PaymentModel>(url,body).subscribe({
+            next: result => {
+                if(result !== null) {
+                    
+                    setTimeout(()=> {
+                        this.renderer.removeAttribute(this.backgroundSemiTransparent.nativeElement, 'background-semi-transparent');
+
+                        this.cartInformationService.modifyItemsInCart(0);
+            
+                        this.router.navigateByUrl('/user/food');
+                    },1500);
+
+                    this.clearMenuItems();
+
+                } else {
+                    this.showError('Internal Error occured in placing the orders');
+                }
+            },
+            error: error => {
+                console.log('Error occured in Placing the orders ',error);
+                this.showErrorPayment('Error occured in placing the orders');
+            }
+        })
+    }
+
+    async clearMenuItems() {
+        let clearMenuItems = await this.cartInfoService.clearMenuItems();
+    }
+
+    async processPoints(price:number,userId:string) {
+        let url = environment.idsConfig.utility + '/update/points';
+        let body = {
+            userId: userId,
+            amountToBeDebited: price
+        }
+        let event = this.httpclient.post<boolean>(url,body);
+        let result = await lastValueFrom(event).catch(err=>{
+            console.log('Error occured in Updating the User Points ',err);
+            return false;
+        });
+
+        return result;
+    }
+
+    showErrorPayment(message:string) {
+        this.renderer.removeAttribute(this.backgroundSemiTransparent.nativeElement, 'background-semi-transparent');
+        this.showError(message);
     }
 }
