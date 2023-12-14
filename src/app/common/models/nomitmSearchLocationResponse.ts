@@ -1,10 +1,8 @@
-export class SearchLocationResponse{
-place_id:number;
-lat:number;
-lon:number;
-name:string;
-display_name:string;
-osm_id:number;
+export interface SearchLocationResponse{
+placeId:number;
+latitude:number;
+longitude:number;
+displayName:string;
 address:AdressLocationModel;
 }
 

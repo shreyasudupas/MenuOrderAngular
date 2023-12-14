@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core'
-import { BehaviorSubject, lastValueFrom ,Observable, switchMap } from 'rxjs'
+import { lastValueFrom ,Observable, BehaviorSubject, switchMap } from 'rxjs'
 import { environment } from 'src/environments/environment';
 import { SearchLocationResponse } from '../models/nomitmSearchLocationResponse';
 import { UserLocation } from '../models/userLocationModel'
@@ -10,6 +10,7 @@ import { UserLocation } from '../models/userLocationModel'
 export class LocationService{
 private userLocation = new UserLocation();
 private userLocationSubcription = new BehaviorSubject<UserLocation>(undefined);
+locationInProgress:boolean = true;
 
 constructor(private httpClient:HttpClient) {}
 
@@ -28,8 +29,8 @@ constructor(private httpClient:HttpClient) {}
         return this.userLocationSubcription.asObservable();
     }
 
-    public async searchUserLocationByAreaCityName(query:string) {
-        let url = environment.location.forwardGeoCoding;
+    public async searchUserLocationByAreaCityName(query:string) : Promise<SearchLocationResponse[]|null> {
+        let url = environment.idsConfig.location.forward;
         url = url.replace('{query}',query);
 
         let locationResult$ = this.httpClient.get<SearchLocationResponse[]>(url);
@@ -42,14 +43,16 @@ constructor(private httpClient:HttpClient) {}
         return locationResult;
     }
 
-    public async searchUserLocationByCoordinates(latitude:string,longitude:string) {
-        let url = environment.location.reverseGeoCoding;
-        url = url.replace('{latitude}',latitude);
-        url = url.replace('{longitude}',longitude);
+    public async searchUserLocationByCoordinates(latitude:string,longitude:string): Promise<SearchLocationResponse | null> {
 
+        let url = environment.idsConfig.location.reverse;
+            url = url.replace('{latitude}',latitude);
+            url = url.replace('{longitude}',longitude);
+        let locationResult:any;
+    
         let locationResult$ = this.httpClient.get<SearchLocationResponse>(url);
 
-        let locationResult = await lastValueFrom(locationResult$).catch(err=>{
+        locationResult = await lastValueFrom(locationResult$).catch(err=>{
             console.log('Error Occured in Search Reverse Geocoding Location',err);
             return null;
         });
@@ -63,25 +66,30 @@ constructor(private httpClient:HttpClient) {}
         }
       
         navigator.geolocation.getCurrentPosition(async (position) => {
-            const longitude = position.coords.longitude.toString();
-            const latitude = position.coords.latitude.toString();
-            //console.log([latitude.toString(), longitude.toString()]);
-            
-            let userLocationResult = await this.searchUserLocationByCoordinates(latitude,longitude);
-            if(userLocationResult !== null) {
 
-                let userLocation:UserLocation =  {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                    address: userLocationResult.display_name,
-                    city: userLocationResult.address.city,
-                    area: userLocationResult.address.suburb,
-                    displayName: userLocationResult.address.road + ' ,' + userLocationResult.address.suburb
-                };
-
-                this.updateUserLocation(userLocation);
+            if(this.locationInProgress) {
+                this.locationInProgress = false; //API should not be called twice hence this flag
+                const longitude = position.coords.longitude.toString();
+                const latitude = position.coords.latitude.toString();
+                //console.log([latitude.toString(), longitude.toString()]);
+                
+                let userLocationResult = await this.searchUserLocationByCoordinates(latitude,longitude);
+                
+                if(userLocationResult !== null && userLocationResult !== undefined) {
+    
+                    let userLocation:UserLocation =  {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        address: userLocationResult.displayName,
+                        city: userLocationResult.address.city,
+                        area: userLocationResult.address.suburb,
+                        displayName: userLocationResult.address.road + ' ,' + userLocationResult.address.suburb
+                    };
+    
+                    this.updateUserLocation(userLocation);
+                }
+                this.locationInProgress = true;
             }
-
         },(error) => {
             //console.log(error);
             if(error.PERMISSION_DENIED !== undefined){

@@ -12,6 +12,7 @@ import { CommonDataSharingService } from 'src/app/common/services/common-datasha
 import { LocationService } from 'src/app/common/services/location.service';
 import { MenuService } from 'src/app/common/services/menu.service';
 import { NavigationService } from 'src/app/common/services/navigation.service';
+import { environment } from 'src/environments/environment';
 import { CartInformation } from '../cart-component/cart-information';
 
 @Component({
@@ -40,6 +41,8 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
         { key:'Online', value: 'Online' },
         { key:'Collect Yourself', value: 'Offline' }
     ];
+    displayDefaultPaymentPage:boolean;
+    showOverlay:boolean= false;
 
     constructor(
         public menuService:MenuService,
@@ -62,6 +65,9 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
         this.componentName = this.activatedRoute.snapshot.routeConfig?.component?.name;
 
         this.InitilizeMenu();
+
+        this.baseUrl = environment.sagaService.payment;
+        this.action = null;
 
         this.userId = this.authService.getUserInformation().profile['userId'];
 
@@ -102,7 +108,8 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
             query: GET_USER_INFO,
             variables: {
                 userId: this.userId
-            }
+            },
+            fetchPolicy: "network-only"
         }).valueChanges.subscribe({
             next: result => {
                 if(result.data.userInformation !== null) {
@@ -124,25 +131,33 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
                     this.cartInformation = result;
 
                     if(this.cartInformation !== null ) {
-                        this.totalPrice = this.cartInformation.menuItems.reduce(function(prevValue,currentValue){
-                            return prevValue + currentValue.price;
-                        },0);
 
-                        let discountPercentage = this.cartInformation.menuItems.reduce(function(prevValue,currentValue){
-                            return prevValue + currentValue.discount;
-                        },0);
-
-                        if(discountPercentage > 0) {
-                            //discounted amount
-                            this.discount = (this.totalPrice * discountPercentage)/100;
-                            this.totalPriceToPay = this.totalPrice * ( 1 - discountPercentage/100 );
+                        if(this.cartInformation.menuItems.length > 0 ) {
+                            this.displayDefaultPaymentPage = false;
+                            this.totalPrice = this.cartInformation.menuItems.reduce(function(prevValue,currentValue){
+                                return prevValue + currentValue.price;
+                            },0);
+    
+                            let discountPercentage = this.cartInformation.menuItems.reduce(function(prevValue,currentValue){
+                                return prevValue + currentValue.discount;
+                            },0);
+    
+                            if(discountPercentage > 0) {
+                                //discounted amount
+                                this.discount = (this.totalPrice * discountPercentage)/100;
+                                this.totalPriceToPay = this.totalPrice * ( 1 - discountPercentage/100 );
+                            } else {
+                                this.totalPriceToPay = this.totalPrice;
+                            }
+    
+                            this.paymentForm.patchValue({
+                                totalPrice: this.totalPriceToPay
+                            });
                         } else {
-                            this.totalPriceToPay = this.totalPrice;
+                            this.displayEmptyPaymentPage();
                         }
-
-                        this.paymentForm.patchValue({
-                            totalPrice: this.totalPriceToPay
-                        });
+                    } else {
+                        this.displayEmptyPaymentPage();
                     }
                 }
             },
@@ -151,7 +166,11 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
                 this.showError('Error in Cart serivice');
             }
         });
+    }
 
+
+    displayEmptyPaymentPage() {
+        this.displayDefaultPaymentPage = true;
     }
 
     getUserLocation() {
@@ -207,10 +226,33 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
                     userId: this.cartInformation.userId
                 };
 
-                console.log(body);
+                //console.log(body);
+                this.showOverlay = true;
+                this.paymentApiCalling(body);
             }
         } else {
             console.log(this.paymentForm.errors);
         }
+    }
+
+    private paymentApiCalling(paymentModel:any) {
+        this.Create(paymentModel).subscribe({
+            next: result => {
+                //console.log(result);
+                if(result.isSuccess === false)
+                {
+                    this.showError('Error has occured in the Server');
+                }
+                else {
+                    this.cartInformationService.modifyItemsInCart(0);
+                    this.router.navigateByUrl('/user/food');
+                }
+                this.showOverlay = false;
+            },
+            error: err => {
+                console.log('Error occrued in Payment API',err);
+                this.showOverlay = false;
+            }
+        });
     }
 }

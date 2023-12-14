@@ -409,7 +409,7 @@ userEnable:boolean;
             if(lat !== '0' && long !== '0'){
                 var result = await this.locationService.searchUserLocationByCoordinates(lat,long);
 
-                if(result.error !== undefined){
+                if(result !== undefined){
                     this.showError('Auto Generated address have recieved incorrect lattitude and longtitude');
                 } else {
 
@@ -423,7 +423,7 @@ userEnable:boolean;
                     this.updateStateAssociations(result.address.state,result.address.city,result.address.suburb);
 
                     this.vendorDetailForm.patchValue({
-                        addressLine1: result.display_name,
+                        addressLine1: result.displayName,
                         state: result.address.state,
                         city: result.address.city,
                         area: result.address.suburb

@@ -61,7 +61,7 @@ export class LocationSearchDropdown implements OnInit {
     }
 
     locationSelection(location:SearchLocationResponse) : void {
-        let locationSplit = location.display_name.split(',');
+        let locationSplit = location.displayName.split(',');
         this.displayLocationName = locationSplit[0] + ' ,' + locationSplit[1] + ' ,' + locationSplit[2];
 
         this.searchLocation = "";
@@ -69,9 +69,9 @@ export class LocationSearchDropdown implements OnInit {
         this.isLocationListOpened = false;
 
         let userLocation:UserLocation =  {
-            latitude: location.lat,
-            longitude: location.lon,
-            address: location.display_name,
+            latitude: location.latitude,
+            longitude: location.longitude,
+            address: location.displayName,
             city: (location.address === undefined)?'':location.address.city,
             area: (location.address === undefined)?'':location.address.suburb,
             displayName: (location.address === undefined)?this.displayLocationName:location.address.road + ' ,' + location.address.suburb

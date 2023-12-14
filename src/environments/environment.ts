@@ -18,7 +18,11 @@ export const environment = {
     vendorUserMapping:'https://localhost:5006/api/vendor-user-mapping',
     utility:'https://localhost:5006/api/utility',
     imageUrl:'https://localhost:5006/ids-images/',
-    vendor:'https://localhost:5006/api/vendor/'
+    vendor:'https://localhost:5006/api/vendor/',
+    location:{
+      forward:'https://localhost:5006/api/location/forward?locationQuery={query}',
+      reverse:"https://localhost:5006/api/location/reverse?latitude={latitude}&longitude={longitude}"
+    }
   },
   inventory:{
     baseUrl:"https://localhost:5003/api/",
@@ -33,11 +37,14 @@ export const environment = {
   orderService: {
     cartInformation: 'https://localhost:5005/api/cartInformation'
   },
+  sagaService:{
+    payment: 'https://localhost:5007/api/payment'
+  },
   notification: 'https://localhost:5004/api/notification',
   imagePath:'https://localhost:5003/app-images/',
   location:{
-    forwardGeoCoding: 'https://geocode.maps.co/search?q={query}',
-    reverseGeoCoding: 'https://geocode.maps.co/reverse?lat={latitude}&lon={longitude}',
+    // forwardGeoCoding: 'https://geocode.maps.co/search?q={query}',
+    // reverseGeoCoding: 'https://geocode.maps.co/reverse?lat={latitude}&lon={longitude}',
     clientsIpAddress:'https://jsonip.com',
     geolocationByIpAddress: 'http://ip-api.com/json/{ipAddress}'
   },
