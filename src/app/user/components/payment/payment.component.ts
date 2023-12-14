@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
@@ -14,6 +14,9 @@ import { MenuService } from 'src/app/common/services/menu.service';
 import { NavigationService } from 'src/app/common/services/navigation.service';
 import { environment } from 'src/environments/environment';
 import { CartInformation } from '../cart-component/cart-information';
+import { OrderStatusEnum, PaymentModel } from './payment';
+import { environment } from 'src/environments/environment';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
     selector: 'payment-dashboard',
@@ -57,7 +60,9 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
         private apollo:Apollo,
         private authService:AuthService,
         private locationService:LocationService,
-        private fb:FormBuilder){
+        private fb:FormBuilder,
+        private cartInfoService:CartInformationSerivice,
+        private renderer: Renderer2){
             super(menuService,httpclient,commonBroadcastService,messageService)
     }
 
@@ -205,25 +210,25 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
                     return;
                 }
 
-                let body = {
-                    userAddress: {
-                        fulladdress: this.paymentForm.controls['fulladdress'].value,
-                        city: this.paymentForm.controls['city'].value,
-                        area: this.paymentForm.controls['area'].value,
+                let body : PaymentModel= {
+                    userDetails: {
+                        userId: this.cartInformation.userId,
+                        fullAddress: this.paymentForm.controls['fulladdress'].value,
                         latitude: this.paymentForm.controls['latitude'].value,
                         longitude: this.paymentForm.controls['longitude'].value,
                     },
-                    cartInfo: {
-                        menuItems: this.cartInformation.menuItems,
-                        cartId: this.cartInformation.id
-                    },
-                    paymentInfo: {
-                        totalPrice: this.paymentForm.controls['totalPrice'].value,
+                    cartId: this.cartInformation.id,
+                    menuItems: this.cartInformation.menuItems,
+                    payementDetails: {
+                        price: this.paymentForm.controls['totalPrice'].value,
                         selectedPayment: this.paymentForm.controls['selectedPayment'].value,
                         methodOfDelivery: this.paymentForm.controls['methodOfDelivery'].value,
-                        reward: this.rewardPoints
+                        paymentSuccess: true
                     },
-                    userId: this.cartInformation.userId
+                    orderStatus: OrderStatusEnum[OrderStatusEnum.AcceptedByVendor],
+                    orderPlaced: new Date().toLocaleString('en-US',{ hour12:false }),
+                    id:''
+                    
                 };
 
                 //console.log(body);

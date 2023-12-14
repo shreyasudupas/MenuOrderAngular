@@ -35,7 +35,8 @@ export const environment = {
     imageMenu: "https://localhost:5003/api/menuimage"
   },
   orderService: {
-    cartInformation: 'https://localhost:5005/api/cartInformation'
+    cartInformation: 'https://localhost:5005/api/cartInformation',
+    order: 'https://localhost:5005/api/order'
   },
   sagaService:{
     payment: 'https://localhost:5007/api/payment'
