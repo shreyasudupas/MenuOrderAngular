@@ -15,8 +15,6 @@ import { NavigationService } from 'src/app/common/services/navigation.service';
 import { environment } from 'src/environments/environment';
 import { CartInformation } from '../cart-component/cart-information';
 import { OrderStatusEnum, PaymentModel } from './payment';
-import { environment } from 'src/environments/environment';
-import { lastValueFrom } from 'rxjs';
 
 @Component({
     selector: 'payment-dashboard',
