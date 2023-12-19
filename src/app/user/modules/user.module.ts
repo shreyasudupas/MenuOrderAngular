@@ -13,6 +13,7 @@ import { CartIconComponent } from '../components/cart-icon-component/cart-icon.c
 import { FoodComponent } from '../components/food/food.component';
 import { UserHomeComponent } from '../components/home/user-home.component';
 import { MenuComponent } from '../components/menu/menu.component';
+import { OrderDetailsComponent } from '../components/order-details/order-details.component';
 import { PaymentDashboardComponent } from '../components/payment/payment.component';
 import { UserDashboardComponent } from '../components/user-dashboard/user-dashboard.component';
 import { UserRoutingModule } from './user-routing.module';
@@ -27,7 +28,8 @@ import { UserRoutingModule } from './user-routing.module';
         CartIconComponent,
         ClickOutsideDirective,
         LocationSearchDropdown,
-        PaymentDashboardComponent
+        PaymentDashboardComponent,
+        OrderDetailsComponent
     ],
     imports:[
         CommonModule,

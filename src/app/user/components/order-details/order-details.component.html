@@ -1,0 +1,12 @@
+<p-card header="Your Orders">
+    <p-dataView #dv [value]="orders">
+        <ng-template let-order pTemplate="listItem">
+            <div class="col-12">
+                <div>
+                    <h1>Order #123</h1>
+                    {{order.orderStatus}}
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</p-card>

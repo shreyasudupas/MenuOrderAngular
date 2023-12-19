@@ -7,6 +7,7 @@ import { CartComponent } from "../components/cart-component/cart.component";
 import { FoodComponent } from "../components/food/food.component";
 import { UserHomeComponent } from "../components/home/user-home.component";
 import { MenuComponent } from "../components/menu/menu.component";
+import { OrderDetailsComponent } from "../components/order-details/order-details.component";
 import { PaymentDashboardComponent } from "../components/payment/payment.component";
 import { UserDashboardComponent } from "../components/user-dashboard/user-dashboard.component";
 
@@ -20,6 +21,7 @@ const routes:Routes = [
                 path: 'profile', component: UserProfileComponent
             },
             { path:'payment',component: PaymentDashboardComponent },
+            { path:'order/list' , component: OrderDetailsComponent },
             { 
                 path:'',
                 redirectTo:'home',

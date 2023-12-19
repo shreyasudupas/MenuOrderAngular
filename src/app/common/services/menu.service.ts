@@ -78,6 +78,15 @@ export class MenuService{
                         visible:true,
                         routeName:'user/payment',
                         routerLinkActiveOptions: { exact:true }
+                    },
+                    {
+                        label: 'OrderDetails',
+                        icon: 'pi pi-fw pi-credit-card',
+                        routerLink:['./order/list'],
+                        componentName:'OrderDetailsComponent',
+                        visible:true,
+                        routeName:'order/list',
+                        routerLinkActiveOptions: { exact:true }
                     }
                 ]
             },

@@ -41,7 +41,7 @@ long:number;
 
         this.showVendorList();
         
-        console.log('Food page' + this.navigation.history);
+        //console.log('Food page' + this.navigation.history);
 
         this.navigation.startSaveHistory('food/menu')
     }
