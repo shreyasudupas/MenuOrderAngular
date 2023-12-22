@@ -209,24 +209,24 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
                 }
 
                 let body : PaymentModel= {
-                    userDetails: {
-                        userId: this.cartInformation.userId,
+                    userId: this.cartInformation.userId,
+                    userAddress: {
                         fullAddress: this.paymentForm.controls['fulladdress'].value,
                         latitude: this.paymentForm.controls['latitude'].value,
                         longitude: this.paymentForm.controls['longitude'].value,
+                        city: this.paymentForm.controls['city'].value,
+                        area: this.paymentForm.controls['area'].value
                     },
-                    cartId: this.cartInformation.id,
-                    menuItems: this.cartInformation.menuItems,
-                    payementDetails: {
-                        price: this.paymentForm.controls['totalPrice'].value,
+                    cartInfo: {
+                        cartId: this.cartInformation.id,
+                        menuItems: this.cartInformation.menuItems
+                    },
+                    paymentInfo: {
+                        totalPrice: this.paymentForm.controls['totalPrice'].value,
                         selectedPayment: this.paymentForm.controls['selectedPayment'].value,
                         methodOfDelivery: this.paymentForm.controls['methodOfDelivery'].value,
                         paymentSuccess: true
-                    },
-                    orderStatus: OrderStatusEnum[OrderStatusEnum.AcceptedByVendor],
-                    orderPlaced: new Date().toLocaleString('en-US',{ hour12:false }),
-                    id:''
-                    
+                    }
                 };
 
                 //console.log(body);
