@@ -39,6 +39,8 @@ import { AvatarModule } from 'primeng/avatar';
 import { ImageModule } from 'primeng/image';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { AccordionModule } from 'primeng/accordion';
+import { TagModule } from 'primeng/tag';
+
 
 @NgModule({
     imports:[ButtonModule,
@@ -81,7 +83,9 @@ import { AccordionModule } from 'primeng/accordion';
         AvatarModule,
         ImageModule,
         ToggleButtonModule,
-        AccordionModule
+        AccordionModule,
+        TagModule
+
     ],
     exports:[ButtonModule,
         TabMenuModule,
@@ -123,7 +127,8 @@ import { AccordionModule } from 'primeng/accordion';
         AvatarModule,
         ImageModule,
         ToggleButtonModule,
-        AccordionModule
+        AccordionModule,
+        TagModule
     ]
 })
 

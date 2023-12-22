@@ -1,0 +1,12 @@
+<p-card header="Orders Dashboard">
+    <p-dataView #dv [value]="orders" layout="grid">
+        <ng-template let-order pTemplate="gridItem">
+            <div class="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
+                <div class="p-4 border-1 surface-border surface-card border-round">
+                    {{order.totalPrice}}
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</p-card>
+

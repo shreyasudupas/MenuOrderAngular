@@ -261,6 +261,15 @@ export class MenuService{
                         routerLinkActiveOptions: { exact:true }
                     },
                     {
+                        label: 'Order Dashboard',
+                        icon: 'pi pi-fw pi-calendar',
+                        visible:true,
+                        componentName:'VendorOrderDasboardComponent',
+                        routerLink: ['vendor-order-dashboard/'+ vendorId],
+                        routeName:'/vendor-order-dashboard',
+                        routerLinkActiveOptions: { exact:true }
+                    },
+                    {
                         label: 'Profile',
                         icon: 'pi pi-fw pi-calendar',
                         routerLink:['./profile'],

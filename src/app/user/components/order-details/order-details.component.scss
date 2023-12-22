@@ -1,0 +1,91 @@
+.order-container {
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+
+    .order-menu-item-list-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .menu-item-container {
+            display: flex;
+            flex-direction: row;
+
+            .menu-item-image-container {
+                align-self: center;
+                flex-grow: 0.3;
+    
+                .menu-image {
+                    display: flex;
+                    justify-content: center;
+                }
+            }
+    
+            .menu-item-description-list-container {
+                flex-grow: 3;
+    
+                .menu-item-description-container {
+                    display: flex;
+                    flex-direction: column;
+    
+                    .menu-item-foodType {
+                        flex-grow: 1;
+                    }
+    
+                    .menu-item-itemName {
+                        flex-grow: 1;
+                    }
+    
+                    .menu-item-price {
+                        flex-grow: 1;
+                        align-self: flex-end;
+                        border-radius: 25px;
+                        border: 2px solid black;
+                    }
+                }
+            }
+        }
+    }
+
+    .order-menu-footer-container {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+
+        .order-menu-order-placed {
+            flex-grow: 1;
+        }
+
+        .order-menu-price {
+            flex-grow: 1;
+        }
+
+        .order-status {
+            flex-grow: 1;
+
+            .order-status-container {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                .order-status-item {
+                    flex-grow: 1;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 800px) {
+    
+    .order-container {
+        
+        .order-menu-footer-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+    
+}

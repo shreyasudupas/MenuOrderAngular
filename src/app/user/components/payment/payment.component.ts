@@ -44,6 +44,7 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
     ];
     displayDefaultPaymentPage:boolean;
     showOverlay:boolean= false;
+    isPhoneNumberConfirmed:boolean;
 
     constructor(
         public menuService:MenuService,
@@ -58,9 +59,7 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
         private apollo:Apollo,
         private authService:AuthService,
         private locationService:LocationService,
-        private fb:FormBuilder,
-        private cartInfoService:CartInformationSerivice,
-        private renderer: Renderer2){
+        private fb:FormBuilder){
             super(menuService,httpclient,commonBroadcastService,messageService)
     }
 
@@ -82,7 +81,9 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
             area:[{value:'',disabled:true},Validators.required],
             latitude: [0,Validators.required],
             longitude: [0,Validators.required],
-            methodOfDelivery: ['',Validators.required]
+            methodOfDelivery: ['',Validators.required],
+            phoneNumber: [{value:'',disabled:true},Validators.required],
+            emailId: [{value:'',disabled:true},Validators.required]
         });
 
         this.getCartInformation();
@@ -116,8 +117,14 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
         }).valueChanges.subscribe({
             next: result => {
                 if(result.data.userInformation !== null) {
-                    let cartInfo = result.data.userInformation;
-                    this.rewardPoints = cartInfo.points;
+                    let userInfo = result.data.userInformation;
+                    this.rewardPoints = userInfo.points;
+                    this.isPhoneNumberConfirmed = userInfo.phoneNumberConfirmed;
+
+                    this.paymentForm.patchValue({
+                        phoneNumber: userInfo.phoneNumber,
+                        emailId: userInfo.email
+                    });                
                 }
             },
             error: err => {
@@ -200,6 +207,8 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
         if(this.paymentForm.valid){
             if(this.paymentForm.controls['selectedPayment'].value !== 'Reward') {
                 this.paymentForm.controls['selectedPayment'].setErrors({invalid: true,message:'*Please select Rewards since its only active'});
+            } else if(this.paymentForm.controls['phoneNumber'].value === '' || this.isPhoneNumberConfirmed === false) {
+                this.paymentForm.controls['phoneNumber'].setErrors({invalid:true,message:'*Phone Number not confirmed'});
             } else {
 
                 //check if reward is within the price
@@ -209,24 +218,26 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
                 }
 
                 let body : PaymentModel= {
-                    userDetails: {
-                        userId: this.cartInformation.userId,
+                    userId: this.cartInformation.userId,
+                    userAddress: {
                         fullAddress: this.paymentForm.controls['fulladdress'].value,
                         latitude: this.paymentForm.controls['latitude'].value,
                         longitude: this.paymentForm.controls['longitude'].value,
+                        city: this.paymentForm.controls['city'].value,
+                        area: this.paymentForm.controls['area'].value,
+                        emailId: this.paymentForm.controls['emailId'].value,
+                        phoneNumber: this.paymentForm.controls['phoneNumber'].value,
                     },
-                    cartId: this.cartInformation.id,
-                    menuItems: this.cartInformation.menuItems,
-                    payementDetails: {
-                        price: this.paymentForm.controls['totalPrice'].value,
+                    cartInfo: {
+                        cartId: this.cartInformation.id,
+                        menuItems: this.cartInformation.menuItems
+                    },
+                    paymentInfo: {
+                        totalPrice: this.paymentForm.controls['totalPrice'].value,
                         selectedPayment: this.paymentForm.controls['selectedPayment'].value,
                         methodOfDelivery: this.paymentForm.controls['methodOfDelivery'].value,
                         paymentSuccess: true
-                    },
-                    orderStatus: OrderStatusEnum[OrderStatusEnum.AcceptedByVendor],
-                    orderPlaced: new Date().toLocaleString('en-US',{ hour12:false }),
-                    id:''
-                    
+                    }
                 };
 
                 //console.log(body);

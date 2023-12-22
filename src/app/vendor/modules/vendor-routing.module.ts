@@ -1,14 +1,15 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { VendorDashboardComponent } from "../components/vendorDashboard/vendor-dashboard.component";
+import { VendorDashboardComponent } from "../components/vendor-dashboard/vendor-dashboard.component";
 import { Role } from "src/app/common/models/role";
-import { VendorHomeComponent } from "../components/vendorHome/vendor-home.component";
+import { VendorHomeComponent } from "../components/vendor-home/vendor-home.component";
 import { VendorDetailComponent } from "src/app/admin/components/vendor-details/vendor-detail.component";
 import { CategoryDetailComponent } from "src/app/admin/components/categories/category-detail.component";
 import { MenuDetailsComponent } from "src/app/admin/components/menu-details/menu-details.component";
 import { RoleBasedAuthGaurd } from "src/app/common/gaurds/role-based-routing-gaurd";
 import { UserProfileComponent } from "src/app/common/components/user-profile/user-profile.component";
 import { VendorPreRegistrationComponent } from "../components/vendor-pre-registration/vendor-pre-registration.component";
+import { VendorOrderDasboardComponent } from "../components/vendor-order-dashboard/vendor-order-dashboard.component";
 
 const routes:Routes = [
     { 
@@ -28,6 +29,9 @@ const routes:Routes = [
             },
             {
                 path: 'vendor-pre-registration/:vendorId',component: VendorPreRegistrationComponent
+            },
+            {
+                path: 'vendor-order-dashboard/:vendorId',component: VendorOrderDasboardComponent
             },
             { 
                 path:'',

@@ -1,13 +1,27 @@
 import { CartMenuItem } from "../cart-component/cart-information";
-import { PaymentDetailModel, UserOrderDetailsModel } from "../payment/payment";
+import {  UserOrderDetailsModel } from "../payment/payment";
 import { OrderStatus } from "./order-status-enum";
 
 export interface OrderModel {
 id:string;
 cartId:string;
 menuItems:CartMenuItem[];
-paymentDetails:PaymentDetailModel;
-userDetails:UserOrderDetailsModel;
+totalPrice:number;
+paymentDetail:OrderPaymentModel;
+userDetail:UserOrderDetailsModel;
 orderPlacedDateTime:string;
 orderStatus:OrderStatus;
+vendorDetail:VendorDetailModel;
+}
+
+interface VendorDetailModel {
+vendorId:string;
+vendorName:string;
+}
+
+interface OrderPaymentModel {
+price:number;
+selectedPayment:string;
+methodOfDelivery:string;
+paymentSuccess:boolean;
 }

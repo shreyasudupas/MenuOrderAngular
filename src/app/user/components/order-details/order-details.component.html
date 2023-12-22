@@ -2,9 +2,127 @@
     <p-dataView #dv [value]="orders">
         <ng-template let-order pTemplate="listItem">
             <div class="col-12">
-                <div>
-                    <h1>Order #123</h1>
-                    {{order.orderStatus}}
+                <div class="order-container">
+                    <div>
+                        <h2>Restaurant: {{order.vendorDetail.vendorName}}</h2>
+                    </div>
+
+                    <p-divider></p-divider>
+
+                    <div class="order-menu-item-list-container">
+
+                        <ng-container *ngFor="let menu of order.menuItems">
+                            <div class="menu-item-container">
+                                <div class="menu-item-image-container">
+                                    <div class="menu-image">
+                                        <ng-container *ngIf="menu.image.imageFileName !== '';else showPreviewImage">
+                                            <img [src]="menu.image.imageFileName"
+                                                alt = "Vendor image"
+                                                height="120px"
+                                                width="40%"
+                                            />
+                                        </ng-container>
+                                        <ng-template #showPreviewImage>
+                                            <img src="assets/MenuIcons/BlankMenu.jpg"
+                                                alt = "menu image"
+                                                height="120px"
+                                                width="40%"
+                                        />
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <div class="menu-item-description-list-container">
+                                    <div class="menu-item-description-container">
+                                        <div class="menu-item-foodType">
+                                            {{menu.foodType}}
+                                        </div>
+                                        <div class="menu-item-itemName">
+                                            <h4>{{menu.itemName}}</h4>
+                                        </div>
+                                        <ng-container *ngIf="menu.discount > 0">
+                                            <div class="menu-item-foodType">
+                                                <img src="assets/Logo/discount_tag.png"
+                                                    alt = "menu image"
+                                                    height="30px"
+                                                    width="2%"
+                                                />
+                                                {{menu.discount}}
+                                            </div>
+                                        </ng-container>
+                                        
+                                        <div class="menu-item-price">
+                                            {{menu.quantity}} * {{menu.price}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <p-divider></p-divider>
+
+                    <div class="order-menu-footer-container">
+                        <div class="order-menu-price">
+                            <b>Total Price:</b> {{order.paymentDetail.price}}
+                        </div>
+                        <div class="order-menu-order-placed">
+                            <b>Placed Time:</b> {{order.orderPlacedDateTime}}
+                        </div>
+                        <div class="order-status">
+                            <ng-container [ngSwitch]="order.orderStatus">
+                                <div *ngSwitchCase="1">
+                                    <div class="order-status-container">
+                                        <div class="order-status-item">
+                                            <p-tag severity="info" value="Order Placed" [rounded]="true"></p-tag>
+
+                                        </div>
+                                        <div class="order-status-item">
+                                            <p-button label="Waiting for Vendor" styleClass="p-button-raised p-button-text"></p-button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngSwitchCase="2">
+                                    <div class="col-12">
+                                        <div class="order-status-container">
+                                            <div class="order-status-item">
+                                                <p-tag severity="warning" value="Order Accepted" [rounded]="true"></p-tag>
+                                            </div>
+                                            <div class="order-status-item">
+                                                <p-button label="InProgress" styleClass="p-button-raised p-button-text p-button-warning"></p-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngSwitchCase="3">
+                                    <div class="order-status-container">
+                                        <div class="order-status-item">
+                                            <p-tag severity="danger" value="Order InProgress" [rounded]="true"></p-tag>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngSwitchCase="4">
+                                    <div class="order-status-container">
+                                        <div class="order-status-item">
+                                            <p-tag value="Order Ready" [rounded]="true"></p-tag>
+                                        </div>
+                                        <div class="order-status-item">
+                                            <p-button label="Track Order" styleClass="p-button-raised p-button-text p-button-help"></p-button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngSwitchCase="5">
+                                    <div class="order-status-container">
+                                        <div class="order-status-item">
+                                            <p-tag severity="success" value="Order Done" [rounded]="true"></p-tag>
+                                        </div>
+                                        <div class="order-status-item">
+                                            <p-button label="Reorder" styleClass="p-button-raised p-button-text p-button-success"></p-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
                 </div>
             </div>
         </ng-template>

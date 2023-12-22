@@ -1,34 +1,39 @@
 import { CartMenuItem } from "../cart-component/cart-information";
 
 export class PaymentModel {
-    id:string;
-    cartId:string;
-    menuItems:CartMenuItem[];
-    payementDetails:PaymentDetailModel;
-    userDetails:UserOrderDetailsModel;
-    orderPlaced:string;
-    orderStatus:string;
+    userId:string;
+    cartInfo:CartInfoModel;
+    paymentInfo:PaymentDetailModel;
+    userAddress:UserOrderDetailsModel;
 }
 
 export class PaymentDetailModel {
-    price:number;
+    totalPrice:number;
     selectedPayment:string;
     methodOfDelivery:string;
     paymentSuccess:boolean;
 }
 
 export class UserOrderDetailsModel {
-    userId:string;
     fullAddress:string;
     latitude:number;
     longitude:number;
+    city:string;
+    area:string;
+    phoneNumber:string;
+    emailId:string;
+}
+
+export class CartInfoModel {
+    cartId:string;
+    menuItems:CartMenuItem[];
 }
 
 export enum OrderStatusEnum {
-    WaitingOnVendorAccept,
-    AcceptedByVendor,
-    Processing,
-    Ready,
-    Done
+    OrderPlaced,
+    OrderAccepted,
+    OrderInProgress,
+    OrderReady,
+    OrderDone
 }
 

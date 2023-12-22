@@ -43,6 +43,11 @@
                                         *Select the Payment method.
                                       </div>
                                 </div>
+
+                                <div *ngIf="paymentForm.get('phoneNumber')?.errors?.invalid" class="error">
+                                    {{paymentForm.controls['phoneNumber'].errors.message}}
+                                </div>
+                                
                                 <p-accordion [activeIndex]="0">
                                     <p-accordionTab>
                                         <ng-template pTemplate="header">
@@ -102,6 +107,34 @@
                                             </div>
                                         </ng-template>
                                         
+                                    </p-accordionTab>
+
+                                    <p-accordionTab>
+                                        <ng-template pTemplate="header">
+                                            <div class="flex align-items-center">
+                                                <i class="pi pi-car mr-2"></i>
+                                                <span class="vertical-align-middle">Mode of Communication</span>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template pTemplate="content">
+                                            <div class="col-12">
+                                                <span class="p-float-label p-2">
+                                                    <input pInputText id="phonenumber" formControlName="phoneNumber" />
+                                                    <label for="phonenumber">Phone Number</label>
+                                                </span>
+
+                                                <div *ngIf="paymentForm.get('phoneNumber')?.errors?.invalid" class="error">
+                                                    {{paymentForm.controls['phoneNumber'].errors.message}}
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <span class="p-float-label">
+                                                    <input pInputText id="email" formControlName="emailId" />
+                                                    <label for="email">Email</label>
+                                                </span>
+                                            </div>
+                                        </ng-template>
                                     </p-accordionTab>
                                 </p-accordion>
                             </p-card>
