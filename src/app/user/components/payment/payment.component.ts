@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
@@ -14,7 +14,7 @@ import { MenuService } from 'src/app/common/services/menu.service';
 import { NavigationService } from 'src/app/common/services/navigation.service';
 import { environment } from 'src/environments/environment';
 import { CartInformation } from '../cart-component/cart-information';
-import { OrderStatusEnum, PaymentModel } from './payment';
+import { PaymentModel } from './payment';
 
 @Component({
     selector: 'payment-dashboard',
@@ -237,6 +237,7 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
                         selectedPayment: this.paymentForm.controls['selectedPayment'].value,
                         methodOfDelivery: this.paymentForm.controls['methodOfDelivery'].value,
                         paymentSuccess: true
+                        
                     }
                 };
 
