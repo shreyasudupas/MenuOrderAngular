@@ -1,0 +1,168 @@
+.order-toolbar {
+    display: flex;
+    flex-direction: row;
+    row-gap: 10px;
+    background-color: rgb(162, 82, 228);
+
+    .order-refresh {
+        flex-grow: 1;
+        padding: 20px;
+    }
+
+    .order-buttons {
+        flex-grow: 1.5;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .user-name {
+        flex-grow: 1;
+        text-align: right;
+        padding: 20px;
+    }
+}
+
+/* CSS */
+.current-order-button {
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-bottom-left-radius: 8px;
+    border-top-left-radius: 8px ;
+    box-sizing: border-box;
+    color: rgb(162, 82, 228);
+    cursor: pointer;
+    display: inline-block;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    margin: 0;
+    outline: none;
+    padding: 13px 23px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    touch-action: manipulation;
+    transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+    user-select: none;
+    -webkit-user-select: none;
+    width: auto;
+}
+
+.current-order-button-inactive {
+    background-color: rgb(162, 82, 228);
+    border: 1px solid #FFFFFF;
+    border-bottom-left-radius: 8px;
+    border-top-left-radius: 8px ;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    margin: 0;
+    outline: none;
+    padding: 13px 23px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    touch-action: manipulation;
+    transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+    user-select: none;
+    -webkit-user-select: none;
+    width: auto;
+}
+
+.all-order-button {
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-bottom-right-radius: 8px;
+    border-top-right-radius: 8px ;
+    box-sizing: border-box;
+    color: rgb(145, 20, 247);
+    cursor: pointer;
+    display: inline-block;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    margin: 0;
+    outline: none;
+    padding: 13px 23px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    touch-action: manipulation;
+    transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+    user-select: none;
+    -webkit-user-select: none;
+    width: auto;
+}
+
+.all-order-button-inactive {
+    background-color: rgb(145, 20, 247);
+    border: 1px solid #FFFFFF;
+    border-bottom-right-radius: 8px;
+    border-top-right-radius: 8px ;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    margin: 0;
+    outline: none;
+    padding: 13px 23px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    touch-action: manipulation;
+    transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+    user-select: none;
+    -webkit-user-select: none;
+    width: auto;
+}
+  
+.orders-display-container {
+    display: flex;
+    flex-direction: row;
+
+    .orders-display-list-container {
+        flex-grow: 1;
+
+        .order-display-list {
+            padding: 0;
+            margin: 0;
+            position: relative;
+            height: 65vh;
+            border: 1px solid rgba(146, 146, 144, 0.151);
+            display: flex;
+            flex-direction: column;
+
+            .order-display-list-order-type-display {
+                position: fixed;
+                width: 50%;
+                padding: 10px;
+                border-bottom: 1px solid grey;
+                font-family: cursive;
+            }   
+        }
+    }
+
+    .orders-display-layout-container {
+        flex-grow: 1;
+
+        .orders-display-layout {
+            padding: 0;
+            margin: 0;
+            height: 65vh;
+            position: relative;
+            border: 1px solid rgba(146, 146, 144, 0.151);
+        }
+    }
+}
+  

@@ -6,7 +6,6 @@ import { BaseComponent } from 'src/app/common/components/base/base.component';
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
 import { MenuService } from 'src/app/common/services/menu.service';
 import { NavigationService } from 'src/app/common/services/navigation.service';
-import { UserDataSharingService } from 'src/app/common/services/user-datasharing.service';
 import { OrderModel } from 'src/app/user/components/order-details/order-model'
 import { OrderStatus } from 'src/app/user/components/order-details/order-status-enum';
 
@@ -18,6 +17,8 @@ import { OrderStatus } from 'src/app/user/components/order-details/order-status-
 
 export class VendorOrderDasboardComponent extends BaseComponent<any> implements OnInit {
 orders:OrderModel[];
+showAllOrderButton:boolean = false;
+showOrderType:string = 'Current Orders';
 
 constructor(private menuService:MenuService,
     public override httpclient:HttpClient,
@@ -25,7 +26,6 @@ constructor(private menuService:MenuService,
     private activatedRoute:ActivatedRoute,
     messageService:MessageService,
     public router:Router,
-    public globlalService:UserDataSharingService,
     public navigation:NavigationService){
     super(menuService,httpclient,commonBroadcastService,messageService)
 }
@@ -127,6 +127,24 @@ constructor(private menuService:MenuService,
                 }
             }
         ]
+    }
+
+    getCurrentOrders(event:any) {
+        let hasClass = event.target.classList.contains('current-order-button-inactive');
+        //console.log(hasClass);
+        if (hasClass) {
+            this.showAllOrderButton = false;
+            this.showOrderType = "Current orders"
+        } 
+    }
+
+    getAllOrders(event:any) {
+        let hasClass = event.target.classList.contains('all-order-button-inactive');
+        //console.log(hasClass);
+        if (hasClass) {
+           this.showAllOrderButton = true;
+           this.showOrderType = "All Orders"
+        } 
     }
 
 }

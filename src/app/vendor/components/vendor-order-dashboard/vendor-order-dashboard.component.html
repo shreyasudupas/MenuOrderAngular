@@ -1,5 +1,5 @@
 <p-card header="Orders Dashboard">
-    <p-dataView #dv [value]="orders" layout="grid">
+    <!-- <p-dataView #dv [value]="orders" layout="grid">
         <ng-template let-order pTemplate="gridItem">
             <div class="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
                 <div class="p-4 border-1 surface-border surface-card border-round">
@@ -7,6 +7,41 @@
                 </div>
             </div>
         </ng-template>
-    </p-dataView>
+    </p-dataView> -->
+
+    <div class="col-12">
+        <div class="order-toolbar">
+            <div class="order-refresh">
+              <p-button icon="pi pi-refresh"></p-button>
+            </div>
+      
+            <div class="order-buttons">
+              <!-- HTML !-->
+              <button [ngClass] = " showAllOrderButton === false ? 'current-order-button' : 'current-order-button-inactive' " role="button" (click)="getCurrentOrders($event)">Current Order</button>
+              <button [ngClass] = "showAllOrderButton === false? 'all-order-button-inactive' : 'all-order-button' " role="button" (click)="getAllOrders($event)">All Orders</button>
+            </div>
+      
+            <div class="user-name">
+                  Hi Vendor1
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="orders-display-container">
+            <div class="orders-display-list-container">
+                <div class="order-display-list">
+                    <div class="order-display-list-order-type-display">
+                        {{showOrderType}}
+                    </div>
+                </div>
+            </div>
+            <div class="orders-display-layout-container">
+                <div class="orders-display-layout">
+                    188278382728
+                </div>
+            </div>
+        </div>
+    </div>
 </p-card>
 
