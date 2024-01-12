@@ -1,28 +1,40 @@
+.scrollable-cards {
+    margin: 5px;
+    padding: 2px;
+    width: auto;
+    height: 49vh;
+    overflow: auto;
+    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .order-display-list-card {
     border: 1px solid black;
     box-shadow: 0 4px 8px 0 rgb(161, 161, 161);
     transition: 0.3s;
 
-    .card-container {
+    .card-row-separations {
         display: flex;
         flex-direction: column;
 
-        .card-content-container {
+        .order-content-container {
             display: flex;
             flex-direction: row;
 
-            .order-content-container {
+            .card-column-container {
                 display: flex;
                 flex-direction: column;
             }
 
-            div.order-content {
+            div.row-content {
                 font-family: cursive;
                 font-weight: 500;
             }
         }
 
-        .order-footer-container {
+        .order-status-viewBtn-container {
             display: flex;
             flex-direction: row;
 
@@ -30,8 +42,21 @@
                 color: rgb(124, 121, 121);
                 font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
                 font-size: small;
-                padding: 20px;
-                text-align: center;
+                padding: 3vh;
+                text-align: start;
+            }
+
+            .order-view-button-container {
+                flex-grow: 1;
+                width:40%;
+                padding: 1vh;
+                display: flex;
+                flex-direction: row;
+
+                .button-order {
+                    flex-grow: 1;
+                    width: 50%;
+                }
             }
         }
     }
@@ -57,17 +82,6 @@
     box-shadow: 0 8px 16px 0 rgb(61, 61, 61);
 }
 
-.scrollable-cards {
-    margin: 5px;
-    padding: 2px;
-    width: auto;
-    height: 49vh;
-    overflow: auto;
-    text-align: justify;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
 
 ::-webkit-scrollbar {
     width: 10px;

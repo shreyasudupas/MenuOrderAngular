@@ -142,54 +142,20 @@
             display: flex;
             flex-direction: column;
 
-            .order-display-list-order-type-display {
-                position: absolute;
-                display: inline-block;
-                padding: 10px;
+            .display-order-type-container {
+                display: flex;
+                flex-direction: row;
+                gap: 2vw;
+                padding: 2px;
                 font-family: cursive;
-            }  
+                padding-bottom: 3vh;
+                border-bottom: 1px solid rgb(107, 105, 105);
+
+                .order-image {
+                    padding-left: 15px;
+                }
+            }
             
-            // .order-display-list-card {
-            //     border: 1px solid black;
-            //     box-shadow: 0 4px 8px 0 rgb(161, 161, 161);
-            //     transition: 0.3s;
-
-            //     .card-container {
-            //         display: flex;
-            //         flex-direction: column;
-
-            //         .card-content-container {
-            //             display: flex;
-            //             flex-direction: row;
-
-            //             .order-content-container {
-            //                 display: flex;
-            //                 flex-direction: column;
-            //             }
-    
-            //             div.order-content {
-            //                 font-family: cursive;
-            //                 font-weight: 500;
-            //             }
-            //         }
-            //     }
-
-            //     .price {
-            //         background-color: rgb(162, 82, 228);
-            //         color: #FFFFFF;
-            //         border-radius: 7%;
-            //         text-align: center;
-            //         width: 70%;
-            //         box-shadow: 0 4px 8px 0 rgb(161, 161, 161);
-            //     }
-            // }
-
-            // .image-card {
-            //     padding: 5px;
-            //     border-radius: 50%;
-            //     height: 54px;
-            //     width: 55px;
-            // }
             .vendor-order-container {
                 display: flex;
                 flex-direction: column;
@@ -210,10 +176,6 @@
             height: 65vh;
             position: relative;
             border: 1px solid rgba(146, 146, 144, 0.151);
-
-            .order-list-card {
-                border: 2px solid black;
-            }
         }
     }
 }

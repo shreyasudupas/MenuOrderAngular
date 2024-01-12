@@ -1,0 +1,75 @@
+<div class="order-detail-container">
+    <div class="customer-detail-container">
+        <div class="customer-name-email">
+            <span>Customer Name: {{orderData.userDetail.emailId}}</span>
+            <span>Email Address: {{orderData.userDetail.emailId}}</span>
+        </div>
+
+        <div class="customer-phonenumber">
+            Phone: {{orderData.userDetail.phoneNumber}}
+        </div>
+    </div>
+
+
+    <div class="order-number-order-datetime-layout">
+        <span class="order-number">
+            <span class="order-image">
+                <img src="assets/icons/fork.png" alt="fork"
+                    height = "20vh"
+                    width = "25vw"/>
+            </span>
+             <span style="color: rgb(94, 92, 92);">Order Number: #</span>  001
+        </span>
+        <span class="order-datetime"> {{orderData.orderPlacedDateTime | date:"dd/MM/yyyy h:mm:ss a"}} </span>
+    </div>
+
+    <div class="order-delivery-address-layout">
+        Delivery Address: {{orderData.userDetail.fullAddress}}
+    </div>
+
+    <div class="order-info-table">
+        <p-table [value]="orderData.menuItems" [scrollable]="true" scrollHeight="32vh" [tableStyle]="{ 'width': '100%','height':'20vh' }">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th></th>
+                    <th>Item</th>
+                    <th>FoodType</th>
+                    <th>Quantity</th>
+                    <th>Discount</th>
+                    <th>Price</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-menuItem>
+                <tr>
+                    <td style="padding: 5px;margin: 5px;">
+                        <div *ngIf="menuItem.image.imageFileName != '';else showDefaultMenuImage" style="text-align:center">
+                            <img [src]="menuItem.image.imageFileName"
+                                alt = "Menu image"
+                                width="80vh"
+                                height="80vh"
+                            />
+                        </div>
+                        <ng-template #showDefaultMenuImage style="text-align:center">
+                            <img src="assets/MenuIcons/BlankMenu.jpg"
+                                alt = "Vendor image"
+                                width="80vh"
+                                height="80vh"
+                            />
+                        </ng-template>
+                    </td>
+                    <td>{{ menuItem.itemName }}</td>
+                    <td>{{ menuItem.foodType }}</td>
+                    <td>x{{ menuItem.quantity }}</td>
+                    <td>{{ menuItem.discount }}</td>
+                    <td><span>&#8377;</span>{{ menuItem.price }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <div class="order-table-footer">
+        <div class="total-price">
+            Total Price:  <span>&#8377;</span> {{orderData.totalPrice}}
+        </div>
+    </div>
+</div>

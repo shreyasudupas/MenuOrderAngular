@@ -24,66 +24,29 @@
         <div class="orders-display-container">
             <div class="orders-display-list-container">
                 <div class="order-display-list">
-                    <div class="col-12">
-                        <div class="order-display-list-order-type-display">
+                    
+                    <div class="display-order-type-container">
+                        <div class="order-image">
                             <img src="assets/icons/fork.png" alt="fork"
-                                          height = "28px"
-                                          width = "25px"/>
-                                          {{showOrderType}}
+                                height = "20vh"
+                                width = "25vw"/>
+                        </div>
+                        <div class="order-type">
+                            {{showOrderType}}
                         </div>
                     </div>
-                    <div class="col-12">
-                        <p-divider></p-divider>
-                    </div>
 
-                    <div class="col-12">
-                        <!-- <div class="order-display-list-card">
-                            <div class="card-container">
-                                
-                                <div class="card-content-container">
-                                    <div class="order-content-container" style="flex-grow: 1;width: 20%;">
-                                        <div class="card-photo">
-                                           <img class="image-card" src="assets/icons/online-order.png" 
-                                                    alt="Offline Order"
-                                                     />
-                                        </div>
-                                   </div>
-
-                                   <div class="order-content-container" style="flex-grow: 1;width: 40%;">
-                                        <div class="order-content" style="color: rgb(162, 82, 228);">Order: 01</div>
-                                        <div class="order-content">Payment: Done</div>
-                                        <div class="order-content">Mode: Online</div>
-                                    </div>
-
-                                    <div class="order-content-container" style="flex-grow: 1;width: 40%;">
-                                        <div class="order-content">
-                                            <i class="pi pi-calendar" style="color: rgb(35, 8, 207)"></i>
-                                            {{sampleDate | date: "dd/MM/yyyy h:mm:ss a"}}
-                                        </div>
-                                        <div class="order-content">
-                                            <div class="price">
-                                                Total Price: <span>&#8377;</span> 1234.00
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div>
-                                    footer toolbar
-                                </div>
-                            </div>
-                        </div> -->
-                        <vendor-order-card class="vendor-order-container" 
+                    <!-- <div class="col-12">
+                        
+                    </div> -->
+                    <vendor-order-card class="vendor-order-container" 
                                            [data] = "orders"></vendor-order-card>
-                    </div>
                 </div>
             </div>
 
             <div class="orders-display-layout-container">
                 <div class="orders-display-layout">
-                    <div class="">
-
-                    </div>
+                    <vendor-order-detail [orderData]="orders[0]"></vendor-order-detail>
                 </div>
             </div>
         </div>
