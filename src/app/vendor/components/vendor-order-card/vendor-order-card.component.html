@@ -1,0 +1,75 @@
+
+<div class="scrollable-cards">
+    <ng-container *ngFor="let order of data">
+        <div class="order-display-list-card">
+            <div class="card-container">
+                                    
+                <div class="card-content-container">
+    
+                    <div class="order-content-container" style="flex-grow: 1;width: 20%;">
+                        <div class="card-photo">
+                        <ng-container *ngIf="order.paymentDetail.methodOfDelivery === 'Offline';else showOnline">
+                            <img class="image-card" src="assets/icons/offline-order.png" 
+                              alt="Offline Order"
+                            />
+                        </ng-container>
+                        <ng-template #showOnline>
+                            <img class="image-card" src="assets/icons/online-order.png" 
+                            alt="Online Order"
+                            />
+                        </ng-template>
+                           
+                        </div>
+                   </div>
+            
+                   <div class="order-content-container" style="flex-grow: 1;width: 40%;">
+                        <div class="order-content" style="color: rgb(162, 82, 228);">Order: 01</div>
+                        <div class="order-content">Payment: {{ order.paymentDetail.paymentSuccess }}</div>
+                        <div class="order-content">Mode: {{ order.paymentDetail.methodOfDelivery }}</div>
+                    </div>
+            
+                    <div class="order-content-container" style="flex-grow: 1;width: 40%;">
+                        <div class="order-content">
+                            <i class="pi pi-calendar" style="color: rgb(35, 8, 207)"></i>
+                            {{order.orderPlacedDateTime | date: "dd/MM/yyyy h:mm:ss a"}}
+                        </div>
+                        <div class="order-content">
+                            <div class="price">
+                                Total Price: <span>&#8377;</span> {{order.paymentDetail.price}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-footer-container">
+                    <div class="order-status" style="flex-grow: 1; width:70%">
+                        <ng-container [ngSwitch]="order.orderStatus">
+                            <div *ngSwitchCase="1">
+                                Status: <p-tag severity="info" value="Waiting for vendor" [rounded]="true"></p-tag>
+                            </div>
+                            <div *ngSwitchCase="2">
+                                Status: <p-tag severity="warning" value="In Progress" [rounded]="true"></p-tag>
+                            </div>
+                            <div *ngSwitchCase="3">
+                                Status: <p-tag value="Order Ready" [rounded]="true"></p-tag>
+                            </div>
+                            <div *ngSwitchCase="4">
+                                Status: <p-tag severity="success" value="Order Collected" [rounded]="true"></p-tag>
+                            </div>
+                            <div *ngSwitchCase="5">
+                                Status: <p-tag severity="danger" value="Order Cancelled" [rounded]="true"></p-tag>
+                            </div>
+                        </ng-container>
+                    </div>
+    
+                    <div style="flex-grow: 0.5; width:20%;padding: 5px;">
+                        <p-button label="View Order" styleClass="p-button-outlined p-button-sm"></p-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </ng-container>
+</div>
+
+

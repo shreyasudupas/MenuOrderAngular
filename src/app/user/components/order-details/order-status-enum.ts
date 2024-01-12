@@ -1,7 +1,7 @@
 export enum OrderStatus {
     OrderPlaced = 1,
-    OrderAccepted = 2,
-    OrderInProgress = 3,
-    OrderReady = 4,
-    OrderDone = 5
+    OrderInProgress = 2,
+    OrderReady = 3,
+    OrderDone = 4,
+    OrderCancelled = 5
 }

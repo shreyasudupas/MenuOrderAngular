@@ -12,13 +12,15 @@ import { LocationService } from 'src/app/common/services/location.service';
 import { VendorPreRegistrationComponent } from '../components/vendor-pre-registration/vendor-pre-registration.component';
 import { VendorService } from 'src/app/common/services/vendor.service';
 import { VendorOrderDasboardComponent } from '../components/vendor-order-dashboard/vendor-order-dashboard.component';
+import { VendorOrderCardComponent } from '../components/vendor-order-card/vendor-order-card.component';
 
 @NgModule({
     declarations:[
         VendorDashboardComponent,
         VendorHomeComponent,
         VendorPreRegistrationComponent,
-        VendorOrderDasboardComponent
+        VendorOrderDasboardComponent,
+        VendorOrderCardComponent
     ],
     imports:[
         CommonModule,

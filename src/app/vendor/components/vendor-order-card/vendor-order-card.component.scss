@@ -1,0 +1,89 @@
+.order-display-list-card {
+    border: 1px solid black;
+    box-shadow: 0 4px 8px 0 rgb(161, 161, 161);
+    transition: 0.3s;
+
+    .card-container {
+        display: flex;
+        flex-direction: column;
+
+        .card-content-container {
+            display: flex;
+            flex-direction: row;
+
+            .order-content-container {
+                display: flex;
+                flex-direction: column;
+            }
+
+            div.order-content {
+                font-family: cursive;
+                font-weight: 500;
+            }
+        }
+
+        .order-footer-container {
+            display: flex;
+            flex-direction: row;
+
+            .order-status {
+                color: rgb(124, 121, 121);
+                font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+                font-size: small;
+                padding: 20px;
+                text-align: center;
+            }
+        }
+    }
+
+    .price {
+        background-color: rgb(162, 82, 228);
+        color: #FFFFFF;
+        border-radius: 7%;
+        text-align: center;
+        width: 70%;
+        box-shadow: 0 4px 8px 0 rgb(161, 161, 161);
+    }
+
+    .image-card {
+        padding: 5px;
+        border-radius: 50%;
+        height: 74px;
+        width: 71px;
+    }
+}
+
+.order-display-list-card:hover {
+    box-shadow: 0 8px 16px 0 rgb(61, 61, 61);
+}
+
+.scrollable-cards {
+    margin: 5px;
+    padding: 2px;
+    width: auto;
+    height: 49vh;
+    overflow: auto;
+    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }

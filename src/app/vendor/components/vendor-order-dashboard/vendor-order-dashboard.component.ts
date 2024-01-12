@@ -19,6 +19,7 @@ export class VendorOrderDasboardComponent extends BaseComponent<any> implements 
 orders:OrderModel[];
 showAllOrderButton:boolean = false;
 showOrderType:string = 'Current Orders';
+sampleDate:Date = new Date();
 
 constructor(private menuService:MenuService,
     public override httpclient:HttpClient,
@@ -39,7 +40,7 @@ constructor(private menuService:MenuService,
         this.navigation.startSaveHistory('/vendor-order-dashboard');
 
         this.orders = [
-            {   id:'12345566',
+            {   id:'1',
                 cartId:'',
                 menuItems:[
                     { menuId:'1232344',discount:10,category:'Vegitarian',foodType:'Breakfast',image:{imageFileName:'',imageId:''},itemName:'idly',price:30,quantity:1,vendorId:'3434435' },
@@ -53,7 +54,7 @@ constructor(private menuService:MenuService,
                     paymentSuccess: true
                 },
                 orderPlacedDateTime: new Date().toDateString(),
-                orderStatus: OrderStatus.OrderAccepted,
+                orderStatus: OrderStatus.OrderPlaced,
                 userDetail: {
                     fullAddress: 'asasas asas aa asa',
                     latitude: 45.02998,
@@ -68,7 +69,7 @@ constructor(private menuService:MenuService,
                     vendorName:'McDonalds'
                 }
             },
-            {   id:'12345566',
+            {   id:'2',
                 cartId:'',
                 menuItems:[
                     { menuId:'1232344',discount:10,category:'Vegitarian',foodType:'Breakfast',image:{imageFileName:'',imageId:''},itemName:'idly',price:30,quantity:1,vendorId:'3434435' },
@@ -76,7 +77,7 @@ constructor(private menuService:MenuService,
                 ],
                 totalPrice:22,
                 paymentDetail: {
-                    methodOfDelivery:'Online',
+                    methodOfDelivery:'Offline',
                     price: 40,
                     selectedPayment:'Reward',
                     paymentSuccess: true
@@ -97,7 +98,7 @@ constructor(private menuService:MenuService,
                     vendorName:'McDonalds'
                 }
             },
-            {   id:'12345566',
+            {   id:'3',
                 cartId:'',
                 menuItems:[
                     { menuId:'1232344',discount:10,category:'Vegitarian',foodType:'Breakfast',image:{imageFileName:'',imageId:''},itemName:'idly',price:30,quantity:1,vendorId:'3434435' },
@@ -111,7 +112,7 @@ constructor(private menuService:MenuService,
                     paymentSuccess: true
                 },
                 orderPlacedDateTime: new Date().toDateString(),
-                orderStatus: OrderStatus.OrderDone,
+                orderStatus: OrderStatus.OrderInProgress,
                 userDetail: {
                     fullAddress: 'asasas asas aa asa',
                     latitude: 45.02998,
