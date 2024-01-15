@@ -54,46 +54,73 @@ export class CartInformationSerivice {
         return this.cartInfo;
     }
 
-    public modifyMenuCart(menuItem: CartMenuItem) {
+    public async cartOperations(menuItem: CartMenuItem) {
+        let success = true;
         if(this.cartInfo.menuItems.length == 0){
-            this.addMenuCartItems(menuItem);
+            success = await this.addMenuCartItems(menuItem);
         }else if(this.cartInfo.menuItems.findIndex(m=>m.menuId == menuItem.menuId) > -1) {
-            this.updateCartMenuItems(menuItem);
+            success = await this.updateCartMenuItems(menuItem);
         }else {
-            this.addMenuCartItems(menuItem);
+            success = await this.addMenuCartItems(menuItem);
         }
 
-        console.log('Cart Information: ',this.cartInfo);
+        //console.log('Cart Information: ',this.cartInfo);
+        return success;
     }
 
     public async addMenuCartItems(menuItem: CartMenuItem) {
-        this.cartInfo.menuItems = [...this.cartInfo.menuItems, menuItem];
-
-        let success = await this.updateMenuItemsInCart(menuItem.vendorId);
+        let success = await this.checkIfMenuItemsBelongsToSameVendor(menuItem.vendorId);
 
         if(success){
+            this.cartInfo.menuItems = [...this.cartInfo.menuItems, menuItem];
             this.updatedItemNumber();
+        } else {
+            console.log('Items form diffrent Vendor Cannot be Added');
         }
+
+        return success;
     }
 
     public async updateCartMenuItems(menuItem: CartMenuItem){
-        this.cartInfo.menuItems = this.cartInfo.menuItems.map(item=> (item.menuId === menuItem.menuId)? {...item,quantity: menuItem.quantity} : {...item});
-
-        let success = await this.updateMenuItemsInCart(menuItem.vendorId);
+        let success = await this.checkIfMenuItemsBelongsToSameVendor(menuItem.vendorId);
 
         if(success){
-            this.updatedItemNumber();
+            let previousMenuItem = this.cartInfo.menuItems;
+            this.cartInfo.menuItems = this.cartInfo.menuItems.map(item=> (item.menuId === menuItem.menuId)? {...item,quantity: menuItem.quantity} : {...item});
+            success = await this.callUpdateCartAPI();
+
+            if(!success) {
+                console.error('Something went wrong with the update cart API');
+                this.cartInfo.menuItems = previousMenuItem;
+                return false;
+            } else {
+                this.updatedItemNumber();
+            }
+        } else {
+            console.log('Items form diffrent Vendor Cannot be Updated/Added');
         }
+        return success;
     }
 
     public async removeItemCart(menuItem: CartMenuItem){
-        this.cartInfo.menuItems = this.cartInfo.menuItems.filter(item=> item.menuId !== menuItem.menuId);
-
-        let success = await this.updateMenuItemsInCart(menuItem.vendorId);
+        let success = await this.checkIfMenuItemsBelongsToSameVendor(menuItem.vendorId);
 
         if(success){
-            this.updatedItemNumber();
+            let previousMenuItem = this.cartInfo.menuItems;
+            this.cartInfo.menuItems = this.cartInfo.menuItems.filter(item=> item.menuId !== menuItem.menuId);
+            success = await  this.callUpdateCartAPI();
+
+            if(!success) {
+                console.error('Something went wrong with the update cart API');
+                this.cartInfo.menuItems = previousMenuItem;
+                return false;
+            } else {
+                this.updatedItemNumber();
+            }
+        } else {
+            console.log('Items form diffrent Vendor Cannot be Removed');
         }
+        return success;
     }
 
     public updatedItemNumber(){
@@ -131,9 +158,8 @@ export class CartInformationSerivice {
         });
     }
 
-    public async updateMenuItemsInCart(vendorId:string){
+    public async checkIfMenuItemsBelongsToSameVendor(vendorId:string){
         let success = true;
-        let url = environment.orderService.cartInformation;
 
         //check if item belongs same vendor
         let menuItemBelongsTovendor$ = this.checkIfMenuItemBelongsToSameVendor(vendorId);
@@ -141,12 +167,7 @@ export class CartInformationSerivice {
 
         if(menuItemBelongsTovendor === true)
         {
-            let cartUpdateResult$ = this.http.put<CartInformation>(url,this.cartInfo);
-            this.cartInfo = await lastValueFrom(cartUpdateResult$).catch(err => {
-                console.log('Error Occured in Cart Update Operation ',err);
-                success = false;
-                return null; //old value back
-            });
+            success = true;
         }
         else
         {
@@ -173,5 +194,19 @@ export class CartInformationSerivice {
             return false;
         });
         return clearCartResult;
+    }
+
+    public async callUpdateCartAPI() {
+        let success = true;
+        let url = environment.orderService.cartInformation;
+
+        let cartUpdateResult$ = this.http.put<CartInformation>(url,this.cartInfo);
+        this.cartInfo = await lastValueFrom(cartUpdateResult$).catch(err => {
+            console.log('Error Occured in Cart Update Operation ',err);
+            success = false;
+            return null;
+        });
+
+        return success;
     }
 }

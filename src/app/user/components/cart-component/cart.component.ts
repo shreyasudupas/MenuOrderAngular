@@ -79,7 +79,7 @@ hideClearButton:boolean = true;
     addMenuItem(menuItem:CartMenuItem) {
         menuItem.quantity = menuItem.quantity + 1;
 
-        this.cartInformationService.modifyMenuCart(menuItem);
+        this.cartInformationService.cartOperations(menuItem);
     }
 
     removeMenuItem(menuItem:CartMenuItem) {
@@ -93,7 +93,7 @@ hideClearButton:boolean = true;
                 this.cartInformations = this.cartInformations.filter(c=>c.menuId !== menuItem.menuId);
             } else {
                 //update cart service
-                this.cartInformationService.modifyMenuCart(menuItem);
+                this.cartInformationService.cartOperations(menuItem);
             }
         }
     }

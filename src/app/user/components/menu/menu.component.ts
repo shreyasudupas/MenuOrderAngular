@@ -106,19 +106,25 @@ expandedRows: {} = {};
         table.clear();
     }
 
-    addMenuItem(menuItem:Menu) {
+    async addMenuItem(menuItem:Menu) {
         let item: CartMenuItem = { menuId: menuItem.id,vendorId: menuItem.vendorId,itemName: menuItem.itemName, image: menuItem.image, foodType: menuItem.foodType,
         category: menuItem.category, price: menuItem.price, discount: menuItem.discount, quantity: menuItem.quantity + 1 };
 
         menuItem.quantity = item.quantity;
-
+        
+        let success = false;
         if(item.quantity >= 0){
             //update cart service
-            this.cartInformationService.modifyMenuCart(item);
+            success = await this.cartInformationService.cartOperations(item);
 
-            //update menu in table
-            this.modifyMenuItems(menuItem);
-
+            //undo operation do not go to next step
+            if(!success) {
+                menuItem.quantity--;
+                return;
+            } else {
+                //update menu in table
+                this.modifyMenuItems(menuItem);
+            }
             //console.log('Menu after add cart items: ',this.menus);
         }
     }
@@ -138,7 +144,7 @@ expandedRows: {} = {};
             } else {
 
                 //update cart service
-                this.cartInformationService.modifyMenuCart(item);
+                this.cartInformationService.cartOperations(item);
 
                 //update menu in table
                 this.modifyMenuItems(menuItem);
