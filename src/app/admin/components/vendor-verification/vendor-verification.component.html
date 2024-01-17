@@ -22,13 +22,15 @@
             </div>
 
             <div *ngIf="vendorStatus === 'PartiallyCompleted'">
-                <label><b>Vendor Form Status:</b></label>
+                <label><b>Vendor Form Status:  </b></label> 
+                <p-tag severity="warning" value="PArtially Completed" [rounded]="true"></p-tag>
                 <p-button label="Partially Completed -> Complete" styleClass="p-button-raised p-button-success"
                 (click)="updateStatus('Completed')"></p-button>
             </div>
 
             <div *ngIf="vendorStatus === 'Completed'">
-                <label><b>Vendor Status:</b></label>
+                <label><b>Vendor Status:  </b></label>
+                <p-tag severity="success" value="Completed" [rounded]="true"></p-tag>
                 <p-toggleButton [(ngModel)]="enable" onLabel="Enable" offLabel="Disable" (onChange)="updateEnableUser($event)"></p-toggleButton>
             </div>
         </div>

@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
+import { VendorUserMappingEnableResponse } from 'src/app/admin/components/vendor-user-list/vendor-user-mapping';
 import { AuthService } from 'src/app/common/services/auth.service';
 import { UserDataSharingService } from 'src/app/common/services/user-datasharing.service';
 import { environment } from 'src/environments/environment';
@@ -15,7 +16,8 @@ import { environment } from 'src/environments/environment';
 export class VendorDashboardComponent implements OnInit{
     vendorId:string;
     sidebarVisible:boolean=false;
-    enabled:boolean;
+    enableMenuBar:boolean;
+    showPreRegistrationPage:boolean = false;
     
     constructor(public globlalService:UserDataSharingService,
         public authService:AuthService,
@@ -38,16 +40,41 @@ export class VendorDashboardComponent implements OnInit{
     } 
 
     async checkIfVendorEnabled() {
-        this.enabled = await this.isVendorEnabled();
+        let user = this.authService.getUserInformation();
+        let userId = user.profile['userId'];
 
-        if(!this.enabled) {
-            this.routeToVerificationPage();
+        let userVendorMappingEnabled = await this.isUserVendorMappingEnabled(userId);
+        if(userVendorMappingEnabled !== null) {
+
+            //if user is admin then redirect them to pre registration mail but check if they are enabled
+            if(userVendorMappingEnabled.isEnabled === false && userVendorMappingEnabled.isVendorPresent === false) {
+                this.enableMenuBar = await this.isVendorEnabled(userId);
+
+                //if user is enabled then dont show pre registration mail or else user is diabled then show registration mail
+                this.showPreRegistrationPage = !this.enableMenuBar;  
+
+            } else if (userVendorMappingEnabled.isEnabled === false && userVendorMappingEnabled.isVendorPresent === true) {
+                //then subuser of the vendor is not enabled, so contact the admin for enabling
+                this.showPreRegistrationPage = false;
+                this.enableMenuBar = false;
+            } else {
+                //if sub vendor user is valid is present and also enabled
+                this.showPreRegistrationPage = false;
+                this.enableMenuBar = true;
+            }
+        } else {
+            console.error('Error has occured in Vendor mapping');
+        }
+        //this.enabled = await this.isVendorEnabled(user.profile['userId']);
+
+        if(this.showPreRegistrationPage) {
+            this.routeToPreRegistrationPage();
         }
     }
 
-    async isVendorEnabled() {
-        let user = this.authService.getUserInformation();
-        let url = environment.idsConfig.vendor + 'enable/' + user.profile['userId'];
+    async isVendorEnabled(userId:string) {
+        
+        let url = environment.idsConfig.vendor + 'enable/' + userId;
 
         let vendorEnabled$ = this.http.get<boolean>(url);
         let vendorEnabled = await lastValueFrom(vendorEnabled$).catch( err => {
@@ -58,7 +85,20 @@ export class VendorDashboardComponent implements OnInit{
         return vendorEnabled;
     }
 
-    routeToVerificationPage() {
+    async isUserVendorMappingEnabled(userId:string) : Promise<VendorUserMappingEnableResponse | null>  {
+        let url = environment.idsConfig.vendorUserMapping + '/enabled';
+        let params = new HttpParams().set('vendorId',this.vendorId).set('userId',userId);
+
+        let vendorEnabled$ = this.http.get<VendorUserMappingEnableResponse>(url,{params: params});
+        let vendorEnabled = await lastValueFrom(vendorEnabled$).catch( err => {
+            console.log('Error occured in Vendor Enabled API',err);
+            return null;
+        });
+
+        return vendorEnabled;
+    }
+
+    routeToPreRegistrationPage() {
         
         //if vendorId undefined and Vendor is not enabled then route to verification page
         this.router.navigateByUrl('vendor/vendor-pre-registration/'+ ((this.vendorId === undefined)?'0':this.vendorId));

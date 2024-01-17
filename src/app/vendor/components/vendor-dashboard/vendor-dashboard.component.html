@@ -1,6 +1,6 @@
 <!-- <h2>Welocome to the Vendor Page: {{vendorId}}</h2> -->
 <div>
-  <div *ngIf="enabled" class="layout-sidebar">
+  <div *ngIf="enableMenuBar" class="layout-sidebar">
       <img src="assets/Logo/MenuLogo1.png" height="70px" width="150px" alt="MenuLogo" class="Logo" />
       <app-menu-bar></app-menu-bar>
   </div>
@@ -41,5 +41,9 @@
         <h3>Menu Vendor Application</h3>
         <app-menu-bar></app-menu-bar>
     </p-sidebar>
+  </div>
+
+  <div *ngIf="showPreRegistrationPage == false">
+    <p>Please Contact the administration to enable the current vendor.</p>
   </div>
 </div>

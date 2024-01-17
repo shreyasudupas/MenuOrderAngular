@@ -7,7 +7,7 @@ import { BaseComponent } from 'src/app/common/components/base/base.component';
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
 import { MenuService } from 'src/app/common/services/menu.service';
 import { environment } from 'src/environments/environment';
-import { VendorUserIdMapping } from './vendor-user-mapping';
+import { VendorUserIdMapping, VendorUserType } from './vendor-user-mapping';
 import { WelcomeVendorModel } from 'src/app/common/models/welcomeVendorModel';
 import { EmailTypeEnum } from 'src/app/common/enums/emailenum';
 import { EncryptDecryptService } from 'src/app/common/services/encryptDecrypt.service';
@@ -24,13 +24,12 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
     displayAddUserToVendor:boolean;
     inviteForm:FormGroup;
     runProgressSpinner:boolean;
+    cloneOldVendorUserMapping:{ [s: string]: VendorUserIdMapping } = {};
 
     constructor(
         public menuService:MenuService,
         public override httpclient:HttpClient,
         public commonBroadcastService:CommonDataSharingService,
-        private activatedRoute:ActivatedRoute,
-        private router:Router,
         private fb: FormBuilder,
         messageService: MessageService,
         private encryptDecryptService:EncryptDecryptService){
@@ -66,7 +65,6 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
     }
 
     updateVendorUserIdMapping(vendorMapping:VendorUserIdMapping){
-        vendorMapping.enabled = true;
 
         var body = {
             updateVendorUserMapping : vendorMapping
@@ -79,7 +77,7 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
                 if(result != null){
                     this.showInfo('Update successful');
 
-                    this.emailNotification(vendorMapping);
+                    //this.emailNotification(vendorMapping);
                 }
             },
             error: err => {
@@ -115,36 +113,64 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
     }
 
     inviteUser(inviteForm:FormGroup){
-    this.runProgressSpinner = true;
+        this.runProgressSpinner = true;
 
         if(this.inviteForm.valid)
         {
-            let url = environment.idsConfig.vendormail + 'send-register-vendor';
-            let body = {
-                subject:'Registeration for Vendor MenuApp',
-                templateType: EmailTypeEnum.RegisterVendor,
-                vendorName: this.vendorName,
-                vendorId: this.encryptDecryptService.encryptUsingAES256(this.vendorId),
-                toAddress:this.inviteForm.controls['email'].value
-            };
+            let email = this.inviteForm.controls['email'].value;
 
-            this.httpclient.post(url,body).subscribe({
-                next: result => {
-                    if(result == true){
-                        this.showInfo('Mail sent successfully');
+            if(!this.checkIfEmailExists(email)) {
+                let newUser:VendorUserIdMapping = {
+                    emailId: email,
+                    id:0,
+                    enabled:false,
+                    userId:null,
+                    username:null,
+                    vendorId: this.vendorId,
+                    userType: VendorUserType.VendorUser
+                };
+                this.addVendorUserIdMapping(newUser);
+            } else {
 
-                        this.displayAddUserToVendor=false;
-                        this.runProgressSpinner= false;
-                        this.inviteForm.setValue({
-                            email:''
-                        });
-                    }else{
-                        this.showError('Error is sending the mail');
-                        this.runProgressSpinner= false;
-                    }
-                }
-            });
+                this.resetInviteEmail();
+                alert('Email Already exists, please enter different email Id');
+            }
         }
+    }
+
+    checkIfEmailExists(email:string) {
+        var emailExists = this.vendorMapping.findIndex(x=>x.emailId == email);
+        if(emailExists > -1) {
+            return false;
+        }
+        return true;
+    }
+
+    //send the invitation to the invited user to register for MenuApp
+    sendUserInvitationMail() {
+        let url = environment.idsConfig.vendormail + 'send-register-vendor';
+        let body = {
+            subject:'Registeration for Vendor MenuApp',
+            templateType: EmailTypeEnum.RegisterVendor,
+            vendorName: this.vendorName,
+            vendorId: this.encryptDecryptService.encryptUsingAES256(this.vendorId),
+            toAddress:this.inviteForm.controls['email'].value
+        };
+
+        this.httpclient.post(url,body).subscribe({
+            next: result => {
+                if(result == true){
+                    this.showInfo('Mail sent successfully');
+
+                    this.displayAddUserToVendor=false;
+                    this.resetInviteEmail();
+
+                }else{
+                    this.showError('Error is sending the mail');
+                    this.runProgressSpinner= false;
+                }
+            }
+        });
     }
 
     callHide(){
@@ -154,4 +180,50 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
         });
     }
     
+    onRowEditInit(vendorMap:VendorUserIdMapping) {
+        this.cloneOldVendorUserMapping[vendorMap.id] = {...vendorMap};
+    }
+
+    onRowEditSave(vendorMap:VendorUserIdMapping) {
+        delete this.cloneOldVendorUserMapping[vendorMap.id];
+        this.updateVendorUserIdMapping(vendorMap);
+    }
+
+    onRowEditCancel(vendorMap:VendorUserIdMapping) {
+        //this.vendorMapping[vendorMap.id] = this.cloneOldVendorUserMapping[vendorMap.id];
+        this.vendorMapping = this.vendorMapping.map((item)=> (item.id !== vendorMap.id)? {...item} : this.cloneOldVendorUserMapping[vendorMap.id]);
+        delete this.cloneOldVendorUserMapping[vendorMap.id];
+    }
+
+    addVendorUserIdMapping(vendorMap:VendorUserIdMapping) {
+        this.baseUrl = environment.idsConfig.vendorUserMapping;
+        this.action = null;
+
+        let body = {
+            newVendorUserMapping : vendorMap
+        };
+
+        this.Create(body).subscribe({
+            next: result => {
+                if(result !== null) {
+                    this.vendorMapping = [...this.vendorMapping,result];
+
+                    this.sendUserInvitationMail();
+                }
+            },
+            error: err => {
+                console.error('Error in adding the User for Vendor ',err);
+                this.showError('Error Occured when adding the user, Please try agian later');
+            }
+        });
+    }
+
+    //reset the email form and progressive spinner to false
+    resetInviteEmail() {
+        this.runProgressSpinner= false;
+        this.inviteForm.setValue({
+                email:''
+        });
+    }
+
 }

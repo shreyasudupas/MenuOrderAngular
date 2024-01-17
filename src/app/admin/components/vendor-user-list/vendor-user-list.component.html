@@ -9,25 +9,51 @@
         </p-toolbar>
     </div>
 </div>
-<p-table [value]="vendorMapping" [tableStyle]="{'min-width': '50rem'}">
+<p-table [value]="vendorMapping" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
     <ng-template pTemplate="header">
         <tr>
             <th>Username</th>
-            <th>Verfication Notification</th>
+            <th>Email</th>
+            <th>Enabled</th>
+            <th>User Type</th>
+            <th>Edit</th>
+            <th>Enable/Disable</th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-vendorMap>
-        <tr>
-            <td>{{vendorMap.username}}</td>
+    <ng-template pTemplate="body"  let-vendorMap let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="vendorMap">
             <td>
-                <div *ngIf="vendorMap.enabled == false;else showEnable">
-                    <button pButton pRipple type="button" label="Send Verfication Notification" (click)="updateVendorUserIdMapping(vendorMap)"></button>
-                </div>
-                <ng-template #showEnable>
-                    {{vendorMap.enabled}}
+                {{vendorMap.username}}
+            </td>
+            <td>
+                <ng-container *ngIf="vendorMap.userId === null;else showEmail">
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="vendorMap.emailId">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{vendorMap.emailId}}
+                        </ng-template>
+                    </p-cellEditor>
+                </ng-container>
+                <ng-template #showEmail>
+                    {{vendorMap.emailId}}
                 </ng-template>
             </td>
-            <td></td>
+            <td>{{vendorMap.enabled}}</td>
+            <td>{{vendorMap.userType}}</td>
+            <td>
+                <ng-container *ngIf="vendorMap.userId === null">
+                    <div class="flex align-items-center justify-content-center gap-2">
+                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(vendorMap)" class="p-button-rounded p-button-text"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(vendorMap)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(vendorMap, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                    </div>
+                </ng-container>
+            </td>
+           <td>
+
+           </td>
         </tr>
     </ng-template>
 </p-table>

@@ -16,6 +16,7 @@ import { NavigationService } from "src/app/common/services/navigation.service";
 import { AuthService } from "src/app/common/services/auth.service";
 import { validateCoordinates } from "src/app/common/customFromValidators/validateCoorodinates";
 import { LocationService } from "src/app/common/services/location.service";
+import { VendorUserIdMapping, VendorUserType } from "../vendor-user-list/vendor-user-mapping";
 
 @Component({
     selector: 'vendor-detail',
@@ -286,71 +287,126 @@ userEnable:boolean;
             //alert('Form is valid' + forms.value);
 
             if (this.vendorId === '0') {
-                this.baseUrl = environment.inventory.vendor;
-                this.action = null;
-
-                let body = {
-                    VendorDetail: forms.value
-                };
-
-                this.Create(body).subscribe({
-                    next: result => {
-                        //debugger;
-                        if (result !== null) {
-
-                            this.vendorDetail = {
-                                ...this.vendorDetail, categories: result.categories, id: result.id, vendorName: result.vendorName,
-                                active: result.active, addressLine1: result.addressLine1, addressLine2: result.addressLine2, area: result.area,
-                                state: result.state, city: result.city, closeTime: result.closeTime,
-                                 coordinates: { latitude: result.coordinates.latitude, longitude: result.coordinates.longitude },
-                                openTime: result.openTime, rating: result.rating, cuisineType: result.cuisineType
-                                , vendorDescription: result.vendorDescription,registrationProcess: RegistrationProgressEnum[RegistrationProgressEnum.InProgress]
-                            };
-
-                            this.vendorId = this.vendorDetail.id;
-
-                            window.history.replaceState({}, '', `admin/vendor-detail/${this.vendorId}`);
-
-                            this.showInfo('Vendor successfully added');
-
-                            //this.router.navigateByUrl('admin/vendor-detail/' + this.vendorId);
-                        }
-                    },
-                    error: error => {
-                        console.log(error);
-                        this.showError('Error in adding the Vendor');
-                    },
-                    complete: () => {
-                        console.log('Request complete');
-                    }
-                });
+                this.addVendorDetails(forms);
             } else {
-                this.baseUrl = environment.inventory.vendor;
-                this.action = null;
+                
 
-                let formValue = forms.value;
-                formValue = {...formValue, openTime: formValue.openTime.toTimeString().split(' ')[0],closeTime: formValue.closeTime.toTimeString().split(' ')[0]}
-
-                this.vendorDetail = {
-                    ...this.vendorDetail, categories: formValue.categories, id: formValue.id, vendorName: formValue.vendorName,
-                    active: formValue.active, addressLine1: formValue.addressLine1, addressLine2: formValue.addressLine2, area: formValue.area,
-                    state: formValue.state, city: formValue.city, closeTime: formValue.closeTime, coordinates: { latitude: formValue.latitude, longitude: formValue.longitude },
-                    openTime: formValue.openTime, rating: formValue.rating, cuisineType: formValue.cuisineType
-                    , vendorDescription: formValue.vendorDescription
-                };
-
-                let body = {
-                    VendorDetail: this.vendorDetail
-                };
-
-                this.updateVendor(body);
+                this.updateVendorDetials(forms);
             }
         }else{
             this.showError('Enter manditory field details');
         }
     }
 
-    updateVendor(body:any){
+    addVendorDetails(forms:FormGroup) {
+        this.baseUrl = environment.inventory.vendor;
+        this.action = null;
+
+        let body = {
+            VendorDetail: forms.value
+        };
+        this.Create(body).subscribe({
+            next: result => {
+                //debugger;
+                if (result !== null) {
+
+                    this.vendorDetail = {
+                        ...this.vendorDetail, categories: result.categories, id: result.id, vendorName: result.vendorName,
+                        active: result.active, addressLine1: result.addressLine1, addressLine2: result.addressLine2, area: result.area,
+                        state: result.state, city: result.city, closeTime: result.closeTime,
+                         coordinates: { latitude: result.coordinates.latitude, longitude: result.coordinates.longitude },
+                        openTime: result.openTime, rating: result.rating, cuisineType: result.cuisineType
+                        , vendorDescription: result.vendorDescription,registrationProcess: RegistrationProgressEnum[RegistrationProgressEnum.InProgress]
+                    };
+
+                    this.vendorId = this.vendorDetail.id;
+
+                    window.history.replaceState({}, '', `admin/vendor-detail/${this.vendorId}`);
+
+                    this.showInfo('Vendor successfully added');
+
+                    this.registerVendorInVendorMapping();
+
+                    //this.router.navigateByUrl('admin/vendor-detail/' + this.vendorId);
+                }
+            },
+            error: error => {
+                console.log(error);
+                this.showError('Error in adding the Vendor');
+            },
+            complete: () => {
+                console.log('Request complete');
+            }
+        });
+    }
+
+    //because we need to add claims inorder to move forward
+    addVendorToClaim(vendorId:string,userID:string) {
+        let url = environment.idsConfig.vendor + '/add/vendorClaim';
+        let body = {
+            vendorId: this.vendorDetail.id,
+            userId: userID
+        };
+
+        this.httpclient.post<boolean>(url,body).subscribe({
+            next: result => {
+                if(result === true) {
+                    alert('Please logout of the application in order to reflect the changes you have applied');
+                }
+            },
+            error: err => console.error('Error occured, ',err)
+        })
+    }
+
+    //register vendor to VendorUser Mapping table and then call Vendor Claim to add the claim of this user
+    registerVendorInVendorMapping() {
+        let url = environment.idsConfig.vendorUserMapping;
+        let userInfo = this.authService.getUserInformation();
+
+        let body = {
+            newVendorUserMapping : {
+                id:0,
+                userId: userInfo.profile['userId'],
+                userName: userInfo.profile['username'],
+                emailId: userInfo.profile['emailId'],
+                vendorId: this.vendorDetail.id,
+                enabled: true, //doesnt matter since its done here, admin has to enabe it
+                userType: VendorUserType.VendorAdmin
+            }
+        };
+
+        this.httpclient.post<VendorUserIdMapping>(url,body).subscribe({
+            next: result => {
+                if(result !== null) {
+                    console.log('Vendor User Mapping done');
+
+                    this.addVendorToClaim(this.vendorId,userInfo.profile['userId']);
+                } else {
+                    console.error('Error occured in User Mapping ');
+                }
+            },
+            error: err => console.error('Error occured in the API Vendor Mapping for Admin ',err)
+        });
+    }
+
+    updateVendorDetials(forms:FormGroup){
+        this.baseUrl = environment.inventory.vendor;
+        this.action = null;
+
+        let formValue = forms.value;
+        formValue = {...formValue, openTime: formValue.openTime.toTimeString().split(' ')[0],closeTime: formValue.closeTime.toTimeString().split(' ')[0]}
+
+        this.vendorDetail = {
+            ...this.vendorDetail, categories: formValue.categories, id: formValue.id, vendorName: formValue.vendorName,
+            active: formValue.active, addressLine1: formValue.addressLine1, addressLine2: formValue.addressLine2, area: formValue.area,
+            state: formValue.state, city: formValue.city, closeTime: formValue.closeTime, coordinates: { latitude: formValue.latitude, longitude: formValue.longitude },
+            openTime: formValue.openTime, rating: formValue.rating, cuisineType: formValue.cuisineType
+            , vendorDescription: formValue.vendorDescription
+        };
+
+        let body = {
+            VendorDetail: this.vendorDetail
+        };
 
         this.UpdateItem(body).subscribe({
             next: result => {
