@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { MessageService, SelectItem } from 'primeng/api';
 import { BaseComponent } from 'src/app/common/components/base/base.component';
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
 import { MenuService } from 'src/app/common/services/menu.service';
@@ -25,6 +25,7 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
     inviteForm:FormGroup;
     runProgressSpinner:boolean;
     cloneOldVendorUserMapping:{ [s: string]: VendorUserIdMapping } = {};
+    enableDropDownItems:SelectItem[];
 
     constructor(
         public menuService:MenuService,
@@ -44,6 +45,11 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
             this.inviteForm = this.fb.group({
                 email: ['',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]]
             });
+
+            this.enableDropDownItems = [
+                { label: 'Enable', value: true },
+                { label: 'Disable', value: false },
+            ]
         }
     }
 
@@ -83,7 +89,7 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
             error: err => {
                 console.log(err);
             }
-        })
+        });
     }
 
     emailNotification(vendorMapping:VendorUserIdMapping){

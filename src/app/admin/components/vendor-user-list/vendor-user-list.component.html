@@ -41,18 +41,37 @@
                 </ng-template>
             </td>
             <td>{{vendorMap.enabled}}</td>
-            <td>{{vendorMap.userType}}</td>
             <td>
-                <ng-container *ngIf="vendorMap.userId === null">
-                    <div class="flex align-items-center justify-content-center gap-2">
-                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(vendorMap)" class="p-button-rounded p-button-text"></button>
-                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(vendorMap)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(vendorMap, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                    </div>
+                <ng-container *ngIf="vendorMap.userType === 1;else showVendorUser">
+                    <p-tag severity="success" value="Vendor Admin"></p-tag>
                 </ng-container>
+
+                <ng-template #showVendorUser>
+                    <p-tag  value="Vendor Users"></p-tag>
+                </ng-template>
+
+            </td>
+            <td>
+                <div class="flex align-items-center justify-content-center gap-2">
+                    <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(vendorMap)" class="p-button-rounded p-button-text"></button>
+                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(vendorMap)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(vendorMap, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                </div>
             </td>
            <td>
-
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <p-dropdown [options]="enableDropDownItems" appendTo="body" [(ngModel)]="vendorMap.enabled" [style]="{'width':'100%'}"></p-dropdown>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        <ng-container *ngIf="vendorMap.enabled;else showDisable">
+                            <p-tag icon="pi pi-check" value="Enabled"></p-tag>
+                        </ng-container>
+                        <ng-template #showDisable>
+                            <p-tag icon="pi pi-times" severity="danger" value="Disabled"></p-tag>
+                        </ng-template>
+                    </ng-template>
+                </p-cellEditor>
            </td>
         </tr>
     </ng-template>
