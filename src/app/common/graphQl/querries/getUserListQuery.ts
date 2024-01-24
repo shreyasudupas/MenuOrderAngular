@@ -5,6 +5,7 @@ export const GET_USER_LIST_INFO = gql`
 query UserList {
     userList {
       id
+      fullname
       userName
       userType
     }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './common/services/auth.service';
 import { ErrorHandlerSerivice } from './common/services/error-handler.service';
-import { SignalrService } from './common/services/signalr.service';
+import { NotificationSignalrService } from './common/services/notification-signalr.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit{
   constructor(
     public _authService: AuthService,
     public route:Router,
-    public signalrService:SignalrService,
+    public notificationSignalRService:NotificationSignalrService,
     private errorHandlerSerivice:ErrorHandlerSerivice) {
     
     this._authService.loginChanged.subscribe(userAuthenticated => {
@@ -48,7 +48,7 @@ export class AppComponent implements OnInit{
   }
 
   public logout = () => {
-    this.signalrService.disconnectHubConnection();
+    this.notificationSignalRService.disconnectHubConnection();
     this._authService.logout();
   }
 

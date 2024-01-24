@@ -3,11 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
+import { User } from 'oidc-client';
 import { MessageService, SelectItem, SelectItemGroup } from 'primeng/api';
 import { BaseComponent } from 'src/app/common/components/base/base.component';
 import { Notification } from 'src/app/common/components/notification/notification';
 import { UserProfileInfo } from 'src/app/common/components/user-profile/userProfile';
 import { GET_USER_LIST_INFO, UserListInfoResponse } from 'src/app/common/graphQl/querries/getUserListQuery';
+import { AuthService } from 'src/app/common/services/auth.service';
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
 import { MenuService } from 'src/app/common/services/menu.service';
 import { NavigationService } from 'src/app/common/services/navigation.service';
@@ -24,6 +26,8 @@ notificationForm: FormGroup;
 userListDropDown: SelectItemGroup[];
 notificationId:string;
 users:UserProfileInfo[];
+currentUser:User;
+visible:boolean = false;
 
     constructor(
         private menuService:MenuService,
@@ -34,7 +38,8 @@ users:UserProfileInfo[];
         messageService:MessageService,
         public navigation:NavigationService,
         private fb:FormBuilder,
-        private apollo:Apollo
+        private apollo:Apollo,
+        private authService:AuthService
     ){
         super(menuService,httpclient,broadcastService,messageService)
     }
@@ -45,13 +50,16 @@ users:UserProfileInfo[];
         this.InitilizeMenu();
 
         this.navigation.startSaveHistory('admin/notification-detail');
+
+        this.currentUser = this.authService.getUserInformation();
         //console.log(this.navigation.history);
 
         this.notificationForm = this.fb.group({
             id: [''],
             title: ['',Validators.required],
             description: ['',Validators.required],
-            userId: ['',Validators.required],
+            //fromUserId: ['',Validators.required],
+            toUserId:[''],
             recordedTimeStamp: [{value:'',disabled:true}],
             link: [''],
             sendAll:[false],
@@ -66,6 +74,20 @@ users:UserProfileInfo[];
         }
 
         this.getUserList();
+        this.sendAllChanges();
+    }
+
+    sendAllChanges() {
+        this.notificationForm.get('sendAll').valueChanges.subscribe({
+            next: result => {
+                //console.log('sendAll: '+ result)
+                if(result === true) {
+                    this.visible = true;
+                } else {
+                    this.visible = false;
+                }
+            }
+        });
     }
 
     getUserList() {
@@ -99,7 +121,7 @@ users:UserProfileInfo[];
 
         this.userListDropDown[0].items = adminUsers.map(admin => {
             let item:SelectItem = {
-                label: admin.userName,
+                label: admin.fullname,
                 value: admin.id
             };
 
@@ -115,7 +137,7 @@ users:UserProfileInfo[];
 
         this.userListDropDown[1].items = userUsers.map(user => {
             let item:SelectItem = {
-                label: user.userName,
+                label: user.fullname,
                 value: user.id
             };
 
@@ -131,7 +153,7 @@ users:UserProfileInfo[];
 
         this.userListDropDown[2].items = vendorUsers.map(vendor => {
             let item:SelectItem = {
-                label: vendor.userName,
+                label: vendor.fullname,
                 value: vendor.id
             };
 
@@ -142,19 +164,19 @@ users:UserProfileInfo[];
     submit() {
         if(this.notificationForm.valid){
             //console.log(this.notificationForm.value);
-
-            let user = this.users.find(u=>u.id == this.notificationForm.controls['userId'].value);
+            let sendAllValue = this.notificationForm.controls['sendAll'].value;
 
             let body:Notification = {
                 id:this.notificationForm.controls['id'].value,
                 title: this.notificationForm.controls['title'].value,
                 description: this.notificationForm.controls['description'].value,
-                userId: this.notificationForm.controls['userId'].value,
-                role: user.userType,
+                fromUserId: (sendAllValue === true)? '': this.currentUser.profile['userId'],
+                toUserId: this.notificationForm.controls['toUserId'].value,
+                role: this.currentUser.profile['role'],
                 link:'',
                 recordedTimeStamp: (this.notificationForm.controls['recordedTimeStamp'].value === ''?new Date():this.notificationForm.controls['recordedTimeStamp'].value),
                 read: this.notificationForm.controls['read'].value,
-                sendAll: this.notificationForm.controls['sendAll'].value
+                sendAll: sendAllValue
             };
             //console.log(body);
 

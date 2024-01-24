@@ -23,7 +23,7 @@
                 </span>
                 <div *ngIf="notificationForm.get('description')?.invalid" class="error">
                     <div *ngIf="notificationForm.get('description')?.errors?.['required']">
-                        escription is required
+                        Description is required
                     </div>
                 </div>
             </div>
@@ -32,16 +32,17 @@
         <div class="col-12">
             <div class="notification-content">
                 <span class="p-float-label">
-                    <p-dropdown id="userId" formControlName="userId" 
+                    <p-dropdown id="toUserId" formControlName="toUserId" 
                                             [options]="userListDropDown" 
                                             optionLabel="label"
                                             optionValue="value"
-                                            [group]="true">
+                                            [group]="true"
+                                            >
                         <ng-template let-group pTemplate="group">
                             <span>{{ group.label }}</span>
                         </ng-template>
                     </p-dropdown>
-                    <label htmlFor="userId">Select User</label>
+                    <label htmlFor="toUserId">Select User to Send Notification</label>
                 </span>
             </div>
         </div>
@@ -83,3 +84,10 @@
 
     </form>
 </p-card>
+
+
+<p-dialog header="Attention!!" [modal]="true" [(visible)]="visible" [style]="{width: '50vw'}">
+    <p>
+        You have selected SendAll, hence this notification will be sent to all connected users irrespetive of the selected user.
+    </p>
+</p-dialog>

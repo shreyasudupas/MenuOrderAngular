@@ -1,5 +1,6 @@
 export interface UserProfileInfo {
     id: string;
+    fullname:string;
     userName:string;
     userType:string;
     imagePath:string;
