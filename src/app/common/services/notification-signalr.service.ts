@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import * as signalR from "@microsoft/signalr"
 import { AuthService } from './auth.service';
 
+const SEND_USERNOTIFICATION:string = 'SendUserNotification';
+const CONNECTIONID:string = 'getconnectionid';
+const SENDTO_ALLNOTIFICATION:string = 'SendToAllNotification';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,7 +36,7 @@ export class NotificationSignalrService {
     }
 
     private getConnectionId = () => {
-      this.notificationHubConnection.invoke('getconnectionid')
+      this.notificationHubConnection.invoke(CONNECTIONID)
       .then((connectionId) => {
         console.log(connectionId);
         this.connectionId = connectionId;
@@ -40,14 +44,14 @@ export class NotificationSignalrService {
     }
     
     public addNotificationCountListener = () => {
-      this.notificationHubConnection.on('SendUserNotification', (data) => {
+      this.notificationHubConnection.on(SEND_USERNOTIFICATION, (data) => {
         this.notificationCount = data;
         //console.log("Recieved Notification" + this.notificationCount);
       });
     }
 
     public getAllCountListener = () => {
-      this.notificationHubConnection.on('SendToAllNotification', () => {
+      this.notificationHubConnection.on(SENDTO_ALLNOTIFICATION, () => {
         this.notificationCount = this.notificationCount + 1;
         //console.log("Recieved Notification" + this.notificationCount);
       });

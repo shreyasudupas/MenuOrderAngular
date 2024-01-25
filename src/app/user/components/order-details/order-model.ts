@@ -12,6 +12,7 @@ userDetail:UserOrderDetailsModel;
 orderPlacedDateTime:string;
 orderStatus:OrderStatus;
 vendorDetail:VendorDetailModel;
+uiOrderNumber:number;
 }
 
 interface VendorDetailModel {

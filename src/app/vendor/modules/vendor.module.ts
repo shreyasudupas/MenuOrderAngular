@@ -14,6 +14,7 @@ import { VendorService } from 'src/app/common/services/vendor.service';
 import { VendorOrderDasboardComponent } from '../components/vendor-order-dashboard/vendor-order-dashboard.component';
 import { VendorOrderCardComponent } from '../components/vendor-order-card/vendor-order-card.component';
 import { VendorOrderDetailComponent } from '../components/vendor-order-detail/vendor-order-detail.component';
+import { OrderSignalRService } from 'src/app/common/services/order-signalr.service';
 
 @NgModule({
     declarations:[
@@ -36,7 +37,8 @@ import { VendorOrderDetailComponent } from '../components/vendor-order-detail/ve
         RoleBasedAuthGaurd,
         MessageService,
         LocationService,
-        VendorService
+        VendorService,
+        OrderSignalRService
     ]
 })
 

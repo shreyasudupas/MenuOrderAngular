@@ -1,9 +1,10 @@
+<p-toast></p-toast>
 <p-card header="Orders Dashboard">
 
     <div class="col-12">
         <div class="order-toolbar">
             <div class="order-refresh">
-                <p-button styleClass="p-button-rounded p-button-text">
+                <p-button styleClass="p-button-rounded p-button-text" (click)="refreshOrders()">
                     <i class="pi pi-refresh" style="color: white"></i>
                 </p-button>
             </div>
@@ -40,14 +41,17 @@
                         
                     </div> -->
                     <vendor-order-card class="vendor-order-container" 
-                                           [data] = "orders"></vendor-order-card>
+                                           [data] = "orders"
+                                            (sendOrderDetail)="getViewOrderDetail($event)"></vendor-order-card>
                 </div>
             </div>
 
             <div class="orders-display-layout-container">
-                <div class="orders-display-layout">
-                    <vendor-order-detail [orderData]="orders[0]"></vendor-order-detail>
-                </div>
+                <ng-container *ngIf="showViewOrderDetail">
+                    <div class="orders-display-layout">
+                        <vendor-order-detail [orderData]="viewOrderDetail"></vendor-order-detail>
+                    </div>
+                </ng-container>
             </div>
         </div>
     </div>

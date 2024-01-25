@@ -23,7 +23,7 @@
                    </div>
             
                    <div class="card-column-container" style="flex-grow: 1;width: 40%;">
-                        <div class="row-content" style="color: rgb(162, 82, 228);">Order: 01</div>
+                        <div class="row-content" style="color: rgb(162, 82, 228);">Order: {{order.uiOrderNumber}}</div>
                         <div class="row-content">Payment: {{ order.paymentDetail.paymentSuccess }}</div>
                         <div class="row-content">Mode: {{ order.paymentDetail.methodOfDelivery }}</div>
                     </div>
@@ -70,7 +70,8 @@
                         </div>
 
                         <div class="button-order">
-                            <p-button label="View Order" styleClass="p-button-info p-button-text p-button-sm"></p-button>
+                            <p-button label="View Order" styleClass="p-button-info p-button-text p-button-sm"
+                                      (click)="viewOrderFnCall(order)"></p-button>
                         </div>
                     </div>
                 </div>

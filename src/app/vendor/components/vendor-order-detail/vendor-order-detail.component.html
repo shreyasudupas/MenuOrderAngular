@@ -18,7 +18,7 @@
                     height = "20vh"
                     width = "25vw"/>
             </span>
-             <span style="color: rgb(94, 92, 92);">Order Number: #</span>  001
+             <span style="color: rgb(94, 92, 92);">Order Number: #</span>  {{orderData.uiOrderNumber}}
         </span>
         <span class="order-datetime"> {{orderData.orderPlacedDateTime | date:"dd/MM/yyyy h:mm:ss a"}} </span>
     </div>
@@ -33,7 +33,7 @@
                 <tr>
                     <th></th>
                     <th>Item</th>
-                    <th>FoodType</th>
+                    <th>Category</th>
                     <th>Quantity</th>
                     <th>Discount</th>
                     <th>Price</th>
@@ -58,7 +58,7 @@
                         </ng-template>
                     </td>
                     <td>{{ menuItem.itemName }}</td>
-                    <td>{{ menuItem.foodType }}</td>
+                    <td>{{ menuItem.category }}</td>
                     <td>x{{ menuItem.quantity }}</td>
                     <td>{{ menuItem.discount }}</td>
                     <td><span>&#8377;</span>{{ menuItem.price }}</td>
