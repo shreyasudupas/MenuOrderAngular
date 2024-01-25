@@ -45,7 +45,7 @@ export class NotificationComponent implements OnInit {
 
             //this.notificationsList = Array.from({length:1000});
 
-            this.getNotificationsFromAPI(); 
+            //this.getNotificationsFromAPI(); 
             
             this.getNotifications(this.skip,this.totalRecordsToDisplay);
         }    

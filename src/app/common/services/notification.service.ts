@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Notification } from 'src/app/common/components/notification/notification';
-import { async } from '@angular/core/testing';
 
 @Injectable({
     providedIn:'root'

@@ -72,8 +72,10 @@ export class CartInformationSerivice {
         let success = await this.checkIfMenuItemsBelongsToSameVendor(menuItem.vendorId);
 
         if(success){
+            let previousMenuItem = this.cartInfo.menuItems;
             this.cartInfo.menuItems = [...this.cartInfo.menuItems, menuItem];
-            this.updatedItemNumber();
+            
+            success = await this.updateMenuItemsInDatabase(previousMenuItem);
         } else {
             console.log('Items form diffrent Vendor Cannot be Added');
         }
@@ -87,15 +89,8 @@ export class CartInformationSerivice {
         if(success){
             let previousMenuItem = this.cartInfo.menuItems;
             this.cartInfo.menuItems = this.cartInfo.menuItems.map(item=> (item.menuId === menuItem.menuId)? {...item,quantity: menuItem.quantity} : {...item});
-            success = await this.callUpdateCartAPI();
-
-            if(!success) {
-                console.error('Something went wrong with the update cart API');
-                this.cartInfo.menuItems = previousMenuItem;
-                return false;
-            } else {
-                this.updatedItemNumber();
-            }
+            
+            success = await this.updateMenuItemsInDatabase(previousMenuItem);
         } else {
             console.log('Items form diffrent Vendor Cannot be Updated/Added');
         }
@@ -108,15 +103,8 @@ export class CartInformationSerivice {
         if(success){
             let previousMenuItem = this.cartInfo.menuItems;
             this.cartInfo.menuItems = this.cartInfo.menuItems.filter(item=> item.menuId !== menuItem.menuId);
-            success = await  this.callUpdateCartAPI();
-
-            if(!success) {
-                console.error('Something went wrong with the update cart API');
-                this.cartInfo.menuItems = previousMenuItem;
-                return false;
-            } else {
-                this.updatedItemNumber();
-            }
+            
+            success = await this.updateMenuItemsInDatabase(previousMenuItem);
         } else {
             console.log('Items form diffrent Vendor Cannot be Removed');
         }
@@ -206,6 +194,20 @@ export class CartInformationSerivice {
             success = false;
             return null;
         });
+
+        return success;
+    }
+
+    private async updateMenuItemsInDatabase(previousMenuItems:CartMenuItem[]) : Promise<boolean> {
+        let success = await this.callUpdateCartAPI();
+
+        if(!success) {
+            console.error('Something went wrong with the update cart API');
+            this.cartInfo.menuItems = previousMenuItems;
+            return false;
+        } else {
+            this.updatedItemNumber();
+        }
 
         return success;
     }

@@ -9,7 +9,7 @@ export const environment = {
     clientId : "menuAngularUI",
     redirectUri: window.location.origin,
     idpAuthority : "https://localhost:5006",
-    scope :"openid profile inventory.write inventory.read notification.read notification.write order.read order.write IdentityServerApi"
+    scope :"openid profile inventory.write inventory.read notification.read notification.write order.read order.write IdentityServerApi signalrservice"
 
   },
   idsConfig:{

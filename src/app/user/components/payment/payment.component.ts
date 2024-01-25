@@ -6,6 +6,7 @@ import { Apollo } from 'apollo-angular';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { BaseComponent } from 'src/app/common/components/base/base.component';
 import { GET_USER_INFO, UserInfoResponse, UserInfoVariable } from 'src/app/common/graphQl/querries/getUserInformationsQuery';
+import { GET_USER_CURRENT_POINTS, UserPointsResponse, UserPointsVariable } from 'src/app/common/graphQl/querries/getUserPointsQuery';
 import { AuthService } from 'src/app/common/services/auth.service';
 import { CartInformationSerivice } from 'src/app/common/services/cart-information.service';
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
@@ -89,6 +90,7 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
         this.getCartInformation();
         this.getUserLocation();
         this.selectedPaymentChange();
+        this.getUserInformation();
     }
 
     selectedPaymentChange() {
@@ -98,8 +100,9 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
             next: result => {
                 //console.log(result);
                 if(result === 'Reward') {
-                    this.getUserInformation();
-                    this.selectedPayment = 'Reward'
+                    
+                    this.selectedPayment = 'Reward';
+                    this.getUserPointsInfo();
                 } else {
                     this.selectedPayment = '';
                 }
@@ -118,7 +121,7 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
             next: result => {
                 if(result.data.userInformation !== null) {
                     let userInfo = result.data.userInformation;
-                    this.rewardPoints = userInfo.points;
+                    //this.rewardPoints = userInfo.points;
                     this.isPhoneNumberConfirmed = userInfo.phoneNumberConfirmed;
 
                     this.paymentForm.patchValue({
@@ -130,6 +133,30 @@ export class PaymentDashboardComponent extends BaseComponent<any> implements OnI
             error: err => {
                 console.log('Error in Getting the user info ',err);
                 this.showError('Error getting User Information');
+            }
+        });
+    }
+
+    getUserPointsInfo() {
+        this.apollo.watchQuery<UserPointsResponse,UserPointsVariable>({
+            query: GET_USER_CURRENT_POINTS,
+            variables: {
+                userId: this.userId
+            },
+            fetchPolicy: "network-only"
+        }).valueChanges.subscribe({
+            next: result => {
+                if(result.data.currentUserPointsEvent === null) {
+                    this.showError('Invalid user selected');
+                } else if(result.error) {
+                    this.showError('Error occured while fetching points');
+                } else {
+                    if(result.data.currentUserPointsEvent.pointsInHand > -1) {
+                        this.rewardPoints = result.data.currentUserPointsEvent.pointsInHand;
+                    } else {
+                        this.rewardPoints = 0;
+                    }
+                }
             }
         });
     }

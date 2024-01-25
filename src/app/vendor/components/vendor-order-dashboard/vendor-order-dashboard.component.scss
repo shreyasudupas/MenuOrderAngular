@@ -6,19 +6,22 @@
 
     .order-refresh {
         flex-grow: 1;
-        padding: 20px;
+        padding: 3vh;
+        width: 10%;
     }
 
     .order-buttons {
-        flex-grow: 1.5;
+        flex-grow: 1;
         text-align: center;
-        padding: 20px;
+        padding: 2vh;
+        width:60%
     }
 
     .user-name {
         flex-grow: 1;
         text-align: right;
-        padding: 20px;
+        padding: 3vh;
+        width: 30%;
     }
 }
 
