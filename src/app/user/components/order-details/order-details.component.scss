@@ -1,7 +1,11 @@
+@import "../../../vendor/components/vendor-order-detail/vendor-order-detail.component.scss";
+
 .order-container {
     display: flex;
     flex-direction: column;
     gap:10px;
+    font-family: $fontFamily;
+    font-weight: 400;
 
     .order-menu-item-list-container {
         display: flex;
@@ -19,6 +23,12 @@
                 .menu-image {
                     display: flex;
                     justify-content: center;
+
+                    img {
+                        height: 13.057vh;
+                        width: 40%;
+                        border-radius: 30px;
+                    }
                 }
             }
     
@@ -39,9 +49,17 @@
     
                     .menu-item-price {
                         flex-grow: 1;
-                        align-self: flex-end;
-                        border-radius: 25px;
-                        border: 2px solid black;
+                        padding-left: 80%;
+
+                        .quantity-price {
+                            background-color: rgb(162, 82, 228);
+                            text-align: end;
+                            color: white;
+                            font-family: $fontFamily;
+                            font-weight: 400;
+                            padding: 2vh;
+                            border-radius: 7px;
+                        }
                     }
                 }
             }
@@ -53,26 +71,47 @@
         flex-direction: row;
         gap: 10px;
 
-        .order-menu-order-placed {
-            flex-grow: 1;
-        }
-
         .order-menu-price {
-            flex-grow: 1;
+            flex-grow: 0.5;
+            display: flex;
+            justify-content: center;
         }
 
         .order-status {
             flex-grow: 1;
 
-            .order-status-container {
+            .order-status-button-container {
                 display: flex;
-                flex-direction: row;
-                align-items: center;
+                gap: 1px;
+                //justify-content: space-between;
 
                 .order-status-item {
-                    flex-grow: 1;
+                    // width: 100%;
+                    padding: 2px;
                 }
             }
+
+            .order-status-container {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+        }
+    }
+
+    .order-timeline {
+        width: 100%;
+        padding: 4px;
+
+        .order-marker {
+            display: flex;
+            border-radius: 50%;
+            height: 2rem;
+            width: 2rem;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            z-index: 1;
         }
     }
 }
@@ -80,11 +119,46 @@
 @media (max-width: 800px) {
     
     .order-container {
+
+        .order-menu-item-list-container {
+            .menu-item-container {
+                .menu-item-image-container {
+                    .menu-image {
+                        img {
+                            height: 13.057vh;
+                            width: 60%;
+                            border-radius: 30px;
+                        }
+                    }
+                }
+                .menu-item-description-list-container {
+                    
+                    .menu-item-description-container {
+
+                        .menu-item-price {
+                            padding-left: 0%;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+
+                            .quantity-price {
+                                text-align: center;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         
         .order-menu-footer-container {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 10px;
+
+            .order-menu-price {
+                flex-grow: 0;
+                padding: 17px;
+            }
         }
     }
     

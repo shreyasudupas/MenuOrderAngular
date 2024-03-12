@@ -34,6 +34,7 @@ export enum OrderStatusEnum {
     OrderAccepted,
     OrderInProgress,
     OrderReady,
-    OrderDone
+    OrderDone,
+    OrderCancelled
 }
 
