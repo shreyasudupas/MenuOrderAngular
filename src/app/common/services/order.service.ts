@@ -9,7 +9,7 @@ import { OrderStatusEnum } from 'src/app/user/components/payment/payment';
 export class OrderService {
 
     public getCurrentStatusAndDate(orderStatus:IOrderStatusModel) {
-        if(orderStatus.orderPlaced !== null && orderStatus.orderInProgress == null) {
+        if(orderStatus.orderPlaced !== null && orderStatus.orderInProgress == null && orderStatus.orderCancelled === null) {
             return { 
                 'orderStatus':OrderStatusEnum[OrderStatusEnum.OrderPlaced],
                 'currentOrderPlacedDate':orderStatus.orderPlaced 
@@ -42,7 +42,7 @@ export class OrderService {
         }
     }
 
-    public getOrderDisplayModelList(order:OrderModel) : OrderDisplayModel {
+    public getOrderDisplayModel(order:OrderModel) : OrderDisplayModel {
 
         var {orderStatus,currentOrderPlacedDate} = this.getCurrentStatusAndDate(order.status);
 
@@ -62,14 +62,46 @@ export class OrderService {
             },
             vendorDetail: order.vendorDetail,
             uiOrderNumber: order.uiOrderNumber,
-            //isFastCancelButton: (order.status.orderPlaced !== null && order.status.orderInProgress === null) ? true: false, //remaining status no need to show fast cancel button
-            counter: 0,
+            isFastCancelButton: null,
+            counter: null,
             createdDate: order.createdDate,
             orderCancelledReason: order.orderCancelledReason,
-            currentStatus: orderStatus,
+            currentOrderStatus: order.currentOrderStatus,
             currentStatusDate: currentOrderPlacedDate
         };
 
         return orderMap;
+    }
+
+    public getOrderDisplayModelListList(orders:OrderModel[]) : OrderDisplayModel[] {
+        return orders.map(order=> {
+            let {orderStatus,currentOrderPlacedDate} = this.getCurrentStatusAndDate(order.status);
+
+            let orderMap:OrderDisplayModel = {
+                id: order.id,
+                cartId: order.cartId,
+                menuItems: order.menuItems,
+                totalPrice: order.totalPrice,
+                paymentDetail: order.paymentDetail,
+                userDetail: order.userDetail,
+                status: {
+                    orderPlaced: order.status.orderPlaced,
+                    orderInProgress: order.status.orderInProgress,
+                    orderDone: order.status.orderDone,
+                    orderReady: order.status.orderReady,
+                    orderCancelled: order.status.orderCancelled
+                },
+                vendorDetail: order.vendorDetail,
+                uiOrderNumber: order.uiOrderNumber,
+                isFastCancelButton: null,
+                counter: null,
+                createdDate: order.createdDate,
+                orderCancelledReason: order.orderCancelledReason,
+                currentOrderStatus: order.currentOrderStatus,
+                currentStatusDate: currentOrderPlacedDate
+            };
+
+            return orderMap;
+        });
     }
 }

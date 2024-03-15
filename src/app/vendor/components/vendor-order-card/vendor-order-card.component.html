@@ -31,7 +31,7 @@
                     <div class="card-column-container" style="flex-grow: 1;width: 40%;">
                         <div class="row-content">
                             <i class="pi pi-calendar" style="color: rgb(35, 8, 207)"></i>
-                            {{order.orderPlacedDateTime | date: "dd/MM/yyyy h:mm:ss a"}}
+                            {{order.status.orderPlaced | date: "dd/MM/yyyy h:mm:ss a"}}
                         </div>
                         <div class="row-content">
                             <div class="price">
@@ -43,20 +43,20 @@
                 
                 <div class="order-status-viewBtn-container">
                     <div class="order-status" style="flex-grow: 1; width:70%">
-                        <ng-container [ngSwitch]="order.orderStatus">
-                            <div *ngSwitchCase="1">
+                        <ng-container [ngSwitch]="order.currentOrderStatus">
+                            <div *ngSwitchCase="'OrderPlaced'">
                                 Status: <p-tag severity="info" value="Waiting for vendor" [rounded]="true"></p-tag>
                             </div>
-                            <div *ngSwitchCase="2">
+                            <div *ngSwitchCase="'OrderInProgress'">
                                 Status: <p-tag severity="warning" value="In Progress" [rounded]="true"></p-tag>
                             </div>
-                            <div *ngSwitchCase="3">
+                            <div *ngSwitchCase="'OrderReady'">
                                 Status: <p-tag value="Order Ready" [rounded]="true"></p-tag>
                             </div>
-                            <div *ngSwitchCase="4">
+                            <div *ngSwitchCase="'OrderDone'">
                                 Status: <p-tag severity="success" value="Order Collected" [rounded]="true"></p-tag>
                             </div>
-                            <div *ngSwitchCase="5">
+                            <div *ngSwitchCase="'OrderCancelled'">
                                 Status: <p-tag severity="danger" value="Order Cancelled" [rounded]="true"></p-tag>
                             </div>
                         </ng-container>
@@ -64,8 +64,11 @@
     
                     <div class="order-view-button-container">
                         <div class="button-order">
-                            <ng-container *ngIf="order.orderStatus === 1">
+                            <ng-container *ngIf="order.currentOrderStatus === 'OrderPlaced'">
                                 <p-button label="Accept Order" styleClass="p-button-danger p-button-text p-button-sm"></p-button>
+                            </ng-container>
+                            <ng-container *ngIf="order.currentOrderStatus === 'OrderInProgress'">
+                                <p-button label="Order Ready" styleClass="p-button-danger p-button-text p-button-sm"></p-button>
                             </ng-container>
                         </div>
 

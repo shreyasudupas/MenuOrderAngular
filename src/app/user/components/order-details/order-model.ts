@@ -12,6 +12,7 @@ uiOrderNumber:number;
 status:IOrderStatusModel;
 vendorDetail:IVendorDetailModel;
 orderCancelledReason:string;
+currentOrderStatus:string;
 createdDate:string;
 }
 
@@ -49,9 +50,9 @@ export class OrderDisplayModel implements OrderModel {
     createdDate: string;
     isFastCancelButton?:boolean;
     counter?:number;
-    currentStatus:string;
     currentStatusDate?:string;
     statusTimeLineDetails?:statusTimeLineDetails[];
+    currentOrderStatus:string;
 }
 
 export interface statusTimeLineDetails {

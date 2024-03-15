@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core'
 import { OrderService } from 'src/app/common/services/order.service';
-import { OrderDisplayModel, OrderModel } from 'src/app/user/components/order-details/order-model'
+import { OrderModel } from 'src/app/user/components/order-details/order-model'
 
 @Component({
     selector: 'vendor-order-detail',
@@ -8,19 +8,27 @@ import { OrderDisplayModel, OrderModel } from 'src/app/user/components/order-det
     styleUrls: ['./vendor-order-detail.component.scss']
 })
 
-export class VendorOrderDetailComponent implements OnInit {
+export class VendorOrderDetailComponent implements OnInit,OnChanges {
 
     @Input()
     orderData:OrderModel;
 
-    orderModel:OrderDisplayModel;
+    orderModel:OrderModel;
 
     constructor(private orderSerice:OrderService) {}
 
     ngOnInit(): void {
          if(this.orderData !== null) {
-            this.orderModel = this.orderSerice.getOrderDisplayModelList(this.orderData);
+            this.orderModel = this.orderSerice.getOrderDisplayModel(this.orderData);
          }   
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        //console.log(changes);
+        if(!changes['orderData'].firstChange) {
+            this.orderModel = changes['orderData'].currentValue;
+        }
+        
     }
     
 }

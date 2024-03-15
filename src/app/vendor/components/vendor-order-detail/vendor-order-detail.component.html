@@ -20,7 +20,7 @@
             </span>
              <span style="color: rgb(94, 92, 92);">Order Number: #</span>  {{orderData.uiOrderNumber}}
         </span>
-        <span class="order-datetime"> {{orderModel.currentStatusDate | date:"dd/MM/yyyy h:mm:ss a"}} </span>
+        <span class="order-datetime"> {{orderModel.status.orderPlaced | date:"dd/MM/yyyy h:mm:ss a"}} </span>
     </div>
 
     <div class="order-delivery-address-layout">

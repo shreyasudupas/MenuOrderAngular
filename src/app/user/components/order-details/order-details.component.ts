@@ -142,14 +142,14 @@ events: any[];
                             counter: 0,
                             createdDate: order.createdDate,
                             orderCancelledReason: order.orderCancelledReason,
-                            currentStatus: this.getCurrentStatus(order.status),
                             statusTimeLineDetails: [
                                 { statusName: 'Order Placed',icon: 'pi pi-shopping-cart',placedDate: order.status.orderPlaced ,iconColor: '#9C27B0'},
                                 { statusName: 'Order InProgress',icon: 'pi pi-cog',placedDate: order.status.orderInProgress,iconColor:  '#673AB7'},
                                 { statusName: 'Order Ready',icon: 'pi pi-thumbs-up',placedDate: order.status.orderDone,iconColor: '#FF9800'},
                                 { statusName: 'Order Done',icon: 'pi pi pi-check',placedDate: order.status.orderDone,iconColor: '#4cbb17' },
                                 { statusName: 'Order Cancelled',icon: 'pi pi-times',placedDate: order.status.orderCancelled,iconColor: '#e13b31' }
-                            ]
+                            ],
+                            currentOrderStatus: order.currentOrderStatus
                         };
 
                         this.calculateIfOrderIsUnder40Seconds(new Date(order.status.orderPlaced),orderMap);
