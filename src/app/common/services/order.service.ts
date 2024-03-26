@@ -1,12 +1,17 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { OrderDisplayModel, IOrderStatusModel, OrderModel } from 'src/app/user/components/order-details/order-model';
 import { OrderStatusEnum } from 'src/app/user/components/payment/payment';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn:'root'
 })
 
 export class OrderService {
+
+    constructor(private http:HttpClient) {}
 
     public getCurrentStatusAndDate(orderStatus:IOrderStatusModel) {
         if(orderStatus.orderPlaced !== null && orderStatus.orderInProgress == null && orderStatus.orderCancelled === null) {
@@ -103,5 +108,12 @@ export class OrderService {
 
             return orderMap;
         });
+    }
+
+    public updateOrderInformation(order:OrderModel):Observable<OrderModel> {
+        let body = {
+            orderInfo : order
+        }
+        return this.http.put<OrderModel>(environment.orderService.order,body);
     }
 }

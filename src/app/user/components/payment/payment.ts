@@ -22,6 +22,7 @@ export class UserOrderDetailsModel {
     area:string;
     phoneNumber:string;
     emailId:string;
+    userId?:string;
 }
 
 export class CartInfoModel {

@@ -35,4 +35,18 @@ export class NotificationService{
         return this.http.get<number>(url);
     }
 
+    addNotification = (addNotification:Notification) : Observable<Notification> => {
+        let url = environment.notification;
+        let body = addNotification;
+
+        return this.http.post<Notification>(url,body);
+    }
+
+    getNotificationCountByUserId = (userId:string) : Observable<number> => {
+        let url = environment.notification;
+        url = url.concat(`/${userId}/count`);
+
+        return this.http.get<number>(url);
+    }
+
 }

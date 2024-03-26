@@ -35,9 +35,7 @@ export class NotificationComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.notificationSignalRService.startConnection();
-        this.notificationSignalRService.addNotificationCountListener();
-        this.notificationSignalRService.getAllCountListener();
+        this.notificationSignalRInitilize();
 
         let user = this.authService.getUserInformation();
         if(user !== null){
@@ -46,9 +44,16 @@ export class NotificationComponent implements OnInit {
             //this.notificationsList = Array.from({length:1000});
 
             //this.getNotificationsFromAPI(); 
+            this.getNotificationCountBasedUserId(this.userId);
             
             this.getNotifications(this.skip,this.totalRecordsToDisplay);
         }    
+    }
+
+    notificationSignalRInitilize() {
+        this.notificationSignalRService.startConnection();
+        this.notificationSignalRService.addNotificationCountListener();
+        this.notificationSignalRService.getAllCountListener();
     }
 
     getNotificationsFromAPI() {
@@ -137,6 +142,19 @@ export class NotificationComponent implements OnInit {
             this.loading = false;
             this.notificationsList = [...this.notificationsList, ...result];
         }).catch(err => console.log('Error Occured in recieving the Notification list ',err));
+    }
+
+    getNotificationCountBasedUserId(userId:string) {
+        this.notificationService.getNotificationCountByUserId(userId).subscribe({
+            next: (notificationCount:number) => {
+                if(notificationCount>0) {
+                    this.notificationSignalRService.notificationCount = notificationCount;
+                }
+            },
+            error: (error) => {
+                console.log(`Error occured in the getting notification count: ${error}`);
+            }
+        });
     }
 
     onScroll = () => {
