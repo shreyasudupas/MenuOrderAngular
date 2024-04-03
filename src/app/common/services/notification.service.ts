@@ -49,4 +49,11 @@ export class NotificationService{
         return this.http.get<number>(url);
     }
 
+    deleteNotificationById = (userId:string,notificationId:string) : Observable<boolean> => {
+        let url = environment.notification;
+        let param = new HttpParams().append('id',notificationId).append('userId',userId);
+
+        return this.http.delete<boolean>(url, {params: param});
+    }
+
 }

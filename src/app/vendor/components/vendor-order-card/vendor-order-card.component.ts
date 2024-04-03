@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { OrderService } from 'src/app/common/services/order.service';
-import { OrderModel } from 'src/app/user/components/order-details/order-model';
+import { OrderModel, OrderNotificationModel } from 'src/app/user/components/order-details/order-model';
 import { OrderStatusEnum } from 'src/app/user/components/payment/payment';
 import { Notification } from 'src/app/common/components/notification/notification';
 import { AuthService } from 'src/app/common/services/auth.service';
@@ -23,13 +23,22 @@ export class VendorOrderCardComponent implements OnInit {
     @Output()
     sendOrderDetail = new EventEmitter<OrderModel>();
 
+    orderNotificationDetails:OrderNotificationModel[];
+
     constructor(private orderService: OrderService,
         private messageService: MessageService,
         private notificationService:NotificationService,
         private authService:AuthService) {}
 
     ngOnInit(): void {
-        console.log(this.data);
+        //console.log(this.data);
+        //initialize the order notification
+    }
+
+    ngOnChanges(changes:SimpleChanges) {
+        if(!changes['data'].firstChange) {
+            this.orderNotificationDetails = this.orderService.getOrderNotificationModelArray(this.data);
+        }
     }
 
     //function to call view order component
@@ -90,6 +99,10 @@ export class VendorOrderCardComponent implements OnInit {
             next:(orderResponse:OrderModel) => {
                 if(orderResponse !== null) {
                     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Updated Order ' + orderResponse.uiOrderNumber });
+
+                    let notificationId = this.orderNotificationDetails.find(x=>x.orderId === currentorder.id);
+                    if(notificationId.notificationId !== null)
+                        this.deleteNotification(notificationId.notificationId ,currentorder.userDetail.userId);
                 }
             },
             error:(error) => {
@@ -137,11 +150,25 @@ export class VendorOrderCardComponent implements OnInit {
             next: (result) => {
                 if(result !== null) {
                     console.log('User Notified');
+                    this.orderNotificationDetails = this.orderNotificationDetails.map(order=> 
+                        order.orderId === currentOrder.id ? { orderId: order.orderId ,notificationId:result.id } : {...order});
                 }
             },
             error: (error) => {
                 console.log('Error has occured in Adding the Notification');
             }
+        });
+    }
+
+    deleteNotification(notificationId:string,userId:string) {
+
+        this.notificationService.deleteNotificationById(userId,notificationId).subscribe({
+            next: (deleteResult:boolean) => {
+
+            },
+            error(err) {
+                console.log('Error occured in delete notification {error}',err);
+            },
         });
     }
 }

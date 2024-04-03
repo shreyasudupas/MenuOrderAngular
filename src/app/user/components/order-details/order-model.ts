@@ -61,3 +61,8 @@ export interface statusTimeLineDetails {
     icon:string;
     iconColor: string;
 }
+
+export interface OrderNotificationModel {
+    orderId:string;
+    notificationId?:string;
+}

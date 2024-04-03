@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { OrderDisplayModel, IOrderStatusModel, OrderModel } from 'src/app/user/components/order-details/order-model';
+import { OrderDisplayModel, IOrderStatusModel, OrderModel, OrderNotificationModel } from 'src/app/user/components/order-details/order-model';
 import { OrderStatusEnum } from 'src/app/user/components/payment/payment';
 import { environment } from 'src/environments/environment';
 
@@ -115,5 +115,18 @@ export class OrderService {
             orderInfo : order
         }
         return this.http.put<OrderModel>(environment.orderService.order,body);
+    }
+
+    public getOrderNotificationModelArray(order:OrderModel[]) : OrderNotificationModel[] {
+        let result:OrderNotificationModel[];
+        
+        result = order.map((order)=> {
+            let orderNotification: OrderNotificationModel = {
+                orderId : order.id,
+                notificationId: null
+            };
+            return orderNotification;
+        });
+        return result;
     }
 }
