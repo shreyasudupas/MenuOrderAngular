@@ -7,6 +7,7 @@ import { OrderStatusEnum } from 'src/app/user/components/payment/payment';
 import { Notification } from 'src/app/common/components/notification/notification';
 import { AuthService } from 'src/app/common/services/auth.service';
 import { Role } from 'src/app/common/models/role';
+import { DateUtility } from 'src/app/common/utilities/dateUtilites';
 
 @Component({
     selector: 'vendor-order-card',
@@ -48,7 +49,7 @@ export class VendorOrderCardComponent implements OnInit {
 
     //move order to in progress
     acceptOrder(currentorder:OrderModel) {
-        currentorder.status = {...currentorder.status,orderInProgress: this.formatDateTime(new Date()) };
+        currentorder.status = {...currentorder.status,orderInProgress: DateUtility.formatDateTime(new Date()) };
         currentorder.currentOrderStatus = OrderStatusEnum[OrderStatusEnum.OrderInProgress];
 
         //console.log(currentorder);
@@ -68,7 +69,7 @@ export class VendorOrderCardComponent implements OnInit {
     }
 
     orderReady(currentorder:OrderModel) {
-        currentorder.status = {...currentorder.status,orderReady: this.formatDateTime(new Date()) };
+        currentorder.status = {...currentorder.status,orderReady: DateUtility.formatDateTime(new Date()) };
         currentorder.currentOrderStatus = OrderStatusEnum[OrderStatusEnum.OrderReady];
 
         this.orderService.updateOrderInformation(currentorder).subscribe({
@@ -114,20 +115,7 @@ export class VendorOrderCardComponent implements OnInit {
         });
     }
 
-    formatDate(date: Date): string {
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-        return `${month}/${day}/${year}`;
-    }
-
-    formatDateTime(date: Date): string {
-        const formattedDate = this.formatDate(date); // Reuse formatDate function
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        const seconds = date.getSeconds().toString().padStart(2, '0');
-        return `${formattedDate} ${hours}:${minutes}:${seconds}`;
-    }
+    
     
     notifyUsersOrders(currentOrder:OrderModel) {
         let fromUserId:string = this.authService.getUserInformation().profile['userId'];
@@ -164,7 +152,12 @@ export class VendorOrderCardComponent implements OnInit {
 
         this.notificationService.deleteNotificationById(userId,notificationId).subscribe({
             next: (deleteResult:boolean) => {
-
+                if(deleteResult == true) {
+                    //remove the noticationId once it has been deleted
+                    this.orderNotificationDetails = this.orderNotificationDetails.map(order=> 
+                        order.notificationId === order.notificationId? { orderId: order.orderId, notificationId: null } : {...order}
+                    );
+                }
             },
             error(err) {
                 console.log('Error occured in delete notification {error}',err);

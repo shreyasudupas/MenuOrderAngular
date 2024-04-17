@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { takeWhile, tap, timer } from 'rxjs';
@@ -9,19 +9,23 @@ import { CommonDataSharingService } from 'src/app/common/services/common-datasha
 import { MenuService } from 'src/app/common/services/menu.service';
 import { NavigationService } from 'src/app/common/services/navigation.service';
 import { environment } from 'src/environments/environment';
+import { OrderCancelDialogComponent } from '../order-cancel-dialog/order-cancel-dialog.component';
 import { OrderStatusEnum } from '../payment/payment';
 import { OrderDisplayModel, IOrderStatusModel, OrderModel } from './order-model';
 
 @Component({
     selector: 'order-details',
     templateUrl:'./order-details.component.html',
-    styleUrls: ['./order-details.component.scss']
+    styleUrls: ['./order-details.component.scss'],
+    providers: []
 })
 
 export class OrderDetailsComponent extends BaseComponent<OrderModel> implements OnInit {
 orders:OrderDisplayModel[];
 userId:string;
 events: any[];
+
+@ViewChild(OrderCancelDialogComponent) orderCancelDialogComponent: OrderCancelDialogComponent;
 //counter = 40;
 
     constructor(private menuService:MenuService,
@@ -221,5 +225,24 @@ events: any[];
         } else {
             return 'pi pi-spin pi-cog';
         }
+    }
+
+    cancelOrderAfterLimit(orderInfo:OrderDisplayModel) {
+        let order:OrderModel = {
+            id: orderInfo.id,
+            cartId: orderInfo.cartId,
+            menuItems: orderInfo.menuItems,
+            totalPrice: orderInfo.totalPrice,
+            paymentDetail: orderInfo.paymentDetail,
+            userDetail: orderInfo.userDetail,
+            uiOrderNumber: orderInfo.uiOrderNumber,
+            status: orderInfo.status,
+            vendorDetail: orderInfo.vendorDetail,
+            orderCancelledReason: orderInfo.orderCancelledReason,
+            currentOrderStatus: orderInfo.currentOrderStatus,
+            createdDate: orderInfo.createdDate
+        };
+        this.orderCancelDialogComponent.visible = true;
+        this.orderCancelDialogComponent.orderInfo =  order;
     }
 }

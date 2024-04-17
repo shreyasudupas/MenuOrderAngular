@@ -1,0 +1,11 @@
+@import "../../../admin/components/vendor-details/vendor-detail.component.scss";
+
+.order-cancel-dialog-width {
+    width: 50vw;
+}
+
+@media (max-width:800px) {
+    .order-cancel-dialog-width {
+        width: 30vw;
+    }
+}

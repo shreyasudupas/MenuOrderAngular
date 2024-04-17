@@ -1,0 +1,26 @@
+<p-dialog header="Cancellation Order" [(visible)]="visible" class="order-cancel-dialog-width">
+    <p>
+        Are you sure that you want to proceed with the cancellation? No refund is available.
+    </p>
+    <form [formGroup]="confirmCancelForm">
+        <div>
+            <p-dropdown [options]="cancellationReasons" 
+                        formControlName="cancellationReason"
+                        placeholder="Select a Reason" 
+                        optionLabel="name"></p-dropdown>
+        </div>
+        <div *ngIf="confirmCancelForm.get('cancellationReason')?.invalid" class="error">
+            {{confirmCancelForm.controls['cancellationReason'].errors.message}}
+        </div>
+        <div>
+            <p-button label="Confirm" 
+                      styleClass="p-button-raised p-button-text p-button-danger mr-2 mb-2" 
+                      (click)="confirmCancel()"
+                      ></p-button>
+            <p-button label="Cancel" 
+                      styleClass="p-button-raised p-button-text mr-2 mb-2" 
+                      (click)="cancel()"
+                      ></p-button>
+        </div>
+    </form>
+</p-dialog>
