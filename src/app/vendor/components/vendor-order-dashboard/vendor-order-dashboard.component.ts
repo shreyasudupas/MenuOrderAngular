@@ -228,10 +228,16 @@ constructor(private menuService:MenuService,
     orderSignalRServiceInit() {
         this.orderSignalRService.startConnection();
         this.orderSignalRService.getLatestOrderInfoListner();
+        this.orderSignalRService.publishCancelOrderListner();
 
         this.orderSignalRService.getLatestOrder().subscribe({
             next: result => {
-                this.orders.unshift(result);
+                if(result.operation === 'Add')
+                    this.orders.unshift(result.orderModel);
+                else if(result.operation === 'Cancel') {
+                    this.orders = this.orders.filter(order=>order.id !== result.orderModel.id);
+                    this.orders.unshift(result.orderModel); //add the cancel order at the 7  
+                }
             },
             error: err => {
                 console.error("Error has occured: ",err);

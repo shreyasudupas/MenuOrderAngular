@@ -66,3 +66,8 @@ export interface OrderNotificationModel {
     orderId:string;
     notificationId?:string;
 }
+
+export interface OrderSignalRSubjectModel {
+    orderModel:OrderModel;
+    operation:string;
+}
