@@ -151,11 +151,20 @@
                 gap: 2vw;
                 padding: 2px;
                 font-family: cursive;
-                padding-bottom: 3vh;
+                padding-bottom: 2vh;
                 border-bottom: 1px solid rgb(107, 105, 105);
 
                 .order-image {
                     padding-left: 15px;
+                }
+
+                .order-status-count-group-container {
+                    flex-grow: 1;
+                    
+                    .order-status-count-group {
+                        float: right;
+                        padding: 1vh;
+                    }
                 }
             }
             

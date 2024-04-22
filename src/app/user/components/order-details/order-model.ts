@@ -71,3 +71,9 @@ export interface OrderSignalRSubjectModel {
     orderModel:OrderModel;
     operation:string;
 }
+
+export interface OrderCountResponse {
+    orderPlaced:number;
+    orderInProgress:number;
+    orderCancelled:number;
+}

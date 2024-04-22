@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OrderService } from 'src/app/common/services/order.service';
 import { DateUtility } from 'src/app/common/utilities/dateUtilites';
@@ -20,6 +20,9 @@ cancellationReasons:any[] = [
     { name:'Order is taking long time to prepare',code:'Order is taking long time to prepare'},
     { name:'Ordered by mistake',code:'Ordered by mistake'}
 ];
+
+@Output()
+orderCancelledUpdate = new EventEmitter<OrderModel>();
 
 constructor(private fb:FormBuilder,
     private orderService:OrderService
@@ -53,6 +56,8 @@ constructor(private fb:FormBuilder,
                     next: (orderResult?:OrderModel) => {
                         if(orderResult === null) {
                             console.log('Problem inside the Order Update API');
+                        } else {
+                            this.orderCancelledUpdate.emit(this.orderInfo);
                         }
                         this.cancel();
                     },

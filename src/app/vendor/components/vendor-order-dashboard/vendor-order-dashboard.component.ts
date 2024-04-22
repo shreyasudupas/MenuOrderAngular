@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -8,7 +8,7 @@ import { CommonDataSharingService } from 'src/app/common/services/common-datasha
 import { MenuService } from 'src/app/common/services/menu.service';
 import { NavigationService } from 'src/app/common/services/navigation.service';
 import { OrderSignalRService } from 'src/app/common/services/order-signalr.service';
-import { OrderModel } from 'src/app/user/components/order-details/order-model'
+import { OrderCountResponse, OrderModel } from 'src/app/user/components/order-details/order-model'
 import { OrderStatus } from 'src/app/user/components/order-details/order-status-enum';
 import { environment } from 'src/environments/environment';
 
@@ -29,6 +29,13 @@ sampleDate:Date = new Date();
 viewOrderDetail:OrderModel;
 showViewOrderDetail:boolean = false;
 vendorId:string;
+newOrderCount:number = 0;
+inProgressOrderCount:number = 0;
+cancelOrderCount:number = 0;
+newOrder:string = `New ${this.newOrderCount}`;
+inProgressOrder:string = `InProgress ${this.inProgressOrderCount}`;
+cancelOrder:string = `Cancel Order ${this.cancelOrderCount}`;
+orderCount:OrderCountResponse;
 
 constructor(private menuService:MenuService,
     public override httpclient:HttpClient,
@@ -56,6 +63,7 @@ constructor(private menuService:MenuService,
         let currentStatus =[OrderStatus[OrderStatus.OrderPlaced],OrderStatus[OrderStatus.OrderInProgress]];
         this.getOrder(currentStatus);
 
+        this.getOrderCount(this.vendorId);
         // this.orders = [
         //     {   id:'1',
         //         uiOrderNumber:1,
@@ -151,6 +159,7 @@ constructor(private menuService:MenuService,
         //         }
         //     }
         // ]
+
     }
 
     getCurrentOrders(event:any) {
@@ -207,6 +216,8 @@ constructor(private menuService:MenuService,
                 this.showError('Internal Server Error');
             }
         });
+
+
     }
 
     refreshOrders() {
@@ -223,6 +234,7 @@ constructor(private menuService:MenuService,
 
            this.getOrder(allStatus);
         }
+        this.getOrderCount(this.vendorId);
     }
 
     orderSignalRServiceInit() {
@@ -232,16 +244,35 @@ constructor(private menuService:MenuService,
 
         this.orderSignalRService.getLatestOrder().subscribe({
             next: result => {
-                if(result.operation === 'Add')
+                if(result.operation === 'Add') {
                     this.orders.unshift(result.orderModel);
+                    this.newOrder = `New ${this.orderCount.orderPlaced+1}`;
+                }
                 else if(result.operation === 'Cancel') {
                     this.orders = this.orders.filter(order=>order.id !== result.orderModel.id);
                     this.orders.unshift(result.orderModel); //add the cancel order at the 7  
+                    this.cancelOrder = `Cancel Order ${this.orderCount.orderCancelled+1}`;
                 }
             },
             error: err => {
                 console.error("Error has occured: ",err);
             }
+        });
+    }
+
+    getOrderCount(vendorId:string) {
+        let url = environment.orderService.order.concat('/count');
+        let param = new HttpParams().set('vendorId',vendorId);
+        this.httpclient.get<OrderCountResponse>(url,{params:param}).subscribe({
+            next: (orderCountResult:OrderCountResponse) => {
+                if(orderCountResult !== null) {
+                    this.orderCount = orderCountResult;
+                    this.newOrder = `New ${this.orderCount.orderPlaced}`;
+                    this.inProgressOrder = `InProgress ${this.orderCount.orderInProgress}`;
+                    this.cancelOrder = `Cancel Order ${this.orderCount.orderCancelled}`;
+                }
+            },
+            error: (error) => console.log(`Error occured in retriveing order count error:${error}`)
         });
     }
 

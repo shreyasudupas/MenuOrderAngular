@@ -35,6 +35,13 @@
                         <div class="order-type">
                             {{showOrderType}}
                         </div>
+                        <div class="order-status-count-group-container">
+                            <div class="order-status-count-group">
+                                <p-tag icon="pi pi-plus" [value]="newOrder"></p-tag>
+                                <p-tag icon="pi pi-spinner" severity="warning" [value]="inProgressOrder">  </p-tag>
+                                <p-tag icon="pi pi-info-circle" severity="danger" [value]="cancelOrder"> </p-tag>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- <div class="col-12">

@@ -245,4 +245,9 @@ events: any[];
         this.orderCancelDialogComponent.visible = true;
         this.orderCancelDialogComponent.orderInfo =  order;
     }
+
+    orderStatusUpdateFromCancellation($event:OrderModel) {
+        this.orders = this.orders.map( order => order.id === $event.id ? 
+            { ...order,status:$event.status,orderCancelledReason:$event.orderCancelledReason,currentOrderStatus:$event.currentOrderStatus }: order);
+    }
 }
