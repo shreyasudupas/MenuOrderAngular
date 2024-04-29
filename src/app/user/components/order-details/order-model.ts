@@ -26,6 +26,8 @@ price:number;
 selectedPayment:string;
 methodOfDelivery:string;
 paymentSuccess:boolean;
+orderCancelled:boolean;
+paymentCredited:boolean;
 }
 
 export interface IOrderStatusModel{

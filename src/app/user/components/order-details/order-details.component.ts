@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/common/services/auth.service';
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
 import { MenuService } from 'src/app/common/services/menu.service';
 import { NavigationService } from 'src/app/common/services/navigation.service';
+import { DateUtility } from 'src/app/common/utilities/dateUtilites';
 import { environment } from 'src/environments/environment';
 import { OrderCancelDialogComponent } from '../order-cancel-dialog/order-cancel-dialog.component';
 import { OrderStatusEnum } from '../payment/payment';
@@ -37,13 +38,6 @@ events: any[];
         public navigation:NavigationService,
         private authService:AuthService){
         super(menuService,httpclient,commonBroadcastService,messageService)
-
-        this.events = [
-            { status: 'Ordered', date: '15/10/2020 10:30', icon: 'pi pi-shopping-cart', color: '#9C27B0', image: 'game-controller.jpg' },
-            { status: 'Processing', date: '15/10/2020 14:00', icon: 'pi pi-cog', color: '#673AB7' },
-            { status: 'Shipped', date: '15/10/2020 16:15', icon: 'pi pi-shopping-cart', color: '#FF9800' },
-            { status: 'Delivered', date: '16/10/2020 10:00', icon: 'pi pi-check', color: '#607D8B' }
-        ];
     }
 
     ngOnInit(): void {
@@ -249,5 +243,25 @@ events: any[];
     orderStatusUpdateFromCancellation($event:OrderModel) {
         this.orders = this.orders.map( order => order.id === $event.id ? 
             { ...order,status:$event.status,orderCancelledReason:$event.orderCancelledReason,currentOrderStatus:$event.currentOrderStatus }: order);
+    }
+
+    fastOrderCancellation(order:OrderDisplayModel) {
+        order = {...order, orderCancelledReason: 'User cancelled the order under time limit',
+            status: {...order.status,orderCancelled: DateUtility.formatDateTime(new Date())},
+            currentOrderStatus: OrderStatusEnum[OrderStatusEnum.OrderCancelled]
+        };
+
+        let url = environment.orderService.order.concat('/fastCancellation');
+
+        this.httpclient.post<OrderModel>(url,order).subscribe({
+            next: (orderResult:OrderModel) => {
+                if(orderResult !== null) {
+                    order = {...order,paymentDetail: orderResult.paymentDetail};
+
+                    this.orders = this.orders.map((orderMap)=> order.id === orderResult.id ? {...order}:{...orderMap});
+                }
+            },
+            error: (err) => console.log('Error Occured in Fast cancellation')
+        });
     }
 }

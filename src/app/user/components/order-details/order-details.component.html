@@ -72,7 +72,8 @@
                                                 <ng-container *ngIf="order.isFastCancelButton;else showCancelBtn">
                                                     <p-button label="Fast Cancel" 
                                                               styleClass="p-button-raised p-button-text p-button-danger mr-2 mb-2" 
-                                                              [badge]="order.counter"></p-button>
+                                                              [badge]="order.counter"
+                                                              (click)="fastOrderCancellation(order)"></p-button>
                                                 </ng-container>
     
                                                 <ng-template #showCancelBtn>
@@ -108,7 +109,7 @@
                             </div>
     
                             <div class="order-menu-price">
-                                <b>Total Price:</b> {{order.paymentDetail.price}}
+                                <b>Total Price:</b> {{order.totalPrice}}
                             </div>
                         </div>
     
@@ -121,7 +122,12 @@
                                         <span class="flex align-items-center gap-2 w-full">
                                             <i [ngClass]="validateIfClassNeedsSpinner(order.currentOrderStatus)" class="order-status-icon"></i>
                                             <span class="order-status-icon-name">Order Status:</span>
-                                            <span class="order-status-name">{{order.currentOrderStatus}}</span>
+                                            <ng-container *ngIf="order.paymentDetail.orderCancelled === true;else showstatus">
+                                                <span class="order-status-name"> Fast Cancellation</span>
+                                            </ng-container>
+                                            <ng-template #showstatus>
+                                                <span class="order-status-name">{{order.currentOrderStatus}}</span>
+                                            </ng-template>
                                         </span>
                                     </ng-template>
                                     <p class="m-0">
