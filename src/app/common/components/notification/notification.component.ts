@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
 import { Notification } from 'src/app/common/components/notification/notification';
@@ -46,7 +46,7 @@ export class NotificationComponent implements OnInit {
             //this.getNotificationsFromAPI(); 
             this.getNotificationCountBasedUserId(this.userId);
             
-            this.getNotifications(this.skip,this.totalRecordsToDisplay);
+            //this.getNotifications(this.skip,this.totalRecordsToDisplay);
         }    
     }
 
@@ -106,10 +106,10 @@ export class NotificationComponent implements OnInit {
     }
 
     goToPage = (notification:Notification) => {
-        if(notification.link != ""){
-            this.updateNotification(notification);
-            this.overlayId.hide();
-            this.router.navigateByUrl(notification.link);
+        if(notification.data.uri != ""){
+            //this.updateNotification(notification);
+            //this.overlayId.hide();
+            //this.router.navigateByUrl(notification.link);
 
         }
     }
@@ -137,12 +137,12 @@ export class NotificationComponent implements OnInit {
         })
     }
 
-    getNotifications = (skip:number,take:number) => {
-        this.notificationService.getAllNotifications(this.userId,skip,take).then(result => {
-            this.loading = false;
-            this.notificationsList = [...this.notificationsList, ...result];
-        }).catch(err => console.log('Error Occured in recieving the Notification list ',err));
-    }
+    // getNotifications = (skip:number,take:number) => {
+    //     this.notificationService.getAllNotifications(this.userId,skip,take).then(result => {
+    //         this.loading = false;
+    //         this.notificationsList = [...this.notificationsList, ...result];
+    //     }).catch(err => console.log('Error Occured in recieving the Notification list ',err));
+    // }
 
     getNotificationCountBasedUserId(userId:string) {
         this.notificationService.getNotificationCountByUserId(userId).subscribe({
@@ -157,13 +157,13 @@ export class NotificationComponent implements OnInit {
         });
     }
 
-    onScroll = () => {
-        this.loading = true;
-        this.skip = this.skip + this.totalRecordsToDisplay;
+    // onScroll = () => {
+    //     this.loading = true;
+    //     this.skip = this.skip + this.totalRecordsToDisplay;
 
-        this.getNotifications(this.skip,this.totalRecordsToDisplay);
+    //     this.getNotifications(this.skip,this.totalRecordsToDisplay);
 
-    }
+    // }
 
     ngOnDestroy(){
         this.notificationSignalRService.disconnectHubConnection();

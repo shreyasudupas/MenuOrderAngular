@@ -1,10 +1,16 @@
 <p-toast></p-toast>
 <!-- <p-button icon="pi pi-bell" badge="newNotificationCount" styleClass="p-button" (click)="op.toggle($event)"></p-button> -->
 <div class="center">
-    <i class="pi pi-bell mr-4 p-text-secondary" pBadge style="font-size: 2rem" [value]="notificationSignalRService.notificationCount" severity="danger" (click)="op.toggle($event)"></i>
+    <i class="pi pi-bell mr-4 p-text-secondary" pBadge 
+       style="font-size: 2rem" 
+       [value]="notificationSignalRService.notificationCount" 
+       severity="danger" 
+       (click)="op.toggle($event)"></i>
 </div>
 
-<p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '720px'}">
+<p-overlayPanel #op [showCloseIcon]="true" 
+                class="notification-list-overlay"
+                >
     <ng-template pTemplate>
         <div class="col-12">
             <div *ngIf="userId !== undefined">
@@ -42,23 +48,6 @@
             </ng-template>
         </p-table> -->
 
-        <div
-            class="notification-container"
-            infinite-scroll
-            [infiniteScrollDistance]="2"
-            [infiniteScrollThrottle]="500"
-            [scrollWindow]="false"
-            (scrolled)="onScroll()">
-
-            <div class="col-12">
-                <div class="notification-card-space" *ngFor="let notification of notificationsList">
-                    <div class="notification-card">
-                        <h5> {{notification.description}} </h5>
-                    </div>
-                </div>        
-            </div>
-
-            <div *ngIf="loading">Loading...</div>
-        </div>
+        <notification-list [userId]="userId"></notification-list>
     </ng-template>
 </p-overlayPanel>

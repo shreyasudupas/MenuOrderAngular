@@ -4,10 +4,14 @@ import { NotificationService } from 'src/app/common/services/notification.servic
 import { OrderService } from 'src/app/common/services/order.service';
 import { OrderModel, OrderNotificationModel } from 'src/app/user/components/order-details/order-model';
 import { OrderStatusEnum } from 'src/app/user/components/payment/payment';
-import { Notification } from 'src/app/common/components/notification/notification';
+import { Notification, NotificationDataRequestType, NotificationPriority } from 'src/app/common/components/notification/notification';
 import { AuthService } from 'src/app/common/services/auth.service';
 import { Role } from 'src/app/common/models/role';
 import { DateUtility } from 'src/app/common/utilities/dateUtilites';
+import { ResourceService } from 'src/app/common/services/resource.service';
+import { HttpClient } from '@angular/common/http';
+import { IOrderUpdateToDoneModel } from 'src/app/common/notification-body-template-models/OrderDoneModel';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'vendor-order-card',
@@ -29,7 +33,7 @@ export class VendorOrderCardComponent implements OnInit {
     constructor(private orderService: OrderService,
         private messageService: MessageService,
         private notificationService:NotificationService,
-        private authService:AuthService) {}
+        private authService:AuthService) {  }
 
     ngOnInit(): void {
         //console.log(this.data);
@@ -121,16 +125,24 @@ export class VendorOrderCardComponent implements OnInit {
         let fromUserId:string = this.authService.getUserInformation().profile['userId'];
         let orderDesciption:string = 'Order Number ' +  currentOrder.uiOrderNumber + ' Ready to Collect from ' + currentOrder.vendorDetail.vendorName;
 
+        let orderModel : IOrderUpdateToDoneModel = {
+            orderId: currentOrder.id
+        };
         let newNotification:Notification = {
             id:'',
+            priority: NotificationPriority.High,
             title:'Order is now Ready',
             description: orderDesciption,
             fromUserId: fromUserId,
             toUserId: currentOrder.userDetail.userId,
-            link:'',
+            data: {
+                uri: environment.orderService.order.concat('/statusUpdate'),
+                requestType: NotificationDataRequestType.Patch,
+                body: JSON.stringify(orderModel)
+            },
             role: Role.Vendor,
             read:false,
-            recordedTimeStamp: null,
+            createdDate: null,
             sendAll: false
         };
 

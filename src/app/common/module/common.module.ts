@@ -21,6 +21,8 @@ import { UserProfileComponent } from '../components/user-profile/user-profile.co
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ImageUploadComponent } from '../components/image-upload/image-upload.component';
 import { VendorVerificationComponent } from 'src/app/admin/components/vendor-verification/vendor-verification.component';
+import { NotificationTimePipe } from '../pipes/notification-time.pipe';
+import { NotificationListComponent } from '../components/notification-list/notification-list.component';
 
 
 
@@ -42,7 +44,9 @@ import { VendorVerificationComponent } from 'src/app/admin/components/vendor-ver
     NotificationProfileComponent,
     UserProfileComponent,
     ImageUploadComponent,
-    VendorVerificationComponent
+    VendorVerificationComponent,
+    NotificationTimePipe,
+    NotificationListComponent
   ],
   imports: [
     CommonModule,
@@ -65,7 +69,9 @@ import { VendorVerificationComponent } from 'src/app/admin/components/vendor-ver
     NotificationProfileComponent,
     UserProfileComponent,
     ImageUploadComponent,
-    VendorVerificationComponent
+    VendorVerificationComponent,
+    NotificationTimePipe,
+    NotificationListComponent
   ]
 })
 export class SharedModule { }

@@ -6,7 +6,6 @@ import { ResourceServiceForkRequest } from "../../models/resourceServiceForkRequ
 import { CommonDataSharingService } from "../../services/common-datasharing.service";
 import { MenuService } from "../../services/menu.service";
 import { ResourceService } from "../../services/resource.service";
-import { UserDataSharingService } from "../../services/user-datasharing.service";
 
 export class BaseComponent<T> extends ResourceService<T>{
 

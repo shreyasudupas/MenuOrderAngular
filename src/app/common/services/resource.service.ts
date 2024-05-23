@@ -100,12 +100,29 @@ export abstract class ResourceService<T>{
                 catchError(this.handleError)
             );
         }
+
+        postApiClient<TBody>(body:TBody): Observable<TBody> {
+            return this.httpclient.post<TBody>(this.requestUri,body)
+            .pipe(
+                map((data:any)=>{
+                    return data as TBody;
+                }),
+                catchError(this.handleError)
+            );
+        }
+
+        patchApiClient<TBody>(body:TBody): Observable<TBody> {
+            return this.httpclient.patch<TBody>(this.requestUri,body)
+            .pipe(
+                map((data:any)=>{
+                    return data as TBody;
+                }),
+                catchError(this.handleError)
+            );
+        }
     
         private handleError(error: HttpErrorResponse) {
             // Handle the HTTP error here
-            return throwError(error);
+            return throwError(()=> new Error(`Error Status: ${error.status}, Message: ${error.message}, with url: ${error.url} on time: ${Date.now}`));
           }
-        private CallErrorHandler(error:any){
-            return throwError(error)
-        }
     }

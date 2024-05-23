@@ -22,7 +22,7 @@
                 <td>{{ notification.description }}</td>
                 <td>{{ notification.fromUserId }}</td>
                 <td>{{ notification.role }}</td>
-                <td>{{ notification.recordedTimeStamp | date:'short' }}</td>
+                <td>{{ notification.createdDate | date:'short' }}</td>
                 <td>
                     <p-button icon="pi pi-file-edit" (click)="editPage(notification.id)"></p-button>
                 </td>

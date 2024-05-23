@@ -1,0 +1,44 @@
+<div
+            class="notification-container"
+            infinite-scroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollThrottle]="500"
+            [scrollWindow]="false"
+            (scrolled)="onScroll()">
+
+            <div class="col-12">
+                <div class="notification-card-space" *ngFor="let notification of notifications">
+                    <div class="notification-card">
+                        <!-- <h5> {{notification.description}} </h5> -->
+                        <div class="notifcation-card-container">
+                            <div class="notification-image">
+                                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" 
+                                styleClass="mr-2" 
+                                size="large" 
+                                shape="circle"></p-avatar>
+                            </div>
+                            <div class="notification-description-container">
+                                <div class="notification-description">
+                                    {{notification.description}}
+                                </div>
+                                <div class="notification-time">
+                                    {{notification.createdDate | notificationTime}}
+                                </div>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="notification.read === false && notification.data.uri !== null ">
+                            <div class="notification-button">
+                                <button class="button-accept"
+                                        (click)="acceptNotificationAction(notification)">Accept</button>
+                            </div>
+                        </ng-container>
+                        <div class="notification-button">
+                            <button class="button-accept"
+                                    (click)="acceptNotificationAction(notification)">Accept</button>
+                        </div>
+                    </div>
+                </div>        
+            </div>
+
+            <div *ngIf="loading">Loading...</div>
+        </div>

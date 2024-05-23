@@ -6,7 +6,7 @@ import { Apollo } from 'apollo-angular';
 import { User } from 'oidc-client';
 import { MessageService, SelectItem, SelectItemGroup } from 'primeng/api';
 import { BaseComponent } from 'src/app/common/components/base/base.component';
-import { Notification } from 'src/app/common/components/notification/notification';
+import { Notification, NotificationDataRequestType, NotificationPriority } from 'src/app/common/components/notification/notification';
 import { UserProfileInfo } from 'src/app/common/components/user-profile/userProfile';
 import { GET_USER_LIST_INFO, UserListInfoResponse } from 'src/app/common/graphQl/querries/getUserListQuery';
 import { AuthService } from 'src/app/common/services/auth.service';
@@ -28,6 +28,8 @@ notificationId:string;
 users:UserProfileInfo[];
 currentUser:User;
 visible:boolean = false;
+priorityDropdown:SelectItemGroup[];
+requestTypeDropdown:SelectItemGroup[];
 
     constructor(
         private menuService:MenuService,
@@ -56,14 +58,17 @@ visible:boolean = false;
 
         this.notificationForm = this.fb.group({
             id: [''],
+            priority: ['None',Validators.required],
             title: ['',Validators.required],
             description: ['',Validators.required],
             //fromUserId: ['',Validators.required],
             toUserId:[''],
             recordedTimeStamp: [{value:'',disabled:true}],
-            link: [''],
             sendAll:[false],
-            read: [{value:false,disabled:true}]
+            read: [{value:false,disabled:true}],
+            uri: ['None'],
+            requestType: [''],
+            body:['']
         });
 
         this.notificationId = this.activatedRoute.snapshot.params['id'];
@@ -72,6 +77,8 @@ visible:boolean = false;
                 this.getNotificationById();
             }
         }
+
+        this.dropdownInitilize();
 
         this.getUserList();
         this.sendAllChanges();
@@ -161,32 +168,70 @@ visible:boolean = false;
         });
     }
 
+    dropdownInitilize() {
+        this.priorityDropdown = [];
+        this.priorityDropdown.push(
+            { label:'None',value: 'None' ,items:[] },
+            { label:'Low',value: NotificationPriority.Low ,items:[]},
+            { label:'Medium',value: NotificationPriority.Medium ,items:[]},
+            { label:'High',value: NotificationPriority.High ,items:[]},
+        );
+
+        this.requestTypeDropdown = [];
+        this.requestTypeDropdown.push(
+            { label:'None',value: 'None' ,items:[] },
+            { label:'Get',value: NotificationDataRequestType.Get ,items:[] },
+            { label:'Post',value: NotificationDataRequestType.Post ,items:[] },
+            { label:'Put',value: NotificationDataRequestType.Put ,items:[] },
+            { label:'Delete',value: NotificationDataRequestType.Delete ,items:[] }
+        )
+    }
+
     submit() {
         if(this.notificationForm.valid){
             //console.log(this.notificationForm.value);
-            let sendAllValue = this.notificationForm.controls['sendAll'].value;
+            if(!this.checkIfPriorityDropDownHasSelectedValue(this.notificationForm.controls['priority'].value)) {
+                this.notificationForm.controls['priority'].setErrors({invalid:true,message:'*selection of priority is required.'});
+                return;
+            }
 
-            let body:Notification = {
+            let sendAllValue = this.notificationForm.controls['sendAll'].value;
+            let requestTypeFormValue = this.notificationForm.controls['requestType'].value;
+
+            let notificationBody:Notification = {
                 id:this.notificationForm.controls['id'].value,
+                priority:this.notificationForm.controls['priority'].value,
                 title: this.notificationForm.controls['title'].value,
                 description: this.notificationForm.controls['description'].value,
                 fromUserId: (sendAllValue === true)? '': this.currentUser.profile['userId'],
                 toUserId: this.notificationForm.controls['toUserId'].value,
-                role: this.currentUser.profile['role'],
-                link:'',
-                recordedTimeStamp: (this.notificationForm.controls['recordedTimeStamp'].value === ''?new Date():this.notificationForm.controls['recordedTimeStamp'].value),
+                role: this.checkToUserRole(this.notificationForm.controls['toUserId'].value),
+                data: {
+                    body:this.notificationForm.controls['body'].value,
+                    requestType: (requestTypeFormValue === 'None')? null: requestTypeFormValue,
+                    uri: this.notificationForm.controls['uri'].value
+                },
+                createdDate: (this.notificationForm.controls['recordedTimeStamp'].value === ''?new Date():this.notificationForm.controls['recordedTimeStamp'].value),
                 read: this.notificationForm.controls['read'].value,
                 sendAll: sendAllValue
             };
-            //console.log(body);
-
-            if(body.id === ''){
-                this.addNotification(body);
+            //console.log(notificationBody);
+    
+            if(notificationBody.id === ''){
+                this.addNotification(notificationBody);
             } else {
-                this.editNotification(body);
+                this.editNotification(notificationBody);
             }
+        } 
+    }
 
-        }
+    checkIfPriorityDropDownHasSelectedValue(value:string) {
+        return value === 'None'? false:true;
+    }
+
+    checkToUserRole(userId:string) {
+       let user = this.users.find(x=>x.id === userId);
+       return user.userType.toLowerCase();
     }
 
     addNotification(body:Notification) {
@@ -219,13 +264,13 @@ visible:boolean = false;
         this.UpdateItem(body).subscribe({
             next: result => {
                 if(result !== null) {
-                    this.showInfo('Saved Successfully');
+                    this.showInfo('Edited Successfully');
                 } else {
                     this.showError('Error occured in the server');
                 }
             },
             error: err => {
-                console.log('Error occured in Add Notification ',err);
+                console.log('Error occured in Update Notification ',err);
                 this.showError('Error occured in the server');
             }
         });
@@ -249,12 +294,16 @@ visible:boolean = false;
         this.notificationForm.patchValue({
             id: body.id,
             title: body.title,
+            priority: body.priority,
             description: body.description,
-            userId: body.userId,
-            recordedTimeStamp: body.recordedTimeStamp,
+            toUserId: body.toUserId,
+            recordedTimeStamp: body.createdDate,
             link: body.link,
             sendAll:body.sendAll,
-            read: body.read
+            read: body.read,
+            uri: body.data.uri,
+            requestType: body.data.requestType,
+            body: body.data.body
         });
     }
 

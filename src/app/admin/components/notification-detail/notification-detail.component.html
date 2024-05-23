@@ -32,6 +32,22 @@
         <div class="col-12">
             <div class="notification-content">
                 <span class="p-float-label">
+                    <p-dropdown id="priority" formControlName="priority" 
+                                              [options]="priorityDropdown" 
+                                              optionLabel="label"
+                                              optionValue="value"
+                    ></p-dropdown>
+                    <label htmlFor="priority">Select Priority</label>
+                </span>
+                <div *ngIf="notificationForm.get('priority')?.invalid" class="error">
+                    {{notificationForm.controls['priority'].errors.message}}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="notification-content">
+                <span class="p-float-label">
                     <p-dropdown id="toUserId" formControlName="toUserId" 
                                             [options]="userListDropDown" 
                                             optionLabel="label"
@@ -67,6 +83,40 @@
             <div class="notification-content">
                 <p-checkbox formControlName="read" value="true" inputId="read" [binary]="true"></p-checkbox>
                 <label for="read">Read</label>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="notification-content">
+                <span class="p-float-label">
+                    <input id="uri" pInputText formControlName="uri"/>
+                    <label htmlFor="uri">uri</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="notification-content">
+                <span class="p-float-label">
+                    <p-dropdown id="requestType" formControlName="requestType" 
+                                              [options]="requestTypeDropdown" 
+                                              optionLabel="label"
+                                              optionValue="value"
+                    ></p-dropdown>
+                    <label htmlFor="requestType">Select Uri Request Type</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="notification-content">
+                <span class="p-float-label">
+                    <textarea id="body" rows="5" cols="30" 
+                              pInputTextarea 
+                              autoResize="autoResize"
+                              formControlName="body" ></textarea>
+                    <label for="body">Sample Body</label>
+                </span>
             </div>
         </div>
 
