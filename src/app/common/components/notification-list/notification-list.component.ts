@@ -1,9 +1,9 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { NotificationService } from '../../services/notification.service';
-import { Notification, NotificationDataRequestType } from 'src/app/common/components/notification/notification';
+import { Notification } from 'src/app/common/components/notification/notification';
 import { ApiClientManager } from '../base/api-client-manager';
 import { HttpClient } from '@angular/common/http';
-import { mergeMap, switchMap } from 'rxjs';
+import { mergeMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Component({
