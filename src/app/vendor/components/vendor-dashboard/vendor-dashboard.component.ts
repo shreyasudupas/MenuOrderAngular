@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 @Component({
     selector: 'vendor-dashboard',
     templateUrl: './vendor-dashboard.component.html',
-    styleUrls: [ './vendor-dashboard.component.scss' ]
+    styleUrls: [ './vendor-dashboard.component.scss','../../../../styles.scss' ]
 })
 
 export class VendorDashboardComponent implements OnInit{

@@ -1,12 +1,11 @@
-<!-- <h2>Welocome to the Vendor Page: {{vendorId}}</h2> -->
-<div>
-  <div *ngIf="enableMenuBar" class="layout-sidebar">
+<div class="layout-container">
+  <div *ngIf="enableMenuBar" class="layout-image-menu-container">
       <img src="assets/Logo/MenuLogo1.png" height="70px" width="150px" alt="MenuLogo" class="Logo" />
       <app-menu-bar></app-menu-bar>
   </div>
 
   <div class="layout-content">
-      <div class="p-fluid grid grid-nogutter">
+      <div class="layout-container">
         <!--1st Row-->
         <div class="col-12">
           <div class="header-layout">

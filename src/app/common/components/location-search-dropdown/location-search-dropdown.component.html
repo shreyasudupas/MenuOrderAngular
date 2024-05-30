@@ -11,8 +11,7 @@
         </div>
 
         <div class="location-edit">
-            <p-button icon="pi pi-times" class="edit-button-small" styleClass="p-button-rounded p-button-danger p-button-text"
-            (click)="openSearchBox()"></p-button>
+            <p-button icon="pi pi-times" size="small" [rounded]="true" [text]="true" severity="danger" (click)="openSearchBox()"></p-button>
         </div>
         
       </div>
@@ -20,7 +19,7 @@
     </div>
 
     <div *ngIf="searchLocation !== ''">
-      <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-danger p-button-text" (click)="cancelSearch()"></p-button>
+      <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" (click)="cancelSearch()"></p-button>
     </div>
 
     <ng-template #isLocationList>
