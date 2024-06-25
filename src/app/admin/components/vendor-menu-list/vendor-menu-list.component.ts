@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/common/services/auth.service';
 @Component({
     selector: 'vendor-menu-list',
     templateUrl:'./vendor-menu-list.component.html',
+    styleUrls: ['./vendor-menu-list.component.scss'],
     providers: [ConfirmationService]
 })
 
@@ -21,6 +22,7 @@ export class VendorMenuList extends BaseComponent<VendorMenuDetails> implements 
     displayDeleteDialog:boolean = false;
     uploadedFile:any=[];
     jsonErrorMessage:Message[];
+    showMenuList:boolean = true;
 
     constructor(
         public menuService:MenuService,
@@ -99,7 +101,7 @@ export class VendorMenuList extends BaseComponent<VendorMenuDetails> implements 
         //console.log(event);
         
         if(this.uploadedFile.length >  0 && this.vendorId !== ''){
-            let url = environment.inventory.vendorMenu + '/list';
+            let url = environment.inventory.vendorMenu.concat('/list');
             const formData = new FormData();
             formData.append('uploadFile',this.uploadedFile[0]);
             formData.append('vendorId',this.vendorId);
@@ -134,5 +136,31 @@ export class VendorMenuList extends BaseComponent<VendorMenuDetails> implements 
 
     cancelFileUpload(){
         this.uploadedFile = [];
+    }
+
+    downloadSampleFile() {
+        this.callDownloadSampleApi().subscribe({
+            next: (result:any) => {
+                let blob = new Blob([result], {type: 'application/json'});
+
+                var downloadURL = window.URL.createObjectURL(blob);
+                var link = document.createElement('a');
+                link.href = downloadURL;
+                link.download = "sample.json";
+                link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+            }
+        })
+    }
+
+    callDownloadSampleApi() {
+        const httpOptions = {
+            responseType: 'blob' as 'json'
+        };
+        
+        return this.httpclient.get(`${environment.inventory.vendorMenu}/sample/download`, httpOptions);
+    }
+
+    showOrHideSchema() {
+        this.showMenuList = !this.showMenuList;
     }
 }

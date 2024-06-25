@@ -23,6 +23,7 @@ import { ImageUploadComponent } from '../components/image-upload/image-upload.co
 import { VendorVerificationComponent } from 'src/app/admin/components/vendor-verification/vendor-verification.component';
 import { NotificationTimePipe } from '../pipes/notification-time.pipe';
 import { NotificationListComponent } from '../components/notification-list/notification-list.component';
+import { VendroMenuSchemaDisplayComponent } from 'src/app/admin/components/vendor-menu-schema-display/vendor-menu-schema-display.component';
 
 
 
@@ -46,7 +47,8 @@ import { NotificationListComponent } from '../components/notification-list/notif
     ImageUploadComponent,
     VendorVerificationComponent,
     NotificationTimePipe,
-    NotificationListComponent
+    NotificationListComponent,
+    VendroMenuSchemaDisplayComponent
   ],
   imports: [
     CommonModule,
@@ -54,7 +56,7 @@ import { NotificationListComponent } from '../components/notification-list/notif
     ReactiveFormsModule,
     FormsModule,
     LeafletModule,
-    InfiniteScrollModule 
+    InfiniteScrollModule
   ],
   exports:[
     MenuBarComponent,
@@ -71,7 +73,8 @@ import { NotificationListComponent } from '../components/notification-list/notif
     ImageUploadComponent,
     VendorVerificationComponent,
     NotificationTimePipe,
-    NotificationListComponent
+    NotificationListComponent,
+    VendroMenuSchemaDisplayComponent
   ]
 })
 export class SharedModule { }
