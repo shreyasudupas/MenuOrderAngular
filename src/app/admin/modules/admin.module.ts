@@ -22,6 +22,7 @@ import { MessageService } from 'primeng/api';
 import { LocationService } from 'src/app/common/services/location.service';
 import { NotificationDashboardComponent } from '../components/notification-dashboard/notification-dashboard.component';
 import { NotificationDetailComponent } from '../components/notification-detail/notification-detail.component';
+import { OrderSummaryPieChartComponent } from 'src/app/common/components/order-summary-pie-chart/order-summary-chart.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { NotificationDetailComponent } from '../components/notification-detail/n
     MenuImageUploadComponent,
     InviteUserToVendorComponent,
     NotificationDashboardComponent,
-    NotificationDetailComponent
+    NotificationDetailComponent,
+    OrderSummaryPieChartComponent
     
   ],
   imports: [

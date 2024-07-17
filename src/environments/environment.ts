@@ -36,7 +36,8 @@ export const environment = {
   },
   orderService: {
     cartInformation: 'https://localhost:5005/api/cartInformation',
-    order: 'https://localhost:5005/api/order'
+    order: 'https://localhost:5005/api/order',
+    vendorOrder: 'https://localhost:5005/api/vendorOrder'
   },
   sagaService:{
     payment: 'https://localhost:5007/api/payment'

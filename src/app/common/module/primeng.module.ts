@@ -41,6 +41,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { AccordionModule } from 'primeng/accordion';
 import { TagModule } from 'primeng/tag';
 import { TimelineModule } from 'primeng/timeline';
+import { ChartModule } from 'primeng/chart';
 
 
 @NgModule({
@@ -86,7 +87,8 @@ import { TimelineModule } from 'primeng/timeline';
         ToggleButtonModule,
         AccordionModule,
         TagModule,
-        TimelineModule
+        TimelineModule,
+        ChartModule
     ],
     exports:[ButtonModule,
         TabMenuModule,
@@ -130,7 +132,8 @@ import { TimelineModule } from 'primeng/timeline';
         ToggleButtonModule,
         AccordionModule,
         TagModule,
-        TimelineModule
+        TimelineModule,
+        ChartModule
     ]
 })
 

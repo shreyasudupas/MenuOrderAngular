@@ -8,7 +8,8 @@ import { MenuService } from 'src/app/common/services/menu.service';
 
 @Component({
     selector: 'admin-home',
-    templateUrl: './admin-home.component.html'
+    templateUrl: './admin-home.component.html',
+    styleUrls: [ './admin-home.component.scss' ]
 })
 
 export class HomeComponent extends BaseComponent<void> implements OnInit {

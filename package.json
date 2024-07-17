@@ -23,6 +23,7 @@
     "@microsoft/signalr": "^7.0.2",
     "@popperjs/core": "^2.10.2",
     "apollo-angular": "^5.0.0",
+    "chart.js": "^4.4.3",
     "crypto-js": "^4.1.1",
     "graphql": "^16.7.1",
     "leaflet": "^1.9.4",
