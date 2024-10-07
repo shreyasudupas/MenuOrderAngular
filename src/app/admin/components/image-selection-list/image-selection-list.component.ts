@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -15,7 +15,7 @@ import { AuthService } from 'src/app/common/services/auth.service';
     templateUrl: './image-selection-list.component.html'
 })
 
-export class ImmageSelectionListComponent extends BaseComponent<ImageData> implements OnInit{
+export class ImmageSelectionListComponent extends BaseComponent<ImageData> implements OnInit,OnChanges {
     @Input() itemName:string = '';
     imageList:ImageData[] = [];
     selectedItem!:ImageData|null;
@@ -37,9 +37,17 @@ export class ImmageSelectionListComponent extends BaseComponent<ImageData> imple
 
     
     ngOnInit(): void {
-
         this.callImageSelectionAPi();
     }
+
+    ngOnChanges(changes:SimpleChanges): void {
+
+        if(changes['itemName'].currentValue !== undefined) {
+            this.itemName = changes['itemName'].currentValue;
+            this.callImageSelectionAPi();
+        }
+    }
+
 
     callImageSelectionAPi = () => {
         this.baseUrl = environment.inventory.imageMenu;

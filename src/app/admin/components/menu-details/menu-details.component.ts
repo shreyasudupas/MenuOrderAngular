@@ -36,7 +36,7 @@ itemName:string= "";
 currentImageId:string='';
 role:string;
 vendorUrl:string;
-
+categoryId:string;
 
     constructor(
         public menuService:MenuService,
@@ -58,6 +58,7 @@ vendorUrl:string;
 
         this.vendorId = this.activatedRoute.snapshot.params['vendorId'];
         this.menuDetailsId = this.activatedRoute.snapshot.params['menuDetailsId'];
+        this.categoryId = this.activatedRoute.snapshot.params['categoryId'];
 
         this.navigation.startSaveHistory('/menu-details');
         //console.log(this.navigation.history);
@@ -73,7 +74,11 @@ vendorUrl:string;
                     console.log('No VendorId is present');
                 }
             }},
-            {label: 'Menu Detail'}
+            { label: 'Category' , command: () => {
+                let categoryUrl = this.role.concat('/vendor-detail/',this.vendorId ,'/category/',this.categoryId);
+                this.router.navigate([categoryUrl]);
+            }},
+            { label: 'Menu Detail' }
         ];
 
         this.menuDetailForm = this.fb.group({
@@ -82,8 +87,8 @@ vendorUrl:string;
             itemName: ['',Validators.required],
             imageId:[''],
             imageFilename:[''],
+            categoryId: [ this.categoryId ],
             foodType: ['',Validators.required],
-            category: ['',Validators.required],
             price: [0,Validators.required],
             discount:[0],
             active:[true]
@@ -112,26 +117,13 @@ vendorUrl:string;
         };
         this.forkRequest.requestParamter.push(request1);
 
-        let request2:RequestResource = {
-            httpMethod:'get',
-            requestUrl:environment.inventory.vendor + '/categories/'+ this.vendorId,
-            body:null
-        };
-        this.forkRequest.requestParamter.push(request2);
-
-        this.getForkItems(this.forkRequest).subscribe(([foodTypeResponse,categoryResponse])=>{
+        this.getForkItems(this.forkRequest).subscribe(([foodTypeResponse])=>{
             let error = 'Error occurred';
 
             if(foodTypeResponse !== error){
                 this.foodTypeDropDownList = foodTypeResponse;
             }else{
                 this.showError('Error has occured while fetching Food Type');
-            }
-
-            if(categoryResponse !== error){
-                this.categoryDropdownList = categoryResponse;
-            }else{
-                this.showError('Error has occured while fetching Category Type');
             }
         });
     }
@@ -177,10 +169,11 @@ vendorUrl:string;
     }
 
     submitVendorMenuItem = (forms:FormGroup) => {
+        //console.log(forms.value);
         if(this.menuDetailsId === '0'){
             this.addVendorMenuItem(forms);
         }else{
-            this.updateVendorMenuItem(forms);
+            //this.updateVendorMenuItem(forms);
         }
     }
 
@@ -196,11 +189,11 @@ vendorUrl:string;
                     imageId: forms.value.imageId,
                     imageFileName: forms.value.imageFilename
                 },
-                foodType: forms.value.foodTypes,
-                category: forms.value.category,
+                foodType: forms.value.foodType,
+                categoryId: forms.value.categoryId,
                 price: forms.value.price,
                 discount: forms.value.discount,
-                rating: forms.value.rating,
+                rating: 0,
                 active: forms.value.active
             };
 
@@ -281,7 +274,8 @@ vendorUrl:string;
     }
     
     callImageUploaderDialog = () => {
-        this.imageUploadDialog=true
+        this.imageUploadDialog = true;
+        this.itemName = this.menuDetailForm.controls['itemName'].value;
     }
 
     closeImageDialog = ($event:boolean) => {

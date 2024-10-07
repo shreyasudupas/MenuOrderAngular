@@ -21,11 +21,8 @@ export class CategoryListComponent implements OnInit{
 
     goToCategory = (id:string) => {
         let role = this.authService.GetUserRole();
-        let url =  '/' + role + '/category/';
-        this.router.navigateByUrl( url + id,
-        {
-            state: { vendorId: this.vendorId }
-        });
+        let categoryUrl =  '/'.concat(role,'/vendor-detail/',this.vendorId,'/category/',id);
+        this.router.navigate([categoryUrl]);
     }
     
 }

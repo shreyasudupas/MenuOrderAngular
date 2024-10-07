@@ -32,7 +32,10 @@ const routes: Routes = [
       path:'vendor-detail/:vendorId', component: VendorDetailComponent
     },
     {
-      path:'category/:categoryId', component: CategoryDetailComponent
+      path:'vendor-detail/:vendorId/category/:categoryId', component: CategoryDetailComponent
+    },
+    {
+      path:'vendor-detail/:vendorId/category/:categoryId/menu-details/:menuDetailsId', component: MenuDetailsComponent
     },
     {
       path:'food-type-list', component: FoodTypeListComponent
@@ -45,9 +48,6 @@ const routes: Routes = [
     },
     {
       path:'cuisine-details/:cuisineId', component: CuisineDetailsComponent
-    },
-    {
-      path:'vendor-detail/:vendorId/menu-details/:menuDetailsId', component: MenuDetailsComponent
     },
     {
       path:'image-menu-list', component: MenuImageListComponent, canActivate: [RoleBasedAuthGaurd]

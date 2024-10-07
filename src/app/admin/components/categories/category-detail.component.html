@@ -40,13 +40,77 @@
                     <p-radioButton name="active" [value]="false"  formControlName="active" inputId="inActive"></p-radioButton>
                     <label for="inActive">InActive</label>
                 </div>
-                <div class="col-12">
-                    <button pButton pRipple type="submit" label="Save" class="p-button-rounded w-full"></button>
+                <div class="field col-12">
+                    <label for="releaseDate">Category Release Date</label>
+                    <p-calendar formControlName="releaseDateTime" 
+                                [showTime]="true" 
+                                [showSeconds]="true" 
+                                inputId="releaseDate"
+                                [showIcon]="true">
+                    </p-calendar>
+                </div>
+                <div class="field col-12">
+                    <p-toolbar styleClass="mb-4 gap-2">
+                        <ng-template pTemplate="left">
+                            <p-button 
+                                severity="success" 
+                                label="New" 
+                                icon="pi pi-plus" 
+                                class="mr-2" 
+                                (click)="openNew()"
+                                 />
+                            <p-button 
+                                severity="danger" 
+                                label="Delete" 
+                                icon="pi pi-trash"
+                                [disabled]="!selectedCategoryMenuItem || !selectedCategoryMenuItem.length" 
+                                />
+                        </ng-template>
+                    </p-toolbar>
+                    
+                    <ng-container *ngIf="vendorCategory !== undefined">
+                        <p-table [value]="vendorCategory.categories.menuLists">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 4rem">
+                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                    </th>
+                                    <th>Item Name</th>
+                                    <th>Type</th>
+                                    <th>Price</th>
+                                    <th>Discount</th>
+                                    <th>Active</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td>
+                                        <p-tableCheckbox [value]="menuItem"></p-tableCheckbox>
+                                    </td>
+                                    <td>{{ item.itemName }}</td>
+                                    <td>{{ item.foodType }}</td>
+                                    <td>{{ item.price }}</td>
+                                    <td>{{ item.discount }}</td>
+                                    <td>{{ item.active }}</td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr colspan="6"><p>No records found</p></tr>
+                            </ng-template>
+                        </p-table>
+                    </ng-container>
+                    
+                </div>
+                
+                <div class="field form-button">
+                    <div class="col-12">
+                        <button pButton pRipple type="submit" label="Save" class="p-button-rounded w-full"></button>
+                    </div>
+                    <div class="col-12">
+                        <button pButton pRipple type="button" label="Back" class="p-button-rounded p-button-secondary w-full" (click)="goBack()"></button>
+                    </div>
                 </div>
             </div>
         </form>
-        <div class="col-12">
-            <button pButton pRipple type="button" label="Back" class="p-button-rounded p-button-secondary w-full" (click)="goBack()"></button>
-        </div>
     </p-card>
 </div>

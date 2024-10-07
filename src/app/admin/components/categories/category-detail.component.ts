@@ -7,23 +7,27 @@ import { BaseComponent } from 'src/app/common/components/base/base.component';
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
 import { MenuService } from 'src/app/common/services/menu.service';
 import { environment } from 'src/environments/environment';
-import { Category } from './category';
 import { NavigationService } from 'src/app/common/services/navigation.service';
 import { AuthService } from 'src/app/common/services/auth.service';
+import { VendorCategoryMenu } from './category-menu-item';
+
 
 @Component({
     selector:'category-detail',
-    templateUrl:'./category-detail.component.html'
+    templateUrl:'./category-detail.component.html',
+    styleUrls: ['./category-detail.component.scss']
 })
 
-export class CategoryDetailComponent extends BaseComponent<Category> implements OnInit{
+export class CategoryDetailComponent extends BaseComponent<VendorCategoryMenu> implements OnInit{
 categoryDetailForm!:FormGroup;
-id:string='';
+categoryId:string='';
 vendorId:string='';
 disableCategoryName:boolean = false;
 breadItems: MenuItem[]=[];
 role:string;
 vendorUrl:string;
+vendorCategory:VendorCategoryMenu;
+userRole:string;
 
     constructor(
         private menuService:MenuService,
@@ -53,15 +57,18 @@ vendorUrl:string;
             description: [''],
             openTime: [new Date(),Validators.required],
             closeTime: [new Date(),Validators.required],
-            active: [false]
+            active: [false],
+            releaseDateTime:[new Date(),Validators.required]
         });
 
-        this.id = this.activatedRoute.snapshot.params['categoryId'];
+        this.categoryId = this.activatedRoute.snapshot.params['categoryId'];
 
-        this.vendorId = history.state.vendorId;
+        this.vendorId = this.activatedRoute.snapshot.params['vendorId'];
 
         this.role = this.authService.GetUserRole();
         this.vendorUrl = "/" + this.role + '/vendor-detail/';
+
+        this.userRole = this.authService.GetUserRole();
 
         this.breadItems = [
             {label: 'Vendor Detail' , command: (event) => {
@@ -74,8 +81,8 @@ vendorUrl:string;
             {label: 'Category Detail'}
         ];
 
-        if(this.id !== '0'){
-            this.getCategoryById(this.id);
+        if(this.categoryId !== '0'){
+            this.getCategoryById(this.categoryId);
         }
         
     }
@@ -86,17 +93,19 @@ vendorUrl:string;
         this.GetItem(new HttpParams()).subscribe({
             next: result => {
                 //console.log(result);
+                this.vendorCategory = result;
 
                 this.categoryDetailForm.setValue({
-                    id: result.id,
-                    name: result.name,
-                    description: result.description,
-                    active: result.active,
-                    openTime: new Date(result.openTime),
-                    closeTime: new Date(result.closeTime)
+                    id: result.categories.id,
+                    name: result.categories.name,
+                    description: result.categories.description,
+                    active: result.categories.active,
+                    openTime: new Date(result.categories.openTime),
+                    closeTime: new Date(result.categories.closeTime),
+                    releaseDateTime: new Date(result.categories.releaseDate)
                 });
 
-                this.showInfo('Category Updated');
+                //this.showInfo('Category Updated');
                 this.categoryDetailForm.controls['name'].disable()
             },
             error: error => {
@@ -134,7 +143,10 @@ vendorUrl:string;
         this.baseUrl = environment.inventory.vendor + '/add/category';
         this.action = null;
         let formValue = forms.value;
-        formValue = {...formValue, openTime: formValue.openTime.toTimeString().split(' ')[0],closeTime: formValue.closeTime.toTimeString().split(' ')[0]}
+        formValue = {...formValue, 
+            openTime: formValue.openTime.toTimeString().split(' ')[0],
+            closeTime: formValue.closeTime.toTimeString().split(' ')[0]
+        }
 
         let body = {
             VendorId: this.vendorId,
@@ -160,8 +172,12 @@ vendorUrl:string;
     updateCatgoryVendor = (forms:FormGroup) => {
         this.baseUrl = environment.inventory.vendor + '/update/category';
         this.action = null;
-        let formValue = forms.value;
-        formValue = {...formValue, openTime: formValue.openTime.toTimeString().split(' ')[0],closeTime: formValue.closeTime.toTimeString().split(' ')[0]}
+        let formValue = forms.getRawValue();
+        formValue = {...formValue,
+             openTime: formValue.openTime.toTimeString().split(' ')[0],
+             closeTime: formValue.closeTime.toTimeString().split(' ')[0]
+        };
+
 
         let body = {
             VendorId: this.vendorId,
@@ -185,5 +201,10 @@ vendorUrl:string;
 
     formControlValidation(name:string){
         return (this.categoryDetailForm.get(name)?.invalid && (this.categoryDetailForm.get(name)?.dirty || this.categoryDetailForm.get(name)?.touched));
+    }
+
+    openNew() {
+        let menuUrl = '/'.concat(this.userRole,'/vendor-detail/',this.vendorId,'/category/',this.categoryId,'/menu-details/','0');
+        this.route.navigate([menuUrl]);
     }
 }

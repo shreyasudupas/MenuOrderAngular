@@ -24,6 +24,7 @@ import { VendorVerificationComponent } from 'src/app/admin/components/vendor-ver
 import { NotificationTimePipe } from '../pipes/notification-time.pipe';
 import { NotificationListComponent } from '../components/notification-list/notification-list.component';
 import { VendroMenuSchemaDisplayComponent } from 'src/app/admin/components/vendor-menu-schema-display/vendor-menu-schema-display.component';
+import { CategoryMenuItemComponent } from 'src/app/admin/components/category-menu-item/category-menu-item.component';
 
 
 
@@ -48,7 +49,8 @@ import { VendroMenuSchemaDisplayComponent } from 'src/app/admin/components/vendo
     VendorVerificationComponent,
     NotificationTimePipe,
     NotificationListComponent,
-    VendroMenuSchemaDisplayComponent
+    VendroMenuSchemaDisplayComponent,
+    CategoryMenuItemComponent
   ],
   imports: [
     CommonModule,
@@ -74,7 +76,8 @@ import { VendroMenuSchemaDisplayComponent } from 'src/app/admin/components/vendo
     VendorVerificationComponent,
     NotificationTimePipe,
     NotificationListComponent,
-    VendroMenuSchemaDisplayComponent
+    VendroMenuSchemaDisplayComponent,
+    CategoryMenuItemComponent
   ]
 })
 export class SharedModule { }

@@ -19,7 +19,7 @@ const routes:Routes = [
                 path:'vendor-detail/:vendorId', component: VendorDetailComponent
             },
             {
-                path:'category/:categoryId', component: CategoryDetailComponent
+                path:'vendor/:vendorId/category/:categoryId', component: CategoryDetailComponent
             },
             {
                 path:'vendor-detail/:vendorId/menu-details/:menuDetailsId', component: MenuDetailsComponent
