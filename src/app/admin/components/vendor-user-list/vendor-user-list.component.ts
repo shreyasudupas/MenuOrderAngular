@@ -1,7 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, SelectItem } from 'primeng/api';
 import { BaseComponent } from 'src/app/common/components/base/base.component';
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
@@ -11,6 +10,7 @@ import { VendorUserIdMapping, VendorUserType } from './vendor-user-mapping';
 import { WelcomeVendorModel } from 'src/app/common/models/welcomeVendorModel';
 import { EmailTypeEnum } from 'src/app/common/enums/emailenum';
 import { EncryptDecryptService } from 'src/app/common/services/encryptDecrypt.service';
+import { AuthService } from 'src/app/common/services/auth.service';
 
 @Component({
     selector: 'vendor-user-list',
@@ -26,6 +26,10 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
     runProgressSpinner:boolean;
     cloneOldVendorUserMapping:{ [s: string]: VendorUserIdMapping } = {};
     enableDropDownItems:SelectItem[];
+    addAdminVendorDialog:boolean = false;
+    vendorAdminFormGroup:FormGroup;
+    vendorUsers:any[];
+    role:string;
 
     constructor(
         public menuService:MenuService,
@@ -33,7 +37,8 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
         public commonBroadcastService:CommonDataSharingService,
         private fb: FormBuilder,
         messageService: MessageService,
-        private encryptDecryptService:EncryptDecryptService){
+        private encryptDecryptService:EncryptDecryptService,
+        public authService:AuthService){
             super(menuService,httpclient,commonBroadcastService,messageService)
     }
 
@@ -49,7 +54,15 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
             this.enableDropDownItems = [
                 { label: 'Enable', value: true },
                 { label: 'Disable', value: false },
-            ]
+            ];
+
+            this.vendorAdminFormGroup = this.fb.group({
+                username: ['']
+            });
+
+            this.role = this.authService.GetUserRole();
+
+            this.getVendorUserDropdown();
         }
     }
 
@@ -232,4 +245,49 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
         });
     }
 
+    addVendorAdminDialog() {
+        this.addAdminVendorDialog = !this.addAdminVendorDialog;
+        this.vendorAdminFormGroup.get('username').reset();
+    }
+
+    getVendorUserDropdown() {
+        let url  = environment.idsConfig.utility.concat('/get/vendoradmin');
+        this.httpclient.get(url).subscribe({
+            next: (result:any[]) => {
+                this.vendorUsers = [];
+
+                this.vendorUsers = result.map( r=> {
+                    let model : any = {
+                        value:r.id,
+                        name: r.username
+                    };
+                    return model;
+                });
+            }
+        });
+    }
+
+    addVendorUser() {
+        if(this.vendorAdminFormGroup.valid) {
+            //console.log(this.vendorAdminFormGroup.controls['username'].value);
+            let vendorFormControl = this.vendorAdminFormGroup.controls['username'].value;
+
+            let vendorUserMappingRequestModel = {
+                id: 0,
+                userId: vendorFormControl.value,
+                username: vendorFormControl.name,
+                vendorId: this.vendorId,
+                enabled: true
+            };
+
+            let url = environment.idsConfig.utility.concat('/add/new/vendorUserMapping');
+            this.httpclient.post(url,vendorUserMappingRequestModel).subscribe({
+                next: () => {
+                    this.vendorUsers.filter(v=>v.value !== vendorFormControl.value);
+                    this.addVendorAdminDialog()
+                },
+                error: err => console.error(err)
+            });
+        }
+    }
 }

@@ -37,6 +37,8 @@ currentImageId:string='';
 role:string;
 vendorUrl:string;
 categoryId:string;
+categoryUrl:string;
+categoryMenuUrl:string;
 
     constructor(
         public menuService:MenuService,
@@ -60,11 +62,15 @@ categoryId:string;
         this.menuDetailsId = this.activatedRoute.snapshot.params['menuDetailsId'];
         this.categoryId = this.activatedRoute.snapshot.params['categoryId'];
 
-        this.navigation.startSaveHistory('/menu-details');
-        //console.log(this.navigation.history);
-
+        
         this.role = this.authService.GetUserRole();
         this.vendorUrl = "/" + this.role + '/vendor-detail/';
+        this.categoryUrl = this.role.concat('/vendor-detail/',
+            this.vendorId ,
+            '/category/',
+            this.categoryId
+        );
+
 
         this.breadItems = [
             {label: 'Vendor Detail' , command: (event) => {
@@ -75,8 +81,7 @@ categoryId:string;
                 }
             }},
             { label: 'Category' , command: () => {
-                let categoryUrl = this.role.concat('/vendor-detail/',this.vendorId ,'/category/',this.categoryId);
-                this.router.navigate([categoryUrl]);
+                this.router.navigate([this.categoryUrl]);
             }},
             { label: 'Menu Detail' }
         ];
@@ -106,7 +111,7 @@ categoryId:string;
     }
     
     goBack = () => {
-        this.navigation.goBack();
+        this.router.navigate([this.categoryUrl]);
     }
 
     callMultipleApis = () => {

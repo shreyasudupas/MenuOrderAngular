@@ -63,13 +63,16 @@
                                 severity="danger" 
                                 label="Delete" 
                                 icon="pi pi-trash"
-                                [disabled]="!selectedCategoryMenuItem || !selectedCategoryMenuItem.length" 
+                                (click) = "deleteSeletedMenuItems()"
+                                [disabled]="!selectedMenuItems || !selectedMenuItems.length" 
                                 />
                         </ng-template>
                     </p-toolbar>
                     
                     <ng-container *ngIf="vendorCategory !== undefined">
-                        <p-table [value]="vendorCategory.categories.menuLists">
+                        <p-table [value]="vendorCategory.categories.menuLists"
+                                 [(selection)]="selectedMenuItems"
+                                 [rowHover]="true">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th style="width: 4rem">
@@ -79,18 +82,20 @@
                                     <th>Type</th>
                                     <th>Price</th>
                                     <th>Discount</th>
+                                    <th>Rating</th>
                                     <th>Active</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-item>
                                 <tr>
                                     <td>
-                                        <p-tableCheckbox [value]="menuItem"></p-tableCheckbox>
+                                        <p-tableCheckbox [value]="item"></p-tableCheckbox>
                                     </td>
                                     <td>{{ item.itemName }}</td>
                                     <td>{{ item.foodType }}</td>
                                     <td>{{ item.price }}</td>
                                     <td>{{ item.discount }}</td>
+                                    <td> {{item.rating}} </td>
                                     <td>{{ item.active }}</td>
                                 </tr>
                             </ng-template>
@@ -114,3 +119,5 @@
         </form>
     </p-card>
 </div>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

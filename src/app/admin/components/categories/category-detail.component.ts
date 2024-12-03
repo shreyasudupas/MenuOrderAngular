@@ -2,20 +2,21 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MenuItem, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { BaseComponent } from 'src/app/common/components/base/base.component';
 import { CommonDataSharingService } from 'src/app/common/services/common-datasharing.service';
 import { MenuService } from 'src/app/common/services/menu.service';
 import { environment } from 'src/environments/environment';
 import { NavigationService } from 'src/app/common/services/navigation.service';
 import { AuthService } from 'src/app/common/services/auth.service';
-import { VendorCategoryMenu } from './category-menu-item';
+import { CategoryMenuItem, VendorCategoryMenu } from './category-menu-item';
 
 
 @Component({
     selector:'category-detail',
     templateUrl:'./category-detail.component.html',
-    styleUrls: ['./category-detail.component.scss']
+    styleUrls: ['./category-detail.component.scss'],
+    providers: [ConfirmationService]
 })
 
 export class CategoryDetailComponent extends BaseComponent<VendorCategoryMenu> implements OnInit{
@@ -27,6 +28,7 @@ breadItems: MenuItem[]=[];
 role:string;
 vendorUrl:string;
 vendorCategory:VendorCategoryMenu;
+selectedMenuItems: CategoryMenuItem[] | null;
 userRole:string;
 
     constructor(
@@ -38,7 +40,8 @@ userRole:string;
         private fb:FormBuilder,
         messageService:MessageService,
         public navigation:NavigationService,
-        public authService:AuthService
+        public authService:AuthService,
+        private confirmationService: ConfirmationService
     ){
         super(menuService,httpclient,commonBroadcastService,messageService)   
     }
@@ -48,9 +51,7 @@ userRole:string;
 
         this.InitilizeMenu();
 
-        //these routes are adhoc routes since these component are hidden in menu UI hence passing explcitly
-        this.navigation.startSaveHistory('/category-details');
-
+        
         this.categoryDetailForm = this.fb.group({
             id: [''],
             name: ['',Validators.required],
@@ -66,14 +67,14 @@ userRole:string;
         this.vendorId = this.activatedRoute.snapshot.params['vendorId'];
 
         this.role = this.authService.GetUserRole();
-        this.vendorUrl = "/" + this.role + '/vendor-detail/';
+        this.vendorUrl = "/".concat(this.role,'/vendor-detail/',this.vendorId);
 
         this.userRole = this.authService.GetUserRole();
 
         this.breadItems = [
             {label: 'Vendor Detail' , command: (event) => {
                 if(this.vendorId !== '0' || this.vendorId !== undefined)
-                    this.route.navigate([this.vendorUrl + this.vendorId])
+                    this.route.navigate([this.vendorUrl])
                 else{
                     console.log('No Vendor ID Present in category detail page')
                 }
@@ -117,7 +118,7 @@ userRole:string;
 
     goBack = () => {
         if(this.vendorId !== undefined){
-            this.navigation.goBack();
+            this.route.navigate([this.vendorUrl]);
         }else
         {
             console.log('unable to go back since no Vendor Id')
@@ -157,7 +158,7 @@ userRole:string;
             next: result=>{
                 if(result != null){
                     this.navigation.removeHistory();
-                    this.route.navigateByUrl(this.vendorUrl + this.vendorId);
+                    this.route.navigateByUrl(this.vendorUrl);
                 }else{
                     this.showError('Error in saving the category detail');
                 }
@@ -206,5 +207,17 @@ userRole:string;
     openNew() {
         let menuUrl = '/'.concat(this.userRole,'/vendor-detail/',this.vendorId,'/category/',this.categoryId,'/menu-details/','0');
         this.route.navigate([menuUrl]);
+    }
+
+    deleteSeletedMenuItems() {
+        this.confirmationService.confirm({
+            message: 'Are you sure you want to delete the selected menu items?',
+            header: 'Confirm',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                console.log(this.selectedMenuItems);
+                this.selectedMenuItems = null;
+            }
+        });
     }
 }

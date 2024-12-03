@@ -4,7 +4,19 @@
     <div class="col-12">
         <p-toolbar>
             <div class="p-toolbar-group-left">
-                <button pButton pRipple type="button" label="Add Users" icon="pi pi-user-plus" (click)="addUserDialog()"></button>
+                <button pButton pRipple 
+                                type="button" 
+                                label="Add Users" 
+                                icon="pi pi-user-plus" 
+                                (click)="addUserDialog()"
+                                class="mr-2"></button>
+                <ng-container *ngIf="role === 'admin'" class="mr-2">
+                    <button pButton pRipple 
+                                    type="button" 
+                                    label="Add Vendor Admin" 
+                                    icon="pi pi-user-plus" 
+                                    (click)="addVendorAdminDialog()"></button>
+                </ng-container>
             </div>
         </p-toolbar>
     </div>
@@ -90,5 +102,24 @@
     <div *ngIf="runProgressSpinner">
         <p-progressSpinner></p-progressSpinner>
     </div>
+</p-dialog>
+
+<p-dialog header="Add Vendor Admin" 
+          [(visible)]="addAdminVendorDialog" 
+          [style]="{width: '40vw'}"
+          >
+    <form class="formgrid grid" [formGroup]="vendorAdminFormGroup" (ngSubmit)="addVendorUser()">
+        <div class="field col">
+            <p-dropdown appendTo="body"
+                formControlName="username" 
+                [options]="vendorUsers" 
+                optionLabel="name" 
+                placeholder="Select a Vendor User"></p-dropdown>
+        </div>
+        
+        <div class="field col">
+            <button pButton pRipple type="submit" label="Submit" class="p-button-success"></button>
+        </div>
+    </form>
 </p-dialog>
 
