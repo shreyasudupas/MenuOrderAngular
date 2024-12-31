@@ -69,10 +69,10 @@ expandedRows: {} = {};
                             menu.image.imageFileName = environment.imagePath + menu.image.imageFileName;
                         }
                         
-                        let currentCategory = menu.category;
+                        let currentCategory = menu.categoryDetails.categoryName;
                         if(!categories.includes(currentCategory)){
-                            categories.push(menu.category);
-                            thisRef.expandedRows[menu.category]=true;
+                            categories.push(menu.categoryDetails.categoryName);
+                            thisRef.expandedRows[menu.categoryDetails.categoryName]=true;
                         }
                         //console.log(categories);
 
@@ -83,7 +83,7 @@ expandedRows: {} = {};
                         }
 
                         this.menus.push({
-                            id: menu.id,itemName: menu.itemName, price: menu.price, active: menu.active, category: menu.category,
+                            id: menu.id,itemName: menu.itemName, price: menu.price, active: menu.active, categoryDetails: menu.categoryDetails,
                             discount: menu.discount, foodType: menu.foodType, rating: menu.rating, vendorId: menu.vendorId,
                             image: menu.image,quantity: quantity
                         });
@@ -99,7 +99,7 @@ expandedRows: {} = {};
     }
 
     backToVendor(){
-        this.navigation.goBack();
+        this.router.navigate(['user/food']);
     }
 
     clear(table: Table) {
@@ -108,7 +108,7 @@ expandedRows: {} = {};
 
     async addMenuItem(menuItem:Menu) {
         let item: CartMenuItem = { menuId: menuItem.id,vendorId: menuItem.vendorId,itemName: menuItem.itemName, image: menuItem.image, foodType: menuItem.foodType,
-        category: menuItem.category, price: menuItem.price, discount: menuItem.discount, quantity: menuItem.quantity + 1 };
+        category: menuItem.categoryDetails.categoryId, price: menuItem.price, discount: menuItem.discount, quantity: menuItem.quantity + 1 };
 
         menuItem.quantity = item.quantity;
         
@@ -131,7 +131,7 @@ expandedRows: {} = {};
 
     removeMenuItem(menuItem:Menu) {
         let item: CartMenuItem = { menuId: menuItem.id,vendorId: menuItem.vendorId,itemName: menuItem.itemName, image: menuItem.image, foodType: menuItem.foodType,
-        category: menuItem.category, price: menuItem.price, discount: menuItem.discount, quantity: menuItem.quantity - 1 };
+        category: menuItem.categoryDetails.categoryId, price: menuItem.price, discount: menuItem.discount, quantity: menuItem.quantity - 1 };
 
         menuItem.quantity = item.quantity;
 

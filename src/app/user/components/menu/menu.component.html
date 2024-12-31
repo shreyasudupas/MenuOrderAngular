@@ -5,17 +5,18 @@
 </p-toolbar>
 <p-card header="Menu Details">
     <p-table #menuTbl [value]="menus" 
-             sortField="category" 
+             sortField="categoryDetails.categoryName" 
              sortMode="single" 
-             dataKey="category" 
+             dataKey="categoryDetails.categoryName" 
              rowGroupMode="subheader" 
-             groupRowsBy="category" 
+             groupRowsBy="categoryDetails.categoryName" 
              [tableStyle]="{'min-width': '70rem'}"
              [expandedRowKeys]="expandedRows"
              [globalFilterFields]="['itemName']"
              responsiveLayout="stack" 
              [breakpoint]="'960px'"
              [tableStyle]="{'min-width': '50rem'}">
+             
         <ng-template pTemplate="caption">
             <div class="flex-container">
                 <div class="flex-container-reset-filter">
@@ -46,7 +47,7 @@
                             class="p-button-text p-button-rounded p-button-plain mr-2" 
                             [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
                     </button>
-                    <span class="font-bold ml-2">{{menu.category}}</span>
+                    <span class="font-bold ml-2">{{menu.categoryDetails.categoryName}}</span>
                 </td>
             </tr>
         </ng-template>

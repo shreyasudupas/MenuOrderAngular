@@ -285,6 +285,7 @@ export class VendorUserListComponent extends BaseComponent<VendorUserIdMapping> 
                 next: () => {
                     this.vendorUsers.filter(v=>v.value !== vendorFormControl.value);
                     this.addVendorAdminDialog()
+                    this.listAllVendorUserMapping();
                 },
                 error: err => console.error(err)
             });

@@ -6,10 +6,15 @@ export class Menu {
     itemName:string;
     image:ImageModel;
     foodType:string;
-    category:string;
+    categoryDetails:CategoryDetails;
     price:number;
     discount:number;
     rating:number;
     active:boolean;
     quantity:number;
+}
+
+export class CategoryDetails{
+    categoryId:string;
+    categoryName:string;
 }
